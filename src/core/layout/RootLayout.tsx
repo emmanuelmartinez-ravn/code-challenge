@@ -1,10 +1,10 @@
 import { Outlet } from 'react-router'
-import SidebarItem from './Sidebar/SidebarItem'
+import Sidebar from './Sidebar/Sidebar'
 
 function RootLayout() {
   return (
     <div>
-      <SidebarItem />
+      <Sidebar />
       <Outlet />
     </div>
   )

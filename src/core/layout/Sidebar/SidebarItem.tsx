@@ -1,10 +1,24 @@
 import './SidebarItem.css'
 
-function SidebarItem() {
+function SidebarItem({
+  name,
+  icon,
+  selectedName,
+  onClick,
+}: {
+  readonly name: string
+  readonly icon?: React.ReactNode
+  readonly selectedName: string
+  readonly onClick?: () => void
+}) {
   return (
-    <button className="body body--bold body--xl sidebar-item sidebar-item--selected">
-      <div className="sidebar-item__icon"></div>
-      PROJECTS
+    <button
+      className={`body body--bold body--m sidebar-item sidebar-item${selectedName == name ? '--selected' : ''}`}
+      onClick={onClick}
+    >
+      {icon ?? <div className="sidebar-item__icon--default" />}
+
+      {name.toUpperCase()}
     </button>
   )
 }
