@@ -1,4 +1,4 @@
-.sidebar {
+aside {
   width: 232px;
   background-color: var(--color-neutral-4);
   display: flex;
@@ -10,7 +10,7 @@
   scrollbar-color: var(--color-neutral-3) var(--color-neutral-4);
 }
 
-.sidebar > :first-child {
+aside > :first-child {
   margin-top: 1rem;
   margin-bottom: 2rem;
   align-self: center;

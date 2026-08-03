@@ -60,7 +60,7 @@ function Sidebar() {
   })
 
   return (
-    <aside className="sidebar">
+    <aside>
       <RavnIcon />
       {items.map(({ name, icon, href }) => (
         <SidebarItem

@@ -1,0 +1,14 @@
+.avatar {
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.avatar--s {
+  width: 20px;
+  height: 20px;
+}
+
+.avatar--m {
+  width: 32px;
+  height: 32px;
+}
