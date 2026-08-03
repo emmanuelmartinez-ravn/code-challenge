@@ -2,9 +2,9 @@ header {
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin: 2rem 2rem 0 2rem;
+  margin: 2rem 2rem 0 0;
   background-color: var(--color-neutral-4);
-  padding: 0 0.75rem 0 0.75rem;
+  padding: 0 1rem 0 1rem;
   border-radius: 1rem;
 }
 
@@ -23,18 +23,35 @@ header > :first-child {
   align-items: center;
 }
 
+.icon-button:focus-visible {
+  outline: 2px solid var(--color-primary-4);
+  outline-offset: 2px;
+}
+
 header > :first-child > input {
-  border: none;
-  background-color: transparent;
+  all: unset;
   color: var(--color-neutral-2);
-  font-size: var(--body-m-font-size);
   width: 100%;
   margin-right: 1rem;
-  padding: 0.75rem;
+  padding: 1rem;
+}
+
+header > :first-child > input:focus-visible {
+  outline: 2px solid var(--color-primary-4);
+  outline-offset: 2px;
 }
 
 header > :nth-child(2) {
   display: flex;
   gap: 1rem;
   align-items: center;
+}
+
+header > :nth-child(2) > :last-child {
+  all: unset;
+}
+
+header > :nth-child(2) > :last-child:focus-visible {
+  outline: 2px solid var(--color-primary-4);
+  outline-offset: 2px;
 }

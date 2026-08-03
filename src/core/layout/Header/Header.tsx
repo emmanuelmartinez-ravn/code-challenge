@@ -21,6 +21,7 @@ function Header() {
           id="search"
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
+          className="body--m"
         />
       </div>
 
@@ -33,7 +34,9 @@ function Header() {
         <button className="icon-button">
           <NotificationIcon />
         </button>
-        <Avatar />
+        <button>
+          <Avatar />
+        </button>
       </div>
     </header>
   )
