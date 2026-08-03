@@ -11,7 +11,7 @@ function Header() {
   return (
     <header>
       <div>
-        <button className="icon-button">
+        <button className="icon-button" aria-label="Search">
           <SearchIcon />
         </button>
 
@@ -27,14 +27,18 @@ function Header() {
 
       <div>
         {searchValue.length > 0 ? (
-          <button className="icon-button" onClick={() => setSearchValue('')}>
+          <button
+            className="icon-button"
+            onClick={() => setSearchValue('')}
+            aria-label="Clear search"
+          >
             <CancelIcon />{' '}
           </button>
         ) : null}
-        <button className="icon-button">
+        <button className="icon-button" aria-label="Notifications">
           <NotificationIcon />
         </button>
-        <button>
+        <button aria-label="Profile">
           <Avatar />
         </button>
       </div>
