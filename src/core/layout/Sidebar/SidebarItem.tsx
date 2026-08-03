@@ -3,17 +3,17 @@ import './SidebarItem.css'
 function SidebarItem({
   name,
   icon,
-  selectedName,
+  active,
   onClick,
 }: {
   readonly name: string
   readonly icon?: React.ReactNode
-  readonly selectedName: string
+  readonly active: boolean
   readonly onClick?: () => void
 }) {
   return (
     <button
-      className={`body body--bold body--m sidebar-item sidebar-item${selectedName == name ? '--selected' : ''}`}
+      className={`body body--bold body--m sidebar-item sidebar-item${active ? '--selected' : ''}`}
       onClick={onClick}
     >
       {icon ?? <div className="sidebar-item__icon--default" />}

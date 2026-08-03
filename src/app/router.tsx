@@ -4,7 +4,9 @@ import NotFoundPage from '@shared/NotFoundPage/NotFoundPage'
 
 import RootLayout from '@core/layout/RootLayout'
 
-import HomePage from '@features/HomePage/HomePage'
+import DashboardPage from '@features/Dashboard/DashboardPage'
+import MyTaskPage from '@features/MyTask/MyTaskPage'
+import PlaceholderPage from '@features/PlaceholderPage/PlaceholderPage'
 
 export const router = createBrowserRouter([
   {
@@ -14,8 +16,21 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <HomePage />,
+        path: 'dashboard',
+        element: <DashboardPage />,
       },
+      {
+        path: 'projects',
+        element: <PlaceholderPage name="Projects" />,
+      },
+      {
+        path: 'my-task',
+        element: <MyTaskPage />,
+      },
+      { path: 'calendar', element: <PlaceholderPage name="Calendar" /> },
+      { path: 'time-manage', element: <PlaceholderPage name="Time Manage" /> },
+      { path: 'reports', element: <PlaceholderPage name="Reports" /> },
+      { path: 'settings', element: <PlaceholderPage name="Settings" /> },
       {
         path: '*',
         element: <NotFoundPage />,
