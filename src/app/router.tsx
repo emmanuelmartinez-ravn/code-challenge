@@ -7,6 +7,7 @@ import RootLayout from '@core/layout/RootLayout'
 import DashboardPage from '@features/Dashboard/DashboardPage'
 import MyTaskPage from '@features/MyTask/MyTaskPage'
 import PlaceholderPage from '@features/PlaceholderPage/PlaceholderPage'
+import ControlsLayout from '@core/layout/ControlsLayout/ControlsLayout'
 
 export const router = createBrowserRouter([
   {
@@ -15,17 +16,22 @@ export const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       {
-        index: true,
-        path: 'dashboard',
-        element: <DashboardPage />,
+        element: <ControlsLayout />,
+        children: [
+          {
+            index: true,
+            path: 'dashboard',
+            element: <DashboardPage />,
+          },
+          {
+            path: 'my-task',
+            element: <MyTaskPage />,
+          },
+        ],
       },
       {
         path: 'projects',
         element: <PlaceholderPage name="Projects" />,
-      },
-      {
-        path: 'my-task',
-        element: <MyTaskPage />,
       },
       { path: 'calendar', element: <PlaceholderPage name="Calendar" /> },
       { path: 'time-manage', element: <PlaceholderPage name="Time Manage" /> },

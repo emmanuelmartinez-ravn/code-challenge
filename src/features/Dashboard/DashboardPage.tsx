@@ -1,10 +1,9 @@
-import Controls from './Controls'
 import './DashboardPage.css'
 
 function DashboardPage() {
   return (
     <section className="dashboard">
-      <Controls />
+      <h1 className="sr-only">Dashboard</h1>
     </section>
   )
 }

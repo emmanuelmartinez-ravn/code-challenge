@@ -4,7 +4,7 @@
   align-items: center;
   margin: 2rem 2rem 0 0;
   background-color: var(--color-neutral-4);
-  padding: 0 1rem 0 1rem;
+  padding: 0 1.25rem 0 1.25rem;
   border-radius: 1rem;
 }
 
@@ -29,7 +29,7 @@
   color: var(--color-neutral-2);
   width: 100%;
   margin-right: 1rem;
-  padding: 1rem;
+  padding: 1.25rem;
 }
 
 .search-bar > :first-child > input:focus-visible {
@@ -45,6 +45,8 @@
 
 .search-bar > :nth-child(2) > :last-child {
   all: unset;
+  display: flex;
+  align-items: center;
 }
 
 .search-bar > :nth-child(2) > :last-child:focus-visible {

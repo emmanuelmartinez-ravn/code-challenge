@@ -1,7 +1,6 @@
 import './Sidebar.css'
 import SidebarItem from './SidebarItem'
 import RavnIcon from '@shared/icons/RavnIcon'
-import { useState } from 'react'
 import { useNavigate, useLocation } from 'react-router'
 
 import MenuIcon from '@shared/icons/MenuIcon'
@@ -54,10 +53,10 @@ function Sidebar() {
   const navigate = useNavigate()
   const location = useLocation()
 
-  const [selectedButton, setSelectedButton] = useState<string>(() => {
-    const route = location.pathname.split('/')[1]
-    return items.find(({ href }) => href === route)?.name ?? 'Dashboard'
-  })
+  const route = location.pathname.split('/')[1]
+
+  const selectedButton =
+    items.find(({ href }) => href === route)?.name ?? 'Dashboard'
 
   return (
     <aside>
@@ -68,7 +67,6 @@ function Sidebar() {
           name={name}
           icon={icon}
           onClick={() => {
-            setSelectedButton(name)
             navigate(href)
           }}
           selected={selectedButton === name}

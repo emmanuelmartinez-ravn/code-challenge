@@ -14,7 +14,7 @@ export type AvatarProps =
     }
 
 function Avatar({
-  size = 's',
+  size = 'm',
   src = avatarPlaceholder,
   alt = 'Avatar',
 }: AvatarProps) {
