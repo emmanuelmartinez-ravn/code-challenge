@@ -1,17 +1,18 @@
 import avatarPlaceholder from '@assets/avatar-placeholder.png'
 import './Avatar.css'
 
-export type AvatarProps =
+export type AvatarProps = {
+  size?: 's' | 'm'
+} & (
   | {
-      readonly size?: 's' | 'm'
       readonly src: string
       readonly alt?: string
     }
   | {
-      readonly size?: never
       readonly src?: never
       readonly alt?: never
     }
+)
 
 function Avatar({
   size = 'm',

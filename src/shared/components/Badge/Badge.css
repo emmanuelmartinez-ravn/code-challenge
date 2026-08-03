@@ -1,0 +1,27 @@
+.badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+}
+
+.badge--default {
+  color: var(--color-neutral-1);
+  background: #94979a1a;
+}
+
+.badge--primary {
+  color: var(--color-primary-4);
+  background: #da584b1a;
+}
+
+.badge--secondary {
+  color: var(--color-secondary-4);
+  background: #70b2521a;
+}
+
+.badge--tertiary {
+  color: var(--color-tertiary-4);
+  background: #e5b4541a;
+}

@@ -1,0 +1,29 @@
+.task-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: 1rem;
+  background-color: var(--color-neutral-4);
+}
+
+.task-card__header {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.task-card__header > :first-child {
+  color: var(--color-neutral-1);
+}
+
+.task-card__header > :last-child {
+  margin-left: auto;
+}
+
+.task-card__points {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
