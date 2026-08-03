@@ -1,4 +1,4 @@
-header {
+.search-bar {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -8,7 +8,7 @@ header {
   border-radius: 1rem;
 }
 
-header > :first-child {
+.search-bar > :first-child {
   display: flex;
   gap: 1rem;
   align-items: center;
@@ -16,11 +16,7 @@ header > :first-child {
 }
 
 .icon-button {
-  all: unset;
   color: var(--color-neutral-2);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
 }
 
 .icon-button:focus-visible {
@@ -28,7 +24,7 @@ header > :first-child {
   outline-offset: 2px;
 }
 
-header > :first-child > input {
+.search-bar > :first-child > input {
   all: unset;
   color: var(--color-neutral-2);
   width: 100%;
@@ -36,22 +32,22 @@ header > :first-child > input {
   padding: 1rem;
 }
 
-header > :first-child > input:focus-visible {
+.search-bar > :first-child > input:focus-visible {
   outline: 2px solid var(--color-primary-4);
   outline-offset: 2px;
 }
 
-header > :nth-child(2) {
+.search-bar > :nth-child(2) {
   display: flex;
   gap: 1rem;
   align-items: center;
 }
 
-header > :nth-child(2) > :last-child {
+.search-bar > :nth-child(2) > :last-child {
   all: unset;
 }
 
-header > :nth-child(2) > :last-child:focus-visible {
+.search-bar > :nth-child(2) > :last-child:focus-visible {
   outline: 2px solid var(--color-primary-4);
   outline-offset: 2px;
 }

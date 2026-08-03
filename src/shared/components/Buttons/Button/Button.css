@@ -1,0 +1,7 @@
+.button--ghost {
+  color: var(--color-neutral-2);
+}
+
+.button--primary {
+  background-color: var(--color-primary-4);
+}

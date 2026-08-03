@@ -3,17 +3,17 @@ import CancelIcon from '@shared/icons/CancelIcon'
 import NotificationIcon from '@shared/icons/NotificationIcon'
 
 import './Header.css'
-import Avatar from '@shared/Avatar/Avatar'
-import { useState } from 'react'
+import Avatar from '@shared/components/Avatar/Avatar'
+import { useRef, useState } from 'react'
+import Button from '@shared/components/Buttons/Button/Button'
 
 function Header() {
   const [searchValue, setSearchValue] = useState<string>('')
+  const inputRef = useRef<HTMLInputElement>(null)
   return (
-    <header>
+    <header className="search-bar">
       <div>
-        <button className="icon-button" aria-label="Search">
-          <SearchIcon />
-        </button>
+        <Button label="Search" icon={<SearchIcon />} ghost={true} />
 
         <input
           type="text"
@@ -22,22 +22,27 @@ function Header() {
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
           className="body--m"
+          ref={inputRef}
         />
       </div>
 
       <div>
         {searchValue.length > 0 ? (
-          <button
-            className="icon-button"
-            onClick={() => setSearchValue('')}
-            aria-label="Clear search"
-          >
-            <CancelIcon />{' '}
-          </button>
+          <Button
+            label="Clear search"
+            icon={<CancelIcon />}
+            onClick={() => {
+              inputRef.current?.focus()
+              setSearchValue('')
+            }}
+            ghost={true}
+          />
         ) : null}
-        <button className="icon-button" aria-label="Notifications">
-          <NotificationIcon />
-        </button>
+        <Button
+          label="Notifications"
+          icon={<NotificationIcon />}
+          ghost={true}
+        />
         <button aria-label="Profile">
           <Avatar />
         </button>

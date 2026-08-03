@@ -1,0 +1,7 @@
+.controls {
+  display: flex;
+}
+
+.controls > :last-child {
+  margin-left: auto;
+}

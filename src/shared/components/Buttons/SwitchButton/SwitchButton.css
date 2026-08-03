@@ -1,0 +1,13 @@
+.switch-button {
+  color: var(--color-neutral-1);
+}
+
+.switch-button:focus-visible {
+  outline: 2px solid var(--color-primary-4);
+  outline-offset: 2px;
+}
+
+.switch-button--selected {
+  color: var(--color-primary-4);
+  border: 2px solid var(--color-primary-4);
+}

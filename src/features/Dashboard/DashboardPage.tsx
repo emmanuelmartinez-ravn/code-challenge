@@ -1,5 +1,12 @@
+import Controls from './Controls'
+import './DashboardPage.css'
+
 function DashboardPage() {
-  return <div>Home is rendering</div>
+  return (
+    <section className="dashboard">
+      <Controls />
+    </section>
+  )
 }
 
 export default DashboardPage

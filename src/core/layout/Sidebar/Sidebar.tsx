@@ -71,7 +71,7 @@ function Sidebar() {
             setSelectedButton(name)
             navigate(href)
           }}
-          active={selectedButton === name}
+          selected={selectedButton === name}
         />
       ))}
     </aside>
