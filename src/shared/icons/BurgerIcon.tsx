@@ -6,6 +6,7 @@ function BurgerIcon() {
       viewBox="0 0 18 16"
       fill="currentColor"
       xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
     >
       <path d="M0 0H18V2H0V0ZM0 7H18V9H0V7ZM0 14H18V16H0V14Z" />
     </svg>

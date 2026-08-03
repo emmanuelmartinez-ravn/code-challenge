@@ -6,12 +6,12 @@ function Badge({
   variant = 'default',
 }: {
   readonly name: string
-  readonly icon: React.ReactNode
+  readonly icon?: React.ReactNode
   readonly variant?: 'default' | 'primary' | 'secondary' | 'tertiary'
 }) {
   return (
-    <span className={`badge badge--${variant}`}>
-      {icon}
+    <span className={`badge badge--${variant} body--bold`}>
+      {icon ?? null}
       {name}
     </span>
   )

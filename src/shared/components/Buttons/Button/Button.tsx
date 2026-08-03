@@ -19,7 +19,7 @@ function Button({
       className={`button ${ghost ? 'button--ghost' : 'button--primary'}`}
       onClick={onClick}
     >
-      {name}
+      <span>{name}</span>
       {icon ?? null}
     </button>
   )

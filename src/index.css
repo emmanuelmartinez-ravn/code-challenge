@@ -160,6 +160,7 @@ body {
   height: 40px;
   border-radius: 8px;
   cursor: pointer;
+  gap: 0.5rem;
 }
 
 .button:focus-visible {

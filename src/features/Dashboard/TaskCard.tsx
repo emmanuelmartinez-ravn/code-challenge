@@ -3,6 +3,10 @@ import './TaskCard.css'
 import OptionsIcon from '@shared/icons/OptionsIcon'
 import Badge from '@shared/components/Badge/Badge'
 import ClockIcon from '@shared/icons/ClockIcon'
+import Avatar from '@shared/components/Avatar/Avatar'
+import AttachmentIcon from '@shared/icons/AttachmentIcon'
+import BranchIcon from '@shared/icons/BranchIcon'
+import CommentIcon from '@shared/icons/CommentIcon'
 
 function formatDueDate(dueDate: Date): {
   isOverdue: boolean
@@ -78,25 +82,37 @@ function TaskCard({
   return (
     <div className="task-card">
       <div className="task-card__header">
-        <h2>{title}</h2>
+        <h3 className="body body--xl body--bold">{title}</h3>
         <Button label="More options" icon={<OptionsIcon />} ghost={true} />
       </div>
-      <div className="task-card__points">
-        <p>{points} points</p>
+      <div className="task-card__points body--bold">
+        <p className="body body--m">{points} points</p>
         <Badge
           name={formatted}
           icon={<ClockIcon />}
           variant={isOverdue ? 'primary' : 'default'}
         />
-        <p>{dueDate.toLocaleDateString()}</p>
       </div>
-      <div>
+      <div className="task-card__labels">
         {labels.map((label) => (
-          <div key={label}>{label}</div>
+          <Badge key={label} name={label} />
         ))}
       </div>
-      <div>
-        <p>{asignee}</p>
+      <div className="task-card__footer">
+        <Avatar src={asignee} alt="Asignee" size="s" />
+        <div className="task-card__footer__actions">
+          <span aria-label="1 Attachments">
+            <AttachmentIcon />
+          </span>
+          <span aria-label="5 Branches">
+            <p>5</p>
+            <BranchIcon />
+          </span>
+          <span aria-label="3 Comments">
+            <p>3</p>
+            <CommentIcon />
+          </span>
+        </div>
       </div>
     </div>
   )
