@@ -1,6 +1,6 @@
 .controls {
   display: flex;
-  margin: 2rem 2rem 0 0;
+  margin-bottom: 2rem;
 }
 
 .controls > :last-child {

@@ -12,6 +12,7 @@ export default defineConfig({
       '@core': path.resolve(__dirname, './src/core'),
       '@features': path.resolve(__dirname, './src/features'),
       '@shared': path.resolve(__dirname, './src/shared'),
+      '@constants': path.resolve(__dirname, './src/constants'),
     },
   },
 })

@@ -2,7 +2,6 @@ import Accordion from '@shared/components/Accordion/Accordion'
 import './MyTaskPage.css'
 import TablesHeader from './TablesHeader'
 import TaskTable from './TasksTable'
-import { placeholderTask } from '@features/Dashboard/DashboardPage'
 
 function MyTaskPage() {
   return (
@@ -12,9 +11,9 @@ function MyTaskPage() {
         <TablesHeader />
         <div className="table__accordion">
           <Accordion title="To Do" subtitle="(05)">
-            <TaskTable
+            {/* <TaskTable
               tasks={[placeholderTask, placeholderTask, placeholderTask]}
-            />
+            /> */}
           </Accordion>
         </div>
       </div>

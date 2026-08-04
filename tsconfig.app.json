@@ -27,7 +27,8 @@
       "@assets/*": ["./src/assets/*"],
       "@core/*": ["./src/core/*"],
       "@features/*": ["./src/features/*"],
-      "@shared/*": ["./src/shared/*"]
+      "@shared/*": ["./src/shared/*"],
+      "@constants/*": ["./src/constants/*"]
     }
   },
   "include": ["src"]

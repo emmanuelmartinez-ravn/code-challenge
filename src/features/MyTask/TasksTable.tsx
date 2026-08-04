@@ -1,13 +1,12 @@
-import type { Task } from '@features/Dashboard/TaskCard'
 import './TasksTable.css'
 import Badge from '@shared/components/Badge/Badge'
 import Avatar from '@shared/components/Avatar/Avatar'
-import { formatDueDate } from '@features/Dashboard/TaskCard'
+import type { Task } from '@constants/Task'
 
 function TaskTable({ tasks }: { readonly tasks: Task[] }) {
   return (
     <table className="task-table">
-      <tbody>
+      {/* <tbody>
         {tasks.map((task, index) => (
           <tr key={task.title}>
             <td className="task-table__title body body--s">
@@ -33,7 +32,7 @@ function TaskTable({ tasks }: { readonly tasks: Task[] }) {
             </td>
           </tr>
         ))}
-      </tbody>
+      </tbody> */}
     </table>
   )
 }

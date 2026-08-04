@@ -7,89 +7,27 @@ import Avatar from '@shared/components/Avatar/Avatar'
 import AttachmentIcon from '@shared/icons/AttachmentIcon'
 import BranchIcon from '@shared/icons/BranchIcon'
 import CommentIcon from '@shared/icons/CommentIcon'
-
-export function formatDueDate(dueDate: Date): {
-  isOverdue: boolean
-  formatted: string
-} {
-  const due = new Date(dueDate)
-  const current = new Date()
-
-  const normalizeDate = (date: Date) => {
-    const normalized = new Date(date)
-    normalized.setHours(0, 0, 0, 0)
-    return normalized
-  }
-
-  const dueDay = normalizeDate(due)
-  const currentDay = normalizeDate(current)
-
-  const difference = dueDay.getTime() - currentDay.getTime()
-
-  const oneDay = 24 * 60 * 60 * 1000
-
-  if (difference === oneDay) {
-    return {
-      isOverdue: false,
-      formatted: 'Tomorrow',
-    }
-  }
-
-  if (difference === -oneDay) {
-    return {
-      isOverdue: true,
-      formatted: 'Yesterday',
-    }
-  }
-
-  if (difference === 0) {
-    return {
-      isOverdue: false,
-      formatted: 'Today',
-    }
-  }
-
-  const parts = new Intl.DateTimeFormat('en-US', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  }).formatToParts(due)
-
-  const day = parts.find(({ type }) => type === 'day')?.value
-  const month = parts.find(({ type }) => type === 'month')?.value
-  const year = parts.find(({ type }) => type === 'year')?.value
-
-  return {
-    isOverdue: difference < 0,
-    formatted: `${day} ${month}, ${year}`,
-  }
-}
-
-export type Task = {
-  title: string
-  points: number
-  asignee: string
-  tags: string[]
-  dueDate: Date
-}
+import type { Task } from '@constants/Task'
+import { formatDueDate, pointEstimateToNumber } from '@constants/utils'
 
 function TaskCard({ task }: { readonly task: Task }) {
-  const { title, points, asignee, tags, dueDate } = task
+  const { assignee, dueDate, name, pointEstimate, tags } = task
 
   const { isOverdue, formatted } = formatDueDate(dueDate)
+  const points = pointEstimateToNumber(pointEstimate)
   return (
     <article className="task-card">
       <div className="task-card__header">
         <h3 className="body body--xl body--bold">
           <span className="sr-only">Task card: </span>
-          {title}
+          {name}
         </h3>
         <Button label="More options" icon={<OptionsIcon />} ghost={true} />
       </div>
       <div className="task-card__points body--bold">
         <p className="body body--m">
           <span className="sr-only">Estimated: </span>
-          {points} points
+          {points} point{points !== 1 ? 's' : ''}
         </p>
         <Badge
           label="Due date"
@@ -99,12 +37,12 @@ function TaskCard({ task }: { readonly task: Task }) {
         />
       </div>
       <div className="task-card__tags">
-        {tags.map((tag) => (
-          <Badge key={tag} label="Tag" name={tag} />
-        ))}
+        {tags
+          ? tags.map((tag) => <Badge key={tag} label="Tag" name={tag} />)
+          : null}
       </div>
       <div className="task-card__footer">
-        <Avatar src={asignee} alt="Asignee" size="s" />
+        <Avatar src={assignee.avatar} alt="Assignee" size="s" />
         <div className="task-card__footer__actions">
           <span aria-label="1 Attachments">
             <AttachmentIcon />

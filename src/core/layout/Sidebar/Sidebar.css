@@ -4,10 +4,9 @@ aside {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  margin: 2rem;
+  margin-right: 2rem;
   border-radius: 1rem;
   overflow-y: auto;
-  scrollbar-color: var(--color-neutral-3) var(--color-neutral-4);
 }
 
 aside > :first-child {
