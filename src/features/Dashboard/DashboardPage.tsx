@@ -6,13 +6,32 @@ function DashboardPage() {
   return (
     <section className="dashboard">
       <h1 className="sr-only">Dashboard</h1>
-      <TaskCard
-        title="Slack"
-        points={4}
-        asignee={avatarPlaceholder2}
-        labels={['IOS APP', 'ANDROID']}
-        dueDate={new Date(2026, 7, 1)}
-      />
+      <div className="dashboard__cards">
+        <h2 className="body body--l">Working (03)</h2>
+        <h2 className="body body--l">In Progress (03)</h2>
+        <h2 className="body body--l">Completed (03)</h2>
+        <TaskCard
+          title="Slack"
+          points={4}
+          asignee={avatarPlaceholder2}
+          tags={['IOS APP', 'ANDROID']}
+          dueDate={new Date(2026, 7, 1)}
+        />
+        <TaskCard
+          title="Slack"
+          points={4}
+          asignee={avatarPlaceholder2}
+          tags={['IOS APP', 'ANDROID']}
+          dueDate={new Date(2026, 7, 1)}
+        />
+        <TaskCard
+          title="Slack"
+          points={4}
+          asignee={avatarPlaceholder2}
+          tags={['IOS APP', 'ANDROID']}
+          dueDate={new Date(2026, 7, 1)}
+        />
+      </div>
     </section>
   )
 }

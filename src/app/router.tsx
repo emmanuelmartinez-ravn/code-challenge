@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router'
+import { createBrowserRouter, Navigate } from 'react-router'
 import ErrorPage from '@shared/ErrorPage/ErrorPage'
 import NotFoundPage from '@shared/NotFoundPage/NotFoundPage'
 
@@ -20,6 +20,9 @@ export const router = createBrowserRouter([
         children: [
           {
             index: true,
+            element: <Navigate to="/dashboard" replace />,
+          },
+          {
             path: 'dashboard',
             element: <DashboardPage />,
           },
@@ -37,10 +40,10 @@ export const router = createBrowserRouter([
       { path: 'time-manage', element: <PlaceholderPage name="Time Manage" /> },
       { path: 'reports', element: <PlaceholderPage name="Reports" /> },
       { path: 'settings', element: <PlaceholderPage name="Settings" /> },
-      {
-        path: '*',
-        element: <NotFoundPage />,
-      },
     ],
+  },
+  {
+    path: '*',
+    element: <NotFoundPage />,
   },
 ])

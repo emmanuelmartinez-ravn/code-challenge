@@ -34,7 +34,7 @@
   margin-left: auto;
 }
 
-.task-card__labels {
+.task-card__tags {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;

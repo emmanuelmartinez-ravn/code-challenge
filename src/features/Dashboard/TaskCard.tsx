@@ -69,33 +69,40 @@ function TaskCard({
   title,
   points,
   asignee,
-  labels,
+  tags,
   dueDate,
 }: {
   readonly title: string
   readonly points: number
   readonly asignee: string
-  readonly labels: string[]
+  readonly tags: string[]
   readonly dueDate: Date
 }) {
   const { isOverdue, formatted } = formatDueDate(dueDate)
   return (
-    <div className="task-card">
+    <article className="task-card">
       <div className="task-card__header">
-        <h3 className="body body--xl body--bold">{title}</h3>
+        <h3 className="body body--xl body--bold">
+          <span className="sr-only">Task card: </span>
+          {title}
+        </h3>
         <Button label="More options" icon={<OptionsIcon />} ghost={true} />
       </div>
       <div className="task-card__points body--bold">
-        <p className="body body--m">{points} points</p>
+        <p className="body body--m">
+          <span className="sr-only">Estimated: </span>
+          {points} points
+        </p>
         <Badge
+          label="Due date"
           name={formatted}
           icon={<ClockIcon />}
           variant={isOverdue ? 'primary' : 'default'}
         />
       </div>
-      <div className="task-card__labels">
-        {labels.map((label) => (
-          <Badge key={label} name={label} />
+      <div className="task-card__tags">
+        {tags.map((tag) => (
+          <Badge key={tag} label="Tag" name={tag} />
         ))}
       </div>
       <div className="task-card__footer">
@@ -114,7 +121,7 @@ function TaskCard({
           </span>
         </div>
       </div>
-    </div>
+    </article>
   )
 }
 
