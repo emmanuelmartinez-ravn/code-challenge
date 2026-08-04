@@ -1,5 +1,6 @@
 .task-table {
   border-spacing: 0;
+  width: 100%;
 }
 
 .task-table > tbody > tr {
@@ -24,6 +25,40 @@
 .task-table__title__status {
   margin-top: 0.25rem;
   margin-bottom: 0.25rem;
-  border-left: 4px solid var(--color-primary-4);
+  border-left: 4px solid var(--color-secondary-4);
   padding: 1rem 1rem 1rem 2rem;
+}
+
+.task-table__title__status--overdue {
+  border-left: 4px solid var(--color-primary-4);
+}
+
+.task-table__tags {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  width: 100%;
+}
+
+.task-table__points {
+  color: var(--color-neutral-1);
+  display: flex;
+  align-items: center;
+}
+
+.task-table__asignee {
+  color: var(--color-neutral-1);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.task-table__due-date {
+  color: var(--color-neutral-1);
+  display: flex;
+  align-items: center;
+}
+
+.task-table__due-date--overdue {
+  color: var(--color-primary-4);
 }

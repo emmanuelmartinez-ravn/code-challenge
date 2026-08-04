@@ -8,7 +8,7 @@ import AttachmentIcon from '@shared/icons/AttachmentIcon'
 import BranchIcon from '@shared/icons/BranchIcon'
 import CommentIcon from '@shared/icons/CommentIcon'
 
-function formatDueDate(dueDate: Date): {
+export function formatDueDate(dueDate: Date): {
   isOverdue: boolean
   formatted: string
 } {
@@ -31,21 +31,21 @@ function formatDueDate(dueDate: Date): {
   if (difference === oneDay) {
     return {
       isOverdue: false,
-      formatted: 'TOMORROW',
+      formatted: 'Tomorrow',
     }
   }
 
   if (difference === -oneDay) {
     return {
       isOverdue: true,
-      formatted: 'YESTERDAY',
+      formatted: 'Yesterday',
     }
   }
 
   if (difference === 0) {
     return {
       isOverdue: false,
-      formatted: 'TODAY',
+      formatted: 'Today',
     }
   }
 
@@ -61,7 +61,7 @@ function formatDueDate(dueDate: Date): {
 
   return {
     isOverdue: difference < 0,
-    formatted: `${day} ${month}, ${year}`.toUpperCase(),
+    formatted: `${day} ${month}, ${year}`,
   }
 }
 
@@ -93,7 +93,7 @@ function TaskCard({ task }: { readonly task: Task }) {
         </p>
         <Badge
           label="Due date"
-          name={formatted}
+          name={formatted.toUpperCase()}
           icon={<ClockIcon />}
           variant={isOverdue ? 'primary' : 'default'}
         />

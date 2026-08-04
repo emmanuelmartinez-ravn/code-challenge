@@ -8,7 +8,7 @@ export const placeholderTask: Task = {
   points: 4,
   asignee: avatarPlaceholder2,
   tags: ['IOS APP', 'ANDROID'],
-  dueDate: new Date(2026, 7, 1),
+  dueDate: new Date(2026, 7, 4),
 }
 
 function DashboardPage() {
