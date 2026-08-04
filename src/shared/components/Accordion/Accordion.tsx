@@ -15,7 +15,7 @@ function Accordion({
 
   return (
     <div className="accordion">
-      <h3
+      <span
         className={`accordion__header ${isOpen ? 'accordion__header--open' : ''}`}
       >
         <button
@@ -28,7 +28,7 @@ function Accordion({
 
           {subtitle ? <span>{subtitle}</span> : null}
         </button>
-      </h3>
+      </span>
 
       {isOpen && <div className="accordion__content">{children}</div>}
     </div>

@@ -1,0 +1,29 @@
+.task-table {
+  border-spacing: 0;
+}
+
+.task-table > tbody > tr {
+  display: grid;
+  grid-template-columns: 3fr 1fr 1fr 1fr 1fr;
+  gap: 1rem;
+  border-bottom: 1px solid var(--color-neutral-3);
+}
+
+.task-table > tbody > tr:last-child {
+  border-bottom: none;
+}
+
+.task-table > tbody > tr > td {
+  border-right: 1px solid var(--color-neutral-3);
+}
+
+.task-table__title {
+  color: var(--color-neutral-1);
+}
+
+.task-table__title__status {
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+  border-left: 4px solid var(--color-primary-4);
+  padding: 1rem 1rem 1rem 2rem;
+}

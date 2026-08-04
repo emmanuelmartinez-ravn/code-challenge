@@ -65,19 +65,17 @@ function formatDueDate(dueDate: Date): {
   }
 }
 
-function TaskCard({
-  title,
-  points,
-  asignee,
-  tags,
-  dueDate,
-}: {
-  readonly title: string
-  readonly points: number
-  readonly asignee: string
-  readonly tags: string[]
-  readonly dueDate: Date
-}) {
+export type Task = {
+  title: string
+  points: number
+  asignee: string
+  tags: string[]
+  dueDate: Date
+}
+
+function TaskCard({ task }: { readonly task: Task }) {
+  const { title, points, asignee, tags, dueDate } = task
+
   const { isOverdue, formatted } = formatDueDate(dueDate)
   return (
     <article className="task-card">

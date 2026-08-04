@@ -1,7 +1,7 @@
 .accordion {
   border: 1px solid var(--color-neutral-3);
   background-color: var(--color-neutral-4);
-  border-radius: 0.5rem;
+  border-radius: 0.5rem 0.5rem 0 0;
 }
 
 .accordion__header {
@@ -36,8 +36,4 @@
 
 .accordion__header > button > :nth-child(3) {
   color: var(--color-neutral-2);
-}
-
-.accordion__content {
-  padding: 1rem;
 }

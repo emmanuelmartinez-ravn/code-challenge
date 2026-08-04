@@ -3,11 +3,11 @@ import './TablesHeader.css'
 function TablesHeader() {
   return (
     <div className="my-task__header">
-      <h2 className="body body--l"># Task Name</h2>
-      <h2 className="body body--l">Task Tags</h2>
-      <h2 className="body body--l">Estimate</h2>
-      <h2 className="body body--l">Task Assign Name</h2>
-      <h2 className="body body--l">Due Date</h2>
+      <h3 className="body body--m body--bold"># Task Name</h3>
+      <h3 className="body body--m body--bold">Task Tags</h3>
+      <h3 className="body body--m body--bold">Estimate</h3>
+      <h3 className="body body--m body--bold">Task Assign Name</h3>
+      <h3 className="body body--m body--bold">Due Date</h3>
     </div>
   )
 }
