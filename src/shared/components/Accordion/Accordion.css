@@ -1,0 +1,43 @@
+.accordion {
+  border: 1px solid var(--color-neutral-3);
+  background-color: var(--color-neutral-4);
+  border-radius: 0.5rem;
+}
+
+.accordion__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.accordion__header--open {
+  border-bottom: 1px solid var(--color-neutral-3);
+}
+
+.accordion__header > button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: transparent;
+  border: none;
+  font-weight: bold;
+  width: 100%;
+  cursor: pointer;
+  padding: 1rem;
+}
+
+.accordion__header > button > :first-child {
+  color: var(--color-neutral-2);
+}
+
+.accordion__header > button > :nth-child(2) {
+  color: var(--color-neutral-1);
+}
+
+.accordion__header > button > :nth-child(3) {
+  color: var(--color-neutral-2);
+}
+
+.accordion__content {
+  padding: 1rem;
+}
