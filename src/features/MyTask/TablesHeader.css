@@ -1,0 +1,22 @@
+.my-task__header {
+  display: grid;
+  grid-template-columns: subgrid;
+  grid-column: 1 / -1;
+  background-color: var(--color-neutral-4);
+  border-radius: 0.5rem;
+  border: 1px solid var(--color-neutral-3);
+}
+
+.my-task__header > h2 {
+  border-right: 1px solid var(--color-neutral-3);
+  padding: 1rem 0 1rem 0;
+}
+
+.my-task__header > h2:first-child {
+  padding-left: 1rem;
+}
+
+.my-task__header > h2:last-child {
+  border-right: none;
+  padding-right: 1rem;
+}
