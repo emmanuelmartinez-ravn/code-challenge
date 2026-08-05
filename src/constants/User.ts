@@ -3,3 +3,7 @@ export type User = {
   avatar: string
   fullName: string
 }
+
+export type GetUsersResponse = {
+  users: User[]
+}

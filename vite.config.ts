@@ -13,6 +13,7 @@ export default defineConfig({
       '@features': path.resolve(__dirname, './src/features'),
       '@shared': path.resolve(__dirname, './src/shared'),
       '@constants': path.resolve(__dirname, './src/constants'),
+      '@graphql': path.resolve(__dirname, './src/graphql'),
     },
   },
 })

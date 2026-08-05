@@ -3,12 +3,24 @@ import './AddTaskForm.css'
 import Select from '@shared/components/Select/Select'
 import PlusLessIcon from '@shared/icons/PlusLessIcon'
 import EstimateSelectOption from './EstimateSelectOption'
+import { PointEstimates } from '@constants/PointEstimate'
+import { pointEstimateToNumber } from '@constants/utils'
+import AssigneeSelectOption from './AssigneeSelectOption'
+import UserIcon from '@shared/icons/UserIcon'
+import { useQuery } from '@apollo/client/react'
+import { GET_USERS } from '@graphql/queries/users'
 
 function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
   event.preventDefault()
 }
 
 function AddTaskForm() {
+  const { data } = useQuery(GET_USERS, {
+    variables: {
+      input: {},
+    },
+  })
+
   return (
     <form onSubmit={(event) => handleSubmit(event)} className="add-task-form">
       <div className="add-task-form__header">
@@ -27,29 +39,32 @@ function AddTaskForm() {
         <Select
           name="Estimate"
           title="Estimate"
-          options={[
-            {
-              value: 'ZERO',
-              label: '0 points',
-              node: <EstimateSelectOption name="0 Points" />,
-            },
-            {
-              value: 'ONE',
-              label: '1 point',
-              node: <EstimateSelectOption name="1 Point" />,
-            },
-          ]}
+          options={PointEstimates.map((estimate) => ({
+            value: estimate,
+            label: `${pointEstimateToNumber(estimate)} ${pointEstimateToNumber(estimate) === 1 ? 'Point' : 'Points'}`,
+            node: (
+              <EstimateSelectOption
+                name={`${pointEstimateToNumber(estimate)} ${pointEstimateToNumber(estimate) === 1 ? 'Point' : 'Points'}`}
+              />
+            ),
+          }))}
           icon={<PlusLessIcon />}
         />
 
-        <label>
-          <span className="sr-only">Task assignee</span>
-          <select name="assignee">
-            <option value="me">Me</option>
-            <option value="john">John Doe</option>
-            <option value="jane">Jane Doe</option>
-          </select>
-        </label>
+        <Select
+          name="Assignee"
+          title="Assignee"
+          options={
+            data
+              ? data.users.map((user) => ({
+                  value: user.id,
+                  label: user.fullName,
+                  node: <AssigneeSelectOption name={user.fullName} />,
+                }))
+              : []
+          }
+          icon={<UserIcon />}
+        />
       </div>
 
       <div className="add-task-form__footer">

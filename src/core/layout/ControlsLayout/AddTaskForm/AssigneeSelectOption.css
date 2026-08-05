@@ -1,0 +1,6 @@
+.assignee-select-option {
+  color: var(--color-neutral-1);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}

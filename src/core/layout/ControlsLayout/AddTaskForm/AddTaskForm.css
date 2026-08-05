@@ -16,3 +16,8 @@
 .add-task-form__header > label > input::placeholder {
   color: var(--color-neutral-2);
 }
+
+.add-task-form__body {
+  display: flex;
+  gap: 1rem;
+}

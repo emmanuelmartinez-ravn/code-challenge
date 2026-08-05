@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
 import SelectButton from './SelectButton'
 import './Select.css'
 
@@ -26,8 +26,26 @@ function Select({
     label: name,
   })
 
+  const selectRef = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        selectRef.current &&
+        !selectRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false)
+      }
+    }
+
+    document.addEventListener('click', handleClickOutside)
+
+    return () => {
+      document.removeEventListener('click', handleClickOutside)
+    }
+  }, [])
+
   return (
-    <div className="select">
+    <div className="select" ref={selectRef}>
       <SelectButton
         name={selectedOption.label}
         label={selectedOption.label}
@@ -44,7 +62,7 @@ function Select({
             {options.map((option) => (
               <li key={option.value}>
                 <button
-                  className="button"
+                  className="button select__options__list__item"
                   type="button"
                   aria-label={option.label}
                   onClick={() => {

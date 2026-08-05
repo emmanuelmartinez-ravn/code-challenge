@@ -1,5 +1,5 @@
 import { gql, type TypedDocumentNode } from '@apollo/client'
-import type { GetTasksResponse, GetTasksVariables } from '../../constants/Task'
+import type { GetTasksResponse, GetTasksVariables } from '@constants/Task'
 
 export const GET_TASKS: TypedDocumentNode<GetTasksResponse, GetTasksVariables> =
   gql`
