@@ -1,6 +1,6 @@
 import TriangleDownIcon from '@shared/icons/TriangleDownIcon'
 import './Accordion.css'
-import { useState } from 'react'
+import { useState, type ReactNode } from 'react'
 
 function Accordion({
   title,
@@ -9,7 +9,7 @@ function Accordion({
 }: {
   readonly title: string
   readonly subtitle?: string
-  readonly children: React.ReactNode
+  readonly children: ReactNode
 }) {
   const [isOpen, setIsOpen] = useState(true)
 

@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import './SwitchButton.css'
 
 function SwitchButton({
@@ -6,7 +7,7 @@ function SwitchButton({
   selected = false,
   onClick,
 }: {
-  readonly icon?: React.ReactNode
+  readonly icon?: ReactNode
   readonly label: string
   readonly onClick?: () => void
   readonly selected?: boolean
@@ -16,6 +17,7 @@ function SwitchButton({
       aria-label={label}
       className={`button switch-button switch-button${selected ? '--selected' : ''}`}
       onClick={onClick}
+      type="button"
     >
       {icon ?? null}
     </button>

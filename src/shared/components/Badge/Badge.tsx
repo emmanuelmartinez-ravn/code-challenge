@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import './Badge.css'
 
 function Badge({
@@ -8,7 +9,7 @@ function Badge({
 }: {
   readonly label?: string
   readonly name: string
-  readonly icon?: React.ReactNode
+  readonly icon?: ReactNode
   readonly variant?: 'default' | 'primary' | 'secondary' | 'tertiary'
 }) {
   return (

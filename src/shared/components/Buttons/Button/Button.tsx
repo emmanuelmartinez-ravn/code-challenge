@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import './Button.css'
 
 function Button({
@@ -8,7 +9,7 @@ function Button({
   ghost = false,
 }: {
   readonly name?: string
-  readonly icon?: React.ReactNode
+  readonly icon?: ReactNode
   readonly label: string
   readonly onClick?: () => void
   readonly ghost?: boolean
@@ -18,6 +19,7 @@ function Button({
       aria-label={label}
       className={`button ${ghost ? 'button--ghost' : 'button--primary'}`}
       onClick={onClick}
+      type="button"
     >
       {name ? <span>{name}</span> : null}
       {icon ?? null}

@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import './SidebarItem.css'
 
 function SidebarItem({
@@ -7,7 +8,7 @@ function SidebarItem({
   onClick,
 }: {
   readonly name: string
-  readonly icon?: React.ReactNode
+  readonly icon?: ReactNode
   readonly selected: boolean
   readonly onClick?: () => void
 }) {
@@ -15,6 +16,7 @@ function SidebarItem({
     <button
       className={`body body--bold body--m sidebar-item sidebar-item${selected ? '--selected' : ''}`}
       onClick={onClick}
+      type="button"
     >
       {icon ?? <div className="sidebar-item__icon--default" />}
 
