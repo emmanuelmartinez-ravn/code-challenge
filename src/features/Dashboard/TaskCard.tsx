@@ -54,14 +54,14 @@ function TaskCard({ task }: { readonly task: Task }) {
       <div className="task-card__footer">
         <Avatar src={assignee.avatar} alt={`${assignee.fullName}`} size="s" />
         <div className="task-card__footer__actions">
-          <span aria-label="1 Attachments">
+          <span>
             <AttachmentIcon />
           </span>
-          <span aria-label="5 Branches">
+          <span>
             <p>5</p>
             <BranchIcon />
           </span>
-          <span aria-label="3 Comments">
+          <span>
             <p>3</p>
             <CommentIcon />
           </span>

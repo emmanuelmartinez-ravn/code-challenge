@@ -7,17 +7,17 @@
   border: 1px solid var(--color-neutral-3);
 }
 
-.my-task__header > h3 {
+.my-task__header > h2 {
   color: var(--color-neutral-1);
   border-right: 1px solid var(--color-neutral-3);
   padding: 1rem 0 1rem 0;
 }
 
-.my-task__header > h3:first-child {
+.my-task__header > h2:first-child {
   padding-left: 1rem;
 }
 
-.my-task__header > h3:last-child {
+.my-task__header > h2:last-child {
   border-right: none;
   padding-right: 1rem;
 }

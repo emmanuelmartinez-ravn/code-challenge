@@ -46,11 +46,7 @@ function TaskTable({ tasks }: { readonly tasks?: Task[] }) {
               </td>
 
               <td className="task-table__assignee">
-                <Avatar
-                  src={task.assignee.avatar}
-                  alt={task.assignee.fullName}
-                  size="s"
-                />
+                <Avatar src={task.assignee.avatar} size="s" />
                 <span>{task.assignee.fullName}</span>
               </td>
 
