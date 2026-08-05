@@ -13,7 +13,7 @@ function Header() {
   return (
     <header className="search-bar">
       <div>
-        <Button label="Search" icon={<SearchIcon />} ghost={true} />
+        <Button label="Search" icon={<SearchIcon />} variant={'secondary'} />
 
         <input
           type="text"
@@ -35,15 +35,15 @@ function Header() {
               inputRef.current?.focus()
               setSearchValue('')
             }}
-            ghost={true}
+            variant={'secondary'}
           />
         ) : null}
         <Button
           label="Notifications"
           icon={<NotificationIcon />}
-          ghost={true}
+          variant={'secondary'}
         />
-        <button aria-label="Profile">
+        <button aria-label="Profile" type="button">
           <Avatar />
         </button>
       </div>

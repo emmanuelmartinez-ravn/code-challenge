@@ -1,7 +1,36 @@
-.button--ghost {
-  color: var(--color-neutral-2);
-}
-
 .button--primary {
   background-color: var(--color-primary-4);
+  color: var(--color-primary-1);
+}
+
+.button--primary:hover {
+  background-color: var(--color-primary-2);
+}
+
+.button--primary:active {
+  background-color: var(--color-primary-3);
+}
+
+.button--primary:disabled {
+  background-color: var(--color-primary-2);
+  cursor: not-allowed;
+}
+
+.button--secondary {
+  background-color: none;
+  color: var(--color-neutral-1);
+}
+
+.button--secondary:hover {
+  background-color: var(--color-neutral-2);
+}
+
+.button--secondary:active {
+  background-color: var(--color-neutral-3);
+}
+
+.button--secondary:disabled {
+  background-color: none;
+  color: var(--color-neutral-2);
+  cursor: not-allowed;
 }

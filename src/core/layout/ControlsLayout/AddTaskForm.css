@@ -1,0 +1,18 @@
+.add-task-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.add-task-form__header > label > input {
+  border: none;
+  background: none;
+  outline: none;
+  color: var(--color-neutral-1);
+  width: 100%;
+  cursor: pointer;
+}
+
+.add-task-form__header > label > input::placeholder {
+  color: var(--color-neutral-2);
+}
