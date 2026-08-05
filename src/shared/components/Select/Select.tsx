@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react'
-import SelectButton from './SelectButton'
+import SelectButtonContent from './SelectButtonContent'
 import './Select.css'
 
 function Select({
@@ -20,10 +20,10 @@ function Select({
   const [isOpen, setIsOpen] = useState(false)
   const [selectedOption, setSelectedOption] = useState<{
     value: string | null
-    label: string
+    node: ReactNode
   }>({
     value: null,
-    label: name,
+    node: <SelectButtonContent name={name} icon={icon} />,
   })
 
   const selectRef = useRef<HTMLDivElement>(null)
@@ -47,12 +47,14 @@ function Select({
 
   return (
     <div className="select" ref={selectRef}>
-      <SelectButton
-        name={selectedOption.label}
-        icon={icon}
-        onClick={() => setIsOpen(!isOpen)}
+      <button
+        className="button select-button"
+        type="button"
         ref={selectButtonRef}
-      />
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        {selectedOption.node}
+      </button>
 
       {isOpen && (
         <div className="select__options">
@@ -69,7 +71,7 @@ function Select({
                   onClick={() => {
                     setSelectedOption({
                       value: option.value,
-                      label: option.label,
+                      node: option.node,
                     })
                     setIsOpen(false)
                     selectButtonRef.current?.focus()

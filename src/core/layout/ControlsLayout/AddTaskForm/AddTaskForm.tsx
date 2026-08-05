@@ -53,13 +53,18 @@ function AddTaskForm() {
 
         <Select
           name="Assignee"
-          title="Assignee"
+          title="Assign To..."
           options={
             data
               ? data.users.map((user) => ({
                   value: user.id,
                   label: user.fullName,
-                  node: <AssigneeSelectOption name={user.fullName} />,
+                  node: (
+                    <AssigneeSelectOption
+                      name={user.fullName}
+                      src={user.avatar}
+                    />
+                  ),
                 }))
               : []
           }
