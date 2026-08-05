@@ -1,7 +1,7 @@
-import './EstimateSelectButton.css'
+import './EstimateSelectOption.css'
 import PlusLessIcon from '@shared/icons/PlusLessIcon'
 
-function EstimateSelectButton({ name = '' }: { readonly name?: string }) {
+function EstimateSelectOption({ name = '' }: { readonly name?: string }) {
   return (
     <div className="estimate-select-option body body--s">
       <PlusLessIcon />
@@ -10,4 +10,4 @@ function EstimateSelectButton({ name = '' }: { readonly name?: string }) {
   )
 }
 
-export default EstimateSelectButton
+export default EstimateSelectOption
