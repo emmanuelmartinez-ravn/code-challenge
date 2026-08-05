@@ -1,26 +1,35 @@
 import type { ReactNode } from 'react'
 import './SelectButton.css'
 
-function SelectButton({
-  name = '',
-  icon,
-  label,
-  onClick,
-}: {
-  readonly name?: string
-  readonly icon?: ReactNode
-  readonly label: string
-  readonly onClick?: () => void
-}) {
+type SelectButtonProps =
+  | {
+      readonly name: string
+      readonly label?: never
+      readonly icon?: ReactNode
+      readonly onClick?: () => void
+      readonly ref?: React.Ref<HTMLButtonElement>
+    }
+  | {
+      readonly name?: never
+      readonly label: string
+      readonly icon?: ReactNode
+      readonly onClick?: () => void
+      readonly ref?: React.Ref<HTMLButtonElement>
+    }
+
+function SelectButton({ name, label, icon, onClick, ref }: SelectButtonProps) {
+  const accessibleName = name ?? label
+
   return (
     <button
-      aria-label={label}
+      aria-label={accessibleName}
       className="button select-button body body--m"
       onClick={onClick}
       type="button"
+      ref={ref}
     >
       {icon ?? null}
-      {name ? <span>{name}</span> : null}
+      <span>{accessibleName}</span>
     </button>
   )
 }

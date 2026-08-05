@@ -27,6 +27,7 @@ function Select({
   })
 
   const selectRef = useRef<HTMLDivElement>(null)
+  const selectButtonRef = useRef<HTMLButtonElement>(null)
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -48,9 +49,9 @@ function Select({
     <div className="select" ref={selectRef}>
       <SelectButton
         name={selectedOption.label}
-        label={selectedOption.label}
         icon={icon}
         onClick={() => setIsOpen(!isOpen)}
+        ref={selectButtonRef}
       />
 
       {isOpen && (
@@ -71,6 +72,7 @@ function Select({
                       label: option.label,
                     })
                     setIsOpen(false)
+                    selectButtonRef.current?.focus()
                   }}
                 >
                   {option.node}
