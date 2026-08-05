@@ -5,7 +5,7 @@ import NotificationIcon from '@shared/icons/NotificationIcon'
 import './Header.css'
 import Avatar from '@shared/components/Avatar/Avatar'
 import { useRef, useState } from 'react'
-import Button from '@shared/components/Buttons/Button/Button'
+import IconButton from '@shared/components/Buttons/IconButton/IconButton'
 
 function Header() {
   const [searchValue, setSearchValue] = useState<string>('')
@@ -13,7 +13,7 @@ function Header() {
   return (
     <header className="search-bar">
       <div>
-        <Button label="Search" icon={<SearchIcon />} variant={'secondary'} />
+        <IconButton label="Search" icon={<SearchIcon />} />
 
         <input
           type="text"
@@ -28,21 +28,16 @@ function Header() {
 
       <div>
         {searchValue.length > 0 ? (
-          <Button
+          <IconButton
             label="Clear search"
             icon={<CancelIcon />}
             onClick={() => {
               inputRef.current?.focus()
               setSearchValue('')
             }}
-            variant={'secondary'}
           />
         ) : null}
-        <Button
-          label="Notifications"
-          icon={<NotificationIcon />}
-          variant={'secondary'}
-        />
+        <IconButton label="Notifications" icon={<NotificationIcon />} />
         <button aria-label="Profile" type="button">
           <Avatar />
         </button>
