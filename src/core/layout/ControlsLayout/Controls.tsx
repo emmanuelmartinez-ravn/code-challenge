@@ -7,7 +7,7 @@ import Button from '@shared/components/Buttons/Button/Button'
 import AddIcon from '@shared/icons/AddIcon'
 import { useState } from 'react'
 import Modal from '@shared/components/Modal/Modal'
-import AddTaskForm from './AddTaskForm'
+import AddTaskForm from './AddTaskForm/AddTaskForm'
 
 const views = [
   {

@@ -36,9 +36,7 @@ function Select({
           </span>
           <ul className="select__options__list">
             {options.map((option) => (
-              <li key={option.value}>
-                <button type="button">{option.node}</button>
-              </li>
+              <li key={option.value}>{option.node}</li>
             ))}
           </ul>
         </div>

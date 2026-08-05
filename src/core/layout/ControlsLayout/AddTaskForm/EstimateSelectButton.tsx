@@ -1,28 +1,26 @@
-import type { ReactNode } from 'react'
-import './SelectButton.css'
+import './EstimateSelectButton.css'
+import PlusLessIcon from '@shared/icons/PlusLessIcon'
 
-function SelectButton({
+function EstimateSelectButton({
   name = '',
-  icon,
   label,
   onClick,
 }: {
   readonly name?: string
-  readonly icon?: ReactNode
   readonly label: string
   readonly onClick?: () => void
 }) {
   return (
     <button
       aria-label={label}
-      className="button select-button body body--m"
+      className="button estimate-select-button body body--s"
       onClick={onClick}
       type="button"
     >
-      {icon ?? null}
+      <PlusLessIcon />
       {name ? <span>{name}</span> : null}
     </button>
   )
 }
 
-export default SelectButton
+export default EstimateSelectButton
