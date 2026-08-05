@@ -5,6 +5,8 @@ import './Controls.css'
 import { useLocation, useNavigate } from 'react-router'
 import Button from '@shared/components/Buttons/Button/Button'
 import AddIcon from '@shared/icons/AddIcon'
+import { useState } from 'react'
+import Modal from '@shared/components/Modal/Modal'
 
 const views = [
   {
@@ -25,6 +27,8 @@ function Controls() {
 
   const currentView = location.pathname.split('/')[1] ?? 'dashboard'
 
+  const [isOpen, setIsOpen] = useState(false)
+
   return (
     <header className="controls">
       {views.map(({ name, label, icon }) => (
@@ -39,8 +43,18 @@ function Controls() {
         />
       ))}
       <div>
-        <Button label="Add task" icon={<AddIcon />} />
+        <Button
+          label="Add task"
+          icon={<AddIcon />}
+          onClick={() => setIsOpen(true)}
+        />
       </div>
+
+      {isOpen && (
+        <Modal>
+          <div>Hello</div>
+        </Modal>
+      )}
     </header>
   )
 }
