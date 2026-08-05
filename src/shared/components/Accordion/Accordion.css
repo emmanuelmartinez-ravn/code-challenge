@@ -10,10 +10,6 @@
   justify-content: space-between;
 }
 
-.accordion__header--open {
-  border-bottom: 1px solid var(--color-neutral-3);
-}
-
 .accordion__header > button {
   display: flex;
   align-items: center;

@@ -10,12 +10,20 @@
   border-bottom: 1px solid var(--color-neutral-3);
 }
 
+.task-table > tbody > tr:first-child {
+  border-top: 1px solid var(--color-neutral-3);
+}
+
 .task-table > tbody > tr:last-child {
   border-bottom: none;
 }
 
 .task-table > tbody > tr > td {
   border-right: 1px solid var(--color-neutral-3);
+}
+
+.task-table > tbody > tr > td:last-child {
+  border-right: none;
 }
 
 .task-table__title {
@@ -33,6 +41,10 @@
   border-left: 4px solid var(--color-primary-4);
 }
 
+.task-table__title__status--near {
+  border-left: 4px solid var(--color-tertiary-4);
+}
+
 .task-table__tags {
   display: flex;
   gap: 0.5rem;
@@ -46,7 +58,7 @@
   align-items: center;
 }
 
-.task-table__asignee {
+.task-table__assignee {
   color: var(--color-neutral-1);
   display: flex;
   align-items: center;
@@ -54,11 +66,15 @@
 }
 
 .task-table__due-date {
-  color: var(--color-neutral-1);
+  color: var(--color-secondary-1);
   display: flex;
   align-items: center;
 }
 
 .task-table__due-date--overdue {
   color: var(--color-primary-4);
+}
+
+.task-table__due-date--near {
+  color: var(--color-tertiary-4);
 }

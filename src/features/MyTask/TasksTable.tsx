@@ -2,37 +2,77 @@ import './TasksTable.css'
 import Badge from '@shared/components/Badge/Badge'
 import Avatar from '@shared/components/Avatar/Avatar'
 import type { Task } from '@constants/Task'
+import { formatDueDate, pointEstimateToNumber } from '@constants/utils'
 
-function TaskTable({ tasks }: { readonly tasks: Task[] }) {
+function TaskTable({ tasks }: { readonly tasks?: Task[] }) {
+  if (!tasks) {
+    return null
+  }
+
   return (
     <table className="task-table">
-      {/* <tbody>
-        {tasks.map((task, index) => (
-          <tr key={task.title}>
-            <td className="task-table__title body body--s">
-              <h3
-                className={`task-table__title__status ${formatDueDate(task.dueDate).isOverdue ? 'task-table__title__status--overdue' : ''}  `}
-              >{`${String(index + 1).padStart(2, '0')} ${task.title}`}</h3>
-            </td>
-            <td className="task-table__tags">
-              <Badge label="Tag" name={task.tags[0]} />
-              {task.tags.length > 1 ? (
-                <Badge label="Tag" name={`+${task.tags.length - 1}`} />
-              ) : null}
-            </td>
-            <td className="task-table__points">{task.points} Points</td>
-            <td className="task-table__asignee">
-              <Avatar src={task.asignee} alt="Asignee" size="s" />
-              <span>Asignee name</span>
-            </td>
-            <td
-              className={`task-table__due-date ${formatDueDate(task.dueDate).isOverdue ? 'task-table__due-date--overdue' : ''}`}
-            >
-              {formatDueDate(task.dueDate).formatted}
-            </td>
-          </tr>
-        ))}
-      </tbody> */}
+      <tbody>
+        {tasks.map((task, index) => {
+          const tagsCount = task.tags?.length ?? 0
+
+          return (
+            <tr key={task.id}>
+              <td className="task-table__title body body--s">
+                <h3
+                  className={`task-table__title__status ${(() => {
+                    if (formatDueDate(task.dueDate).status === 'overdue') {
+                      return 'task-table__title__status--overdue'
+                    }
+
+                    if (formatDueDate(task.dueDate).status === 'near') {
+                      return 'task-table__title__status--near'
+                    }
+
+                    return ''
+                  })()}`}
+                >{`${String(index + 1).padStart(2, '0')} ${task.name}`}</h3>
+              </td>
+
+              <td className="task-table__tags">
+                {tagsCount > 0 && <Badge label="Tag" name={task.tags![0]} />}
+
+                {tagsCount > 1 && (
+                  <Badge label="Tag" name={`+${tagsCount - 1}`} />
+                )}
+              </td>
+
+              <td className="task-table__points">
+                {pointEstimateToNumber(task.pointEstimate)} Points
+              </td>
+
+              <td className="task-table__assignee">
+                <Avatar
+                  src={task.assignee.avatar}
+                  alt={task.assignee.fullName}
+                  size="s"
+                />
+                <span>{task.assignee.fullName}</span>
+              </td>
+
+              <td
+                className={`task-table__due-date ${(() => {
+                  if (formatDueDate(task.dueDate).status === 'overdue') {
+                    return 'task-table__due-date--overdue'
+                  }
+
+                  if (formatDueDate(task.dueDate).status === 'near') {
+                    return 'task-table__due-date--near'
+                  }
+
+                  return ''
+                })()}`}
+              >
+                {formatDueDate(task.dueDate).formatted}
+              </td>
+            </tr>
+          )
+        })}
+      </tbody>
     </table>
   )
 }
