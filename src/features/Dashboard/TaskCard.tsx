@@ -13,7 +13,7 @@ import { formatDueDate, pointEstimateToNumber } from '@constants/utils'
 function TaskCard({ task }: { readonly task: Task }) {
   const { assignee, dueDate, name, pointEstimate, tags } = task
 
-  const { isOverdue, formatted } = formatDueDate(dueDate)
+  const { status, formatted } = formatDueDate(dueDate)
   const points = pointEstimateToNumber(pointEstimate)
   return (
     <article className="task-card">
@@ -33,7 +33,17 @@ function TaskCard({ task }: { readonly task: Task }) {
           label="Due date"
           name={formatted.toUpperCase()}
           icon={<ClockIcon />}
-          variant={isOverdue ? 'primary' : 'default'}
+          variant={(() => {
+            if (status === 'overdue') {
+              return 'primary'
+            }
+
+            if (status === 'near') {
+              return 'tertiary'
+            }
+
+            return 'secondary'
+          })()}
         />
       </div>
       <div className="task-card__tags">

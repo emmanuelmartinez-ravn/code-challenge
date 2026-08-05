@@ -20,6 +20,8 @@ function DashboardPage() {
     },
   })
 
+  console.log(data)
+
   const tasksByStatus: Map<Status, Task[]> = new Map()
 
   statuses.forEach((status) => {

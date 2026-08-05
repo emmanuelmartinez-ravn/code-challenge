@@ -1,59 +1,67 @@
 import type { PointEstimate } from './PointEstimate'
 
 export function formatDueDate(dueDate: Date): {
-  isOverdue: boolean
+  status: 'onTime' | 'near' | 'overdue'
   formatted: string
 } {
-  const due = new Date(dueDate)
-  const current = new Date()
+  const parseAsLocal = (date: Date) => {
+    return new Date(
+      date.getUTCFullYear(),
+      date.getUTCMonth(),
+      date.getUTCDate(),
+      date.getUTCHours(),
+      date.getUTCMinutes(),
+      date.getUTCSeconds(),
+      date.getUTCMilliseconds(),
+    )
+  }
 
   const normalizeDate = (date: Date) => {
     const normalized = new Date(date)
+
     normalized.setHours(0, 0, 0, 0)
+
     return normalized
   }
+
+  const due = parseAsLocal(new Date(dueDate))
+  const current = new Date()
 
   const dueDay = normalizeDate(due)
   const currentDay = normalizeDate(current)
 
+  const oneDay = 24 * 60 * 60 * 1000
   const difference = dueDay.getTime() - currentDay.getTime()
 
-  const oneDay = 24 * 60 * 60 * 1000
+  let formatted: string
 
   if (difference === oneDay) {
-    return {
-      isOverdue: false,
-      formatted: 'Tomorrow',
-    }
+    formatted = 'Tomorrow'
+  } else if (difference === -oneDay) {
+    formatted = 'Yesterday'
+  } else if (difference === 0) {
+    formatted = 'Today'
+  } else {
+    formatted = new Intl.DateTimeFormat('en-US', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    }).format(due)
   }
 
-  if (difference === -oneDay) {
-    return {
-      isOverdue: true,
-      formatted: 'Yesterday',
-    }
+  let status: 'onTime' | 'near' | 'overdue'
+
+  if (difference < 0) {
+    status = 'overdue'
+  } else if (difference <= 2 * oneDay) {
+    status = 'near'
+  } else {
+    status = 'onTime'
   }
-
-  if (difference === 0) {
-    return {
-      isOverdue: false,
-      formatted: 'Today',
-    }
-  }
-
-  const parts = new Intl.DateTimeFormat('en-US', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  }).formatToParts(due)
-
-  const day = parts.find(({ type }) => type === 'day')?.value
-  const month = parts.find(({ type }) => type === 'month')?.value
-  const year = parts.find(({ type }) => type === 'year')?.value
 
   return {
-    isOverdue: difference < 0,
-    formatted: `${day} ${month}, ${year}`,
+    status,
+    formatted,
   }
 }
 
