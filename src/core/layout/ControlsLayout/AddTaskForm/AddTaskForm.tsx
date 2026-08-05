@@ -30,11 +30,13 @@ function AddTaskForm() {
           options={[
             {
               value: 'ZERO',
-              node: <EstimateSelectButton label="0 points" name="0 Points" />,
+              label: '0 points',
+              node: <EstimateSelectButton name="0 Points" />,
             },
             {
               value: 'ONE',
-              node: <EstimateSelectButton label="1 point" name="1 Point" />,
+              label: '1 point',
+              node: <EstimateSelectButton name="1 Point" />,
             },
           ]}
           icon={<PlusLessIcon />}

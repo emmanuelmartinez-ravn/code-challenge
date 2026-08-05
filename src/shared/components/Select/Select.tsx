@@ -13,18 +13,24 @@ function Select({
   readonly title: string
   readonly options: {
     value: string
+    label: string
     node: ReactNode
   }[]
 }) {
   const [isOpen, setIsOpen] = useState(false)
-
-  console.log(icon)
+  const [selectedOption, setSelectedOption] = useState<{
+    value: string | null
+    label: string
+  }>({
+    value: null,
+    label: name,
+  })
 
   return (
     <div className="select">
       <SelectButton
-        name={name}
-        label={name}
+        name={selectedOption.label}
+        label={selectedOption.label}
         icon={icon}
         onClick={() => setIsOpen(!isOpen)}
       />
@@ -36,7 +42,22 @@ function Select({
           </span>
           <ul className="select__options__list">
             {options.map((option) => (
-              <li key={option.value}>{option.node}</li>
+              <li key={option.value}>
+                <button
+                  className="button"
+                  type="button"
+                  aria-label={option.label}
+                  onClick={() => {
+                    setSelectedOption({
+                      value: option.value,
+                      label: option.label,
+                    })
+                    setIsOpen(false)
+                  }}
+                >
+                  {option.node}
+                </button>
+              </li>
             ))}
           </ul>
         </div>
