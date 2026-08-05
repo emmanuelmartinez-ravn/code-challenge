@@ -42,7 +42,7 @@ function TaskCard({ task }: { readonly task: Task }) {
           : null}
       </div>
       <div className="task-card__footer">
-        <Avatar src={assignee.avatar} alt="Assignee" size="s" />
+        <Avatar src={assignee.avatar} alt={`${assignee.fullName}`} size="s" />
         <div className="task-card__footer__actions">
           <span aria-label="1 Attachments">
             <AttachmentIcon />

@@ -1,8 +1,9 @@
 import './DashboardPage.css'
-import TaskCard from './TaskCard'
 import { useQuery } from '@apollo/client/react'
 import { GET_TASKS } from '../../graphql/queries/task'
 import type { Status } from '@constants/Status'
+import type { Task } from '@constants/Task'
+import TasksColumn from './TasksColumn'
 
 const statuses: Status[] = [
   'BACKLOG',
@@ -19,29 +20,35 @@ function DashboardPage() {
     },
   })
 
-  console.log(data)
+  const tasksByStatus: Map<Status, Task[]> = new Map()
+
+  statuses.forEach((status) => {
+    tasksByStatus.set(status, [])
+  })
+
+  if (data?.tasks) {
+    data.tasks.forEach((task) => {
+      tasksByStatus.get(task.status)?.push(task)
+    })
+
+    tasksByStatus.forEach((tasks) => {
+      tasks.sort((a, b) => a.position - b.position)
+    })
+  }
 
   return (
     <section className="dashboard">
       <h1 className="sr-only">Dashboard</h1>
 
       <div className="dashboard__columns">
-        {statuses.map((status) => (
-          <div className="dashboard__columns__column" key={status}>
-            <h2 className="body body--l">
-              {status} (
-              {data?.tasks.filter((task) => task.status === status).length})
-            </h2>
-
-            <div className="dashboard__columns__column__tasks">
-              {data?.tasks
-                .filter((task) => task.status === status)
-                .map((task) => (
-                  <TaskCard key={task.id} task={task} />
-                ))}
-            </div>
-          </div>
-        ))}
+        {tasksByStatus.size > 0 &&
+          statuses.map((status) => (
+            <TasksColumn
+              key={status}
+              status={status}
+              tasks={tasksByStatus.get(status)}
+            />
+          ))}
       </div>
     </section>
   )
