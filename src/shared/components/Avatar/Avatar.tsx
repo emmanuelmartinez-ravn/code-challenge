@@ -2,7 +2,7 @@ import avatarPlaceholder from '@assets/avatar-placeholder.png'
 import './Avatar.css'
 
 export type AvatarProps = {
-  size?: 's' | 'm'
+  size?: 's' | 'm' | 'l'
 } & (
   | {
       readonly src: string
