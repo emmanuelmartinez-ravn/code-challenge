@@ -1,4 +1,4 @@
-import Button from '@shared/components/Buttons/Button/Button'
+import IconButton from '@shared/components/Buttons/IconButton/IconButton'
 import './TaskCard.css'
 import OptionsIcon from '@shared/icons/OptionsIcon'
 import Badge from '@shared/components/Badge/Badge'
@@ -22,7 +22,7 @@ function TaskCard({ task }: { readonly task: Task }) {
           <span className="sr-only">Task card: </span>
           {name}
         </h3>
-        <Button label="More options" icon={<OptionsIcon />} ghost={true} />
+        <IconButton label="More options" icon={<OptionsIcon />} />
       </div>
       <div className="task-card__points body--bold">
         <p className="body body--m">

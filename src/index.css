@@ -166,11 +166,11 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: fit-content;
   border-radius: 8px;
   cursor: pointer;
   gap: 0.25rem;
+  padding: 0.75rem;
 }
 
 .button:focus-visible {

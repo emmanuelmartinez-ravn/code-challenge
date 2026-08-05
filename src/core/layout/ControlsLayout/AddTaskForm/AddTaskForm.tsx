@@ -1,5 +1,7 @@
 import type { SubmitEvent } from 'react'
 import './AddTaskForm.css'
+import Select from '@shared/components/Select/Select'
+import PlusLessIcon from '@shared/icons/PlusLessIcon'
 
 function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
   event.preventDefault()
@@ -21,16 +23,12 @@ function AddTaskForm() {
       </div>
 
       <div className="add-task-form__body">
-        <label>
-          <span className="sr-only">Task estimate</span>
-          <select name="estimate">
-            <option value="zero">0 points</option>
-            <option value="one">1 point</option>
-            <option value="two">2 points</option>
-            <option value="four">4 points</option>
-            <option value="eight">8 points</option>
-          </select>
-        </label>
+        <Select
+          name="Estimate"
+          title="Estimate"
+          options={[]}
+          icon={<PlusLessIcon />}
+        />
 
         <label>
           <span className="sr-only">Task assignee</span>

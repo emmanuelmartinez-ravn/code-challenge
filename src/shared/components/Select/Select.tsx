@@ -1,30 +1,47 @@
-import type { ReactNode } from 'react'
+import { useState, type ReactNode } from 'react'
+import SelectButton from './SelectButton'
+import './Select.css'
 
 function Select({
   name,
+  title,
+  icon,
   options,
 }: {
   readonly name: string
-  readonly options: ReactNode[]
+  readonly icon?: ReactNode
+  readonly title: string
+  readonly options: {
+    value: string
+    node: ReactNode
+  }[]
 }) {
+  const [isOpen, setIsOpen] = useState(false)
+
+  console.log(icon)
+
   return (
     <div className="select">
-      <button>
-        <StatusIcon />
-        Overdue
-      </button>
+      <SelectButton
+        name={name}
+        label={name}
+        icon={icon}
+        onClick={() => setIsOpen(!isOpen)}
+      />
 
       {isOpen && (
-        <ul>
-          <li>
-            <StatusIcon />
-            Overdue
-          </li>
-          <li>
-            <StatusIcon />
-            Done
-          </li>
-        </ul>
+        <div className="select__options">
+          <span className="select__options__title body body--l body--bold">
+            {title}
+          </span>
+          <ul className="select__options__list">
+            {options.map((option) => (
+              <li key={option.value}>
+                <button type="button">{option.node}</button>
+              </li>
+            ))}
+          </ul>
+        </div>
       )}
     </div>
   )

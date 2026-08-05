@@ -23,8 +23,8 @@ function Button({
       onClick={onClick}
       type="button"
     >
-      {name ? <span>{name}</span> : null}
       {icon ?? null}
+      {name ? <span>{name}</span> : null}
     </button>
   )
 }

@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
-import './IconButton.css'
-function IconButton({
+import './SelectButton.css'
+
+function SelectButton({
   name = '',
   icon,
   label,
@@ -14,14 +15,14 @@ function IconButton({
   return (
     <button
       aria-label={label}
-      className={`icon-button`}
+      className="button select-button"
       onClick={onClick}
       type="button"
     >
-      {name ? <span>{name}</span> : null}
       {icon ?? null}
+      {name ? <span>{name}</span> : null}
     </button>
   )
 }
 
-export default IconButton
+export default SelectButton
