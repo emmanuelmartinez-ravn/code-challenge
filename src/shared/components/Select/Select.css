@@ -25,6 +25,10 @@
   padding: 0;
 }
 
+.select__options__list__item {
+  width: 100%;
+  justify-content: flex-start;
+}
 .select__options__list__item:hover {
   background-color: var(--color-neutral-4);
 }
