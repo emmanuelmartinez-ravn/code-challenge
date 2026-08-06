@@ -79,3 +79,13 @@ export function pointEstimateToNumber(text: PointEstimate): number {
       return 8
   }
 }
+
+export function getInitialDate() {
+  const today = new Date()
+
+  return {
+    year: today.getFullYear(),
+    month: today.getMonth(),
+    day: today.getDate(),
+  }
+}

@@ -4,7 +4,11 @@ import Select from '@shared/components/Select/Select'
 import PlusLessIcon from '@shared/icons/PlusLessIcon'
 import EstimateSelectOption from './EstimateSelectOption'
 import { POINT_ESTIMATES } from '@constants/PointEstimate'
-import { pointEstimateToNumber } from '@constants/utils'
+import {
+  formatDate,
+  getInitialDate,
+  pointEstimateToNumber,
+} from '@constants/utils'
 import AssigneeSelectOption from './AssigneeSelectOption'
 import UserIcon from '@shared/icons/UserIcon'
 import { useQuery } from '@apollo/client/react'
@@ -26,7 +30,19 @@ function AddTaskForm() {
     },
   })
 
+  const [selectedEstimate, setSelectedEstimate] = useState<string | null>(null)
+
+  const [selectedAssignee, setSelectedAssignee] = useState<string | null>(null)
+
+  const [selectedTags, setSelectedTags] = useState<string[]>([])
+
   const [openDatePicker, setOpenDatePicker] = useState(false)
+
+  const [selectedDate, setSelectedDate] = useState<{
+    year: number
+    month: number
+    day: number
+  } | null>(null)
 
   return (
     <form onSubmit={(event) => handleSubmit(event)} className="add-task-form">
@@ -56,6 +72,8 @@ function AddTaskForm() {
             ),
           }))}
           icon={<PlusLessIcon />}
+          value={selectedEstimate}
+          onChange={(value) => setSelectedEstimate(value)}
         />
 
         <Select
@@ -76,16 +94,17 @@ function AddTaskForm() {
               : []
           }
           icon={<UserIcon />}
+          value={selectedAssignee}
+          onChange={(value) => setSelectedAssignee(value)}
         />
 
         <Multiselect
           name="Label"
           title="Tag Title"
           icon={<TagIcon />}
-          options={TAGS.map((tag) => ({
-            value: tag,
-            label: tag,
-          }))}
+          options={TAGS}
+          values={selectedTags}
+          onChange={(values) => setSelectedTags(values)}
         />
 
         <div className="date-picker-wrapper">
@@ -95,12 +114,23 @@ function AddTaskForm() {
             onClick={() => setOpenDatePicker(!openDatePicker)}
           >
             <CalendarCheckIcon />
-            Due date
+            {selectedDate
+              ? formatDate(
+                  new Date(
+                    selectedDate.year,
+                    selectedDate.month,
+                    selectedDate.day,
+                  ),
+                ).formatted
+              : 'Due date'}
           </button>
 
           {openDatePicker && (
             <div className="date-picker-container">
-              <DatePicker />
+              <DatePicker
+                value={selectedDate ?? getInitialDate()}
+                onChange={(value) => setSelectedDate(value)}
+              />
             </div>
           )}
         </div>

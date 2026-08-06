@@ -7,6 +7,8 @@ function Select({
   title,
   icon,
   options,
+  value,
+  onChange,
 }: {
   readonly name: string
   readonly icon?: ReactNode
@@ -16,15 +18,16 @@ function Select({
     label: string
     node: ReactNode
   }[]
+  readonly value: string | null
+  readonly onChange: (value: string) => void
 }) {
   const [isOpen, setIsOpen] = useState(false)
-  const [selectedOption, setSelectedOption] = useState<{
-    value: string | null
-    node: ReactNode
-  }>({
-    value: null,
-    node: <SelectButtonContent name={name} icon={icon} />,
-  })
+
+  const selectedOption = value ? (
+    options.find((option) => option.value === value)?.node
+  ) : (
+    <SelectButtonContent name={name} icon={icon} />
+  )
 
   const selectRef = useRef<HTMLDivElement>(null)
   const selectButtonRef = useRef<HTMLButtonElement>(null)
@@ -53,7 +56,7 @@ function Select({
         ref={selectButtonRef}
         onClick={() => setIsOpen(!isOpen)}
       >
-        {selectedOption.node}
+        {selectedOption}
       </button>
 
       {isOpen && (
@@ -69,10 +72,7 @@ function Select({
                   type="button"
                   aria-label={option.label}
                   onClick={() => {
-                    setSelectedOption({
-                      value: option.value,
-                      node: option.node,
-                    })
+                    onChange(option.value)
                     setIsOpen(false)
                     selectButtonRef.current?.focus()
                   }}

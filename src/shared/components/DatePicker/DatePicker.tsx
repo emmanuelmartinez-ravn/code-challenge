@@ -5,17 +5,7 @@ import DoubleChevronRightIcon from '@shared/icons/DoubleChevronRightIcon'
 import IconButton from '../Buttons/IconButton/IconButton'
 import './DatePicker.css'
 import { useState, type Dispatch, type SetStateAction } from 'react'
-import { formatDate } from '@constants/utils'
-
-function getInitialConfig() {
-  const today = new Date()
-
-  return {
-    year: today.getFullYear(),
-    month: today.getMonth(),
-    day: today.getDate(),
-  }
-}
+import { formatDate, getInitialDate } from '@constants/utils'
 
 function getCalendarDays(year: number, month: number) {
   const firstDayOfMonth = new Date(year, month, 1)
@@ -62,17 +52,17 @@ function getCalendarDays(year: number, month: number) {
   return days
 }
 
-const changeMonth = (
+function changeMonth(
   amount: number,
-  setSelectedDate: Dispatch<
+  setViewDate: Dispatch<
     SetStateAction<{
       year: number
       month: number
       day: number
     }>
   >,
-) => {
-  setSelectedDate((current) => {
+) {
+  setViewDate((current) => {
     const newDate = new Date(current.year, current.month + amount, 1)
 
     return {
@@ -83,60 +73,46 @@ const changeMonth = (
   })
 }
 
-const changeYear = (
+function changeYear(
   amount: number,
-  setSelectedDate: Dispatch<
+  setViewDate: Dispatch<
     SetStateAction<{
       year: number
       month: number
       day: number
     }>
   >,
-) => {
-  setSelectedDate((current) => ({
+) {
+  setViewDate((current) => ({
     ...current,
     year: current.year + amount,
   }))
 }
 
-const selectDay = (
-  day: number,
-  currentMonth: boolean,
-  setSelectedDate: Dispatch<
-    SetStateAction<{
-      year: number
-      month: number
-      day: number
-    }>
-  >,
-) => {
-  setSelectedDate((current) => {
-    const nextMonth = day > 15 ? -1 : 1
+function DatePicker({
+  value,
+  onChange,
+}: {
+  readonly value: {
+    year: number
+    month: number
+    day: number
+  }
+  readonly onChange: (value: {
+    year: number
+    month: number
+    day: number
+  }) => void
+}) {
+  const [viewDate, setViewDate] = useState(value)
+  const [today] = useState(getInitialDate())
 
-    const newDate = new Date(
-      current.year,
-      current.month + (currentMonth ? 0 : nextMonth),
-      day,
-    )
-
-    return {
-      year: newDate.getFullYear(),
-      month: newDate.getMonth(),
-      day: newDate.getDate(),
-    }
-  })
-}
-
-function DatePicker() {
-  const [selectedDate, setSelectedDate] = useState(() => getInitialConfig())
-  const [today] = useState(() => getInitialConfig())
-
-  const monthName = new Date(selectedDate.year, selectedDate.month)
+  const monthName = new Date(viewDate.year, viewDate.month)
     .toLocaleString('en-US', { month: 'long' })
     .slice(0, 3)
     .replace(/^./, (char) => char.toUpperCase())
 
-  const calendarDays = getCalendarDays(selectedDate.year, selectedDate.month)
+  const calendarDays = getCalendarDays(viewDate.year, viewDate.month)
 
   return (
     <div className="date-picker">
@@ -145,30 +121,30 @@ function DatePicker() {
           <IconButton
             icon={<DoubleChevronLeftIcon />}
             label="Previous year"
-            onClick={() => changeYear(-1, setSelectedDate)}
+            onClick={() => changeYear(-1, setViewDate)}
           />
 
           <IconButton
             icon={<ChevronLeftIcon />}
             label="Previous month"
-            onClick={() => changeMonth(-1, setSelectedDate)}
+            onClick={() => changeMonth(-1, setViewDate)}
           />
         </div>
 
         <span className="body body--s body--bold">
-          {`${monthName} ${selectedDate.year}`}
+          {`${monthName} ${viewDate.year}`}
         </span>
         <div className="date-picker__controls__right">
           <IconButton
             icon={<ChevronRightIcon />}
             label="Next month"
-            onClick={() => changeMonth(1, setSelectedDate)}
+            onClick={() => changeMonth(1, setViewDate)}
           />
 
           <IconButton
             icon={<DoubleChevronRightIcon />}
             label="Next year"
-            onClick={() => changeYear(1, setSelectedDate)}
+            onClick={() => changeYear(1, setViewDate)}
           />
         </div>
       </div>
@@ -192,16 +168,17 @@ function DatePicker() {
                 ? 'today'
                 : ''
             } ${
-              selectedDate.year === date.year &&
-              selectedDate.month === date.month &&
-              selectedDate.day === date.day
+              value.year === date.year &&
+              value.month === date.month &&
+              value.day === date.day
                 ? 'selected'
                 : ''
             }`}
             type="button"
-            onClick={() =>
-              selectDay(date.day, date.currentMonth, setSelectedDate)
-            }
+            onClick={() => {
+              setViewDate(date)
+              onChange(date)
+            }}
           >
             {date.day}
           </button>
@@ -210,9 +187,8 @@ function DatePicker() {
       <div className="date-picker__selected">
         <span>
           {
-            formatDate(
-              new Date(selectedDate.year, selectedDate.month, selectedDate.day),
-            ).formatted
+            formatDate(new Date(viewDate.year, viewDate.month, viewDate.day))
+              .formatted
           }
         </span>
       </div>

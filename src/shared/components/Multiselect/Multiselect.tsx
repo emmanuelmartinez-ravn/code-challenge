@@ -18,6 +18,8 @@ function Multiselect({
   title,
   icon,
   options,
+  values,
+  onChange,
 }: {
   readonly name: string
   readonly icon?: ReactNode
@@ -26,9 +28,10 @@ function Multiselect({
     value: string
     label: string
   }[]
+  readonly values: string[]
+  readonly onChange: (values: string[]) => void
 }) {
   const [isOpen, setIsOpen] = useState(false)
-  const [selectedOptions, setSelectedOptions] = useState<string[]>([])
 
   const selectRef = useRef<HTMLDivElement>(null)
   const selectButtonRef = useRef<HTMLButtonElement>(null)
@@ -58,8 +61,15 @@ function Multiselect({
         ref={selectButtonRef}
         onClick={() => setIsOpen(!isOpen)}
       >
-        {selectedOptions.length > 0 ? (
-          selectedOptions.map((option) => <Badge key={option} name={option} />)
+        {values.length > 0 ? (
+          values.map((value) => (
+            <Badge
+              key={value}
+              name={
+                options.find((option) => option.value === value)?.label ?? value
+              }
+            />
+          ))
         ) : (
           <SelectButtonContent name={name} icon={icon} />
         )}
@@ -77,19 +87,13 @@ function Multiselect({
                 <label className="multiselect__options__list__item">
                   <input
                     type="checkbox"
-                    checked={selectedOptions.includes(option.value)}
+                    checked={values.includes(option.value)}
                     onChange={() => {
-                      setSelectedOptions((current) => {
-                        const isSelected = current.includes(option.value)
-
-                        if (isSelected) {
-                          return current.filter(
-                            (value) => value !== option.value,
-                          )
-                        }
-
-                        return [...current, option.value]
-                      })
+                      onChange(
+                        values.includes(option.value)
+                          ? values.filter((value) => value !== option.value)
+                          : [...values, option.value],
+                      )
                     }}
                   />
 
