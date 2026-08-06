@@ -6,7 +6,7 @@ import type { Task } from '@constants/Task'
 import TasksColumn from './TasksColumn'
 import { STATUSES } from '../../constants/Status'
 function DashboardPage() {
-  const { data } = useQuery(GET_TASKS, {
+  const { data, loading } = useQuery(GET_TASKS, {
     variables: {
       input: {},
     },
@@ -29,18 +29,18 @@ function DashboardPage() {
   }
 
   return (
-    <section className="dashboard">
+    <section aria-busy={loading} className="dashboard">
       <h1 className="sr-only">Dashboard</h1>
 
       <div className="dashboard__columns">
-        {tasksByStatus.size > 0 &&
-          STATUSES.map((status) => (
-            <TasksColumn
-              key={status}
-              status={status}
-              tasks={tasksByStatus.get(status)}
-            />
-          ))}
+        {STATUSES.map((status) => (
+          <TasksColumn
+            key={status}
+            loading={loading}
+            status={status}
+            tasks={tasksByStatus.get(status)}
+          />
+        ))}
       </div>
     </section>
   )
