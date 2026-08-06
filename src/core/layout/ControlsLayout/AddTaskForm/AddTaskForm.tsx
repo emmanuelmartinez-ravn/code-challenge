@@ -21,7 +21,7 @@ import CalendarCheckIcon from '@shared/icons/CalendarCheckIcon'
 import Button from '@shared/components/Buttons/Button/Button'
 import { CREATE_TASK } from '@graphql/mutations/createTask'
 
-function AddTaskForm() {
+function AddTaskForm({ onClose }: { readonly onClose: () => void }) {
   const { data } = useQuery(GET_USERS, {
     variables: {
       input: {},
@@ -71,6 +71,8 @@ function AddTaskForm() {
         },
       },
     })
+
+    onClose()
   }
 
   return (
@@ -166,8 +168,8 @@ function AddTaskForm() {
       </div>
 
       <div className="add-task-form__footer">
-        <Button variant="secondary" name="Cancel" />
-        <Button variant="primary" name="Add task" type="submit" />
+        <Button variant="secondary" name="Cancel" onClick={onClose} />
+        <Button variant="primary" name="Create" type="submit" />
       </div>
     </form>
   )

@@ -53,7 +53,7 @@ function Controls() {
 
       {isOpen && (
         <Modal>
-          <AddTaskForm />
+          <AddTaskForm onClose={() => setIsOpen(!isOpen)} />
         </Modal>
       )}
     </header>
