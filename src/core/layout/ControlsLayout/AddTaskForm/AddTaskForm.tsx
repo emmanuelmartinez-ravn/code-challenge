@@ -3,7 +3,7 @@ import './AddTaskForm.css'
 import Select from '@shared/components/Select/Select'
 import PlusLessIcon from '@shared/icons/PlusLessIcon'
 import EstimateSelectOption from './EstimateSelectOption'
-import { PointEstimates } from '@constants/PointEstimate'
+import { POINT_ESTIMATES } from '@constants/PointEstimate'
 import { pointEstimateToNumber } from '@constants/utils'
 import AssigneeSelectOption from './AssigneeSelectOption'
 import UserIcon from '@shared/icons/UserIcon'
@@ -39,7 +39,7 @@ function AddTaskForm() {
         <Select
           name="Estimate"
           title="Estimate"
-          options={PointEstimates.map((estimate) => ({
+          options={POINT_ESTIMATES.map((estimate) => ({
             value: estimate,
             label: `${pointEstimateToNumber(estimate)} ${pointEstimateToNumber(estimate) === 1 ? 'Point' : 'Points'}`,
             node: (
