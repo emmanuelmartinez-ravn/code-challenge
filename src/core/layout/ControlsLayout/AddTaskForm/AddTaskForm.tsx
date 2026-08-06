@@ -1,9 +1,9 @@
-import { useState, type SubmitEvent } from 'react'
+import { useState } from 'react'
 import './AddTaskForm.css'
 import Select from '@shared/components/Select/Select'
 import PlusLessIcon from '@shared/icons/PlusLessIcon'
 import EstimateSelectOption from './EstimateSelectOption'
-import { POINT_ESTIMATES } from '@constants/PointEstimate'
+import { POINT_ESTIMATES, type PointEstimate } from '@constants/PointEstimate'
 import {
   formatDate,
   getInitialDate,
@@ -11,14 +11,15 @@ import {
 } from '@constants/utils'
 import AssigneeSelectOption from './AssigneeSelectOption'
 import UserIcon from '@shared/icons/UserIcon'
-import { useQuery } from '@apollo/client/react'
+import { useQuery, useMutation } from '@apollo/client/react'
 import { GET_USERS } from '@graphql/queries/users'
 import Multiselect from '@shared/components/Multiselect/Multiselect'
-import { TAGS } from '@constants/Tag'
+import { TAGS, type Tag } from '@constants/Tag'
 import TagIcon from '@shared/icons/TagIcon'
 import DatePicker from '@shared/components/DatePicker/DatePicker'
 import CalendarCheckIcon from '@shared/icons/CalendarCheckIcon'
 import Button from '@shared/components/Buttons/Button/Button'
+import { CREATE_TASK } from '@graphql/mutations/createTask'
 
 function AddTaskForm() {
   const { data } = useQuery(GET_USERS, {
@@ -27,13 +28,16 @@ function AddTaskForm() {
     },
   })
 
-  const [selectedEstimate, setSelectedEstimate] = useState<string | null>(null)
+  const [selectedEstimate, setSelectedEstimate] =
+    useState<PointEstimate | null>(null)
 
   const [selectedAssignee, setSelectedAssignee] = useState<string | null>(null)
 
-  const [selectedTags, setSelectedTags] = useState<string[]>([])
+  const [selectedTags, setSelectedTags] = useState<Tag[]>([])
 
   const [openDatePicker, setOpenDatePicker] = useState(false)
+
+  const [createTask] = useMutation(CREATE_TASK)
 
   const [selectedDate, setSelectedDate] = useState<{
     year: number
@@ -41,17 +45,32 @@ function AddTaskForm() {
     day: number
   } | null>(null)
 
-  const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: React.SubmitEvent<HTMLFormElement>) => {
     event.preventDefault()
+
     const formData = new FormData(event.currentTarget)
-    const title = formData.get('title')
+    const title = formData.get('title') as string
 
-    console.log(title)
+    if (!title || !selectedDate || !selectedEstimate || !selectedAssignee) {
+      return
+    }
 
-    console.log(selectedDate)
-    console.log(selectedEstimate)
-    console.log(selectedAssignee)
-    console.log(selectedTags)
+    createTask({
+      variables: {
+        input: {
+          name: title,
+          dueDate: new Date(
+            selectedDate.year,
+            selectedDate.month,
+            selectedDate.day,
+          ),
+          pointEstimate: selectedEstimate,
+          status: 'TODO',
+          tags: selectedTags,
+          assigneeId: selectedAssignee,
+        },
+      },
+    })
   }
 
   return (
@@ -83,7 +102,7 @@ function AddTaskForm() {
           }))}
           icon={<PlusLessIcon />}
           value={selectedEstimate}
-          onChange={(value) => setSelectedEstimate(value)}
+          onChange={(value) => setSelectedEstimate(value as PointEstimate)}
         />
 
         <Select
@@ -114,7 +133,7 @@ function AddTaskForm() {
           icon={<TagIcon />}
           options={TAGS}
           values={selectedTags}
-          onChange={(values) => setSelectedTags(values)}
+          onChange={(values) => setSelectedTags(values as Tag[])}
         />
 
         <div className="date-picker-wrapper">

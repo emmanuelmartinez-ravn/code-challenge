@@ -22,6 +22,7 @@ export const GET_TASKS: TypedDocumentNode<GetTasksResponse, GetTasksVariables> =
         pointEstimate
         position
         status
+        tags
       }
     }
   `
