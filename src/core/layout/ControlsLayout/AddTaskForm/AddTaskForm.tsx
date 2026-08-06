@@ -12,6 +12,7 @@ import { GET_USERS } from '@graphql/queries/users'
 import Multiselect from '@shared/components/Multiselect/Multiselect'
 import { TAGS } from '@constants/Tag'
 import TagIcon from '@shared/icons/TagIcon'
+import DatePicker from '@shared/components/DatePicker/DatePicker'
 
 function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
   event.preventDefault()
@@ -83,6 +84,8 @@ function AddTaskForm() {
             label: tag,
           }))}
         />
+
+        <DatePicker />
       </div>
 
       <div className="add-task-form__footer">

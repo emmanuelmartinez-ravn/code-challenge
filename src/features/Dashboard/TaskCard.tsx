@@ -8,12 +8,12 @@ import AttachmentIcon from '@shared/icons/AttachmentIcon'
 import BranchIcon from '@shared/icons/BranchIcon'
 import CommentIcon from '@shared/icons/CommentIcon'
 import type { Task } from '@constants/Task'
-import { formatDueDate, pointEstimateToNumber } from '@constants/utils'
+import { formatDate, pointEstimateToNumber } from '@constants/utils'
 
 function TaskCard({ task }: { readonly task: Task }) {
   const { assignee, dueDate, name, pointEstimate, tags } = task
 
-  const { status, formatted } = formatDueDate(dueDate)
+  const { status, formatted } = formatDate(dueDate)
   const points = pointEstimateToNumber(pointEstimate)
   return (
     <article className="task-card">

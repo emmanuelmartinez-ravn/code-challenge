@@ -1,6 +1,6 @@
 import type { PointEstimate } from './PointEstimate'
 
-export function formatDueDate(dueDate: Date): {
+export function formatDate(dueDate: Date): {
   status: 'onTime' | 'near' | 'overdue'
   formatted: string
 } {
