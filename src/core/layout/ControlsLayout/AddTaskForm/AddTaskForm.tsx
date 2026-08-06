@@ -9,6 +9,9 @@ import AssigneeSelectOption from './AssigneeSelectOption'
 import UserIcon from '@shared/icons/UserIcon'
 import { useQuery } from '@apollo/client/react'
 import { GET_USERS } from '@graphql/queries/users'
+import Multiselect from '@shared/components/Multiselect/Multiselect'
+import { TAGS } from '@constants/Tag'
+import TagIcon from '@shared/icons/TagIcon'
 
 function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
   event.preventDefault()
@@ -69,6 +72,16 @@ function AddTaskForm() {
               : []
           }
           icon={<UserIcon />}
+        />
+
+        <Multiselect
+          name="Label"
+          title="Tag Title"
+          icon={<TagIcon />}
+          options={TAGS.map((tag) => ({
+            value: tag,
+            label: tag,
+          }))}
         />
       </div>
 
