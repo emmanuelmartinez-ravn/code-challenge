@@ -1,5 +1,5 @@
 ---
-description: Stage and commit the current changes using Conventional Commits
+description: Stage, commit, and push the current changes using Conventional Commits
 allowed-tools: Bash(git *), Bash(npx tsc *), Bash(npm test *), Bash(npm run *), Read, Grep, Glob
 ---
 
@@ -28,6 +28,7 @@ allowed-tools: Bash(git *), Bash(npx tsc *), Bash(npm test *), Bash(npm run *), 
    EOF
    )"
    ```
-7. Run `git status` to confirm the commit succeeded and report the result.
+7. Push automatically: `git push -u origin <branch>` if it has no upstream yet, otherwise a plain `git push`. Since step 2 already ruled out `main`/`prod`, this always pushes to `dev` or a feature branch.
+8. Run `git status` to confirm the commit and push succeeded and report the result.
 
-Do not push and do not open a pull request — that's what `/pr` is for.
+Do not open a pull request — that's what `/pr` is for.
