@@ -19,14 +19,11 @@ allowed-tools: Bash(git *), Bash(npx tsc *), Bash(npm test *), Bash(npm run *), 
    - **Never use `feat` unless the user explicitly asked for a feature commit in this request.** Only `feat` commits are meant to reach `prod` — defaulting to it for anything you inferred as "a new feature" misrepresents what's ready to ship. If in doubt, ask rather than guessing `feat`.
    - Scope: the affected area — a folder under `src/` (`app`, `features`, `shared`, `core`, `graphql`, `constants`) or a specific feature name
    - Description: imperative mood, lowercase, no trailing period
-   - Add a body only when the "why" isn't obvious from the description alone
+   - Keep it short — the `<type>(<scope>): <description>` line only, no body, in almost every case. Add a body only when the "why" genuinely can't be inferred from the diff or description (rare).
    - Add a `BREAKING CHANGE:` footer only for breaking changes
-6. Create the commit via a heredoc (never `--no-verify`, never `--amend` unless explicitly asked):
+6. Create the commit (plain `-m`, no heredoc/body, unless a body was justified above; never `--no-verify`, never `--amend` unless explicitly asked):
    ```
-   git commit -m "$(cat <<'EOF'
-   <type>(<scope>): <description>
-   EOF
-   )"
+   git commit -m "<type>(<scope>): <description>"
    ```
 7. Push automatically: `git push -u origin <branch>` if it has no upstream yet, otherwise a plain `git push`. Since step 2 already ruled out `main`/`prod`, this always pushes to `dev` or a feature branch.
 8. Run `git status` to confirm the commit and push succeeded and report the result.
