@@ -28,7 +28,8 @@
       "@core/*": ["./src/core/*"],
       "@features/*": ["./src/features/*"],
       "@shared/*": ["./src/shared/*"],
-      "@constants/*": ["./src/constants/*"]
+      "@constants/*": ["./src/constants/*"],
+      "@graphql/*": ["./src/graphql/*"]
     }
   },
   "include": ["src"]

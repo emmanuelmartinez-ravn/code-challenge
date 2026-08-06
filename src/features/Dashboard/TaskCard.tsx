@@ -1,4 +1,4 @@
-import Button from '@shared/components/Buttons/Button/Button'
+import IconButton from '@shared/components/Buttons/IconButton/IconButton'
 import './TaskCard.css'
 import OptionsIcon from '@shared/icons/OptionsIcon'
 import Badge from '@shared/components/Badge/Badge'
@@ -8,12 +8,12 @@ import AttachmentIcon from '@shared/icons/AttachmentIcon'
 import BranchIcon from '@shared/icons/BranchIcon'
 import CommentIcon from '@shared/icons/CommentIcon'
 import type { Task } from '@constants/Task'
-import { formatDueDate, pointEstimateToNumber } from '@constants/utils'
+import { formatDate, pointEstimateToNumber } from '@constants/utils'
 
 function TaskCard({ task }: { readonly task: Task }) {
   const { assignee, dueDate, name, pointEstimate, tags } = task
 
-  const { status, formatted } = formatDueDate(dueDate)
+  const { status, formatted } = formatDate(dueDate)
   const points = pointEstimateToNumber(pointEstimate)
   return (
     <article className="task-card">
@@ -22,7 +22,7 @@ function TaskCard({ task }: { readonly task: Task }) {
           <span className="sr-only">Task card: </span>
           {name}
         </h3>
-        <Button label="More options" icon={<OptionsIcon />} ghost={true} />
+        <IconButton label="More options" icon={<OptionsIcon />} />
       </div>
       <div className="task-card__points body--bold">
         <p className="body body--m">
@@ -52,16 +52,18 @@ function TaskCard({ task }: { readonly task: Task }) {
           : null}
       </div>
       <div className="task-card__footer">
-        <Avatar src={assignee.avatar} alt={`${assignee.fullName}`} size="s" />
+        {assignee ? (
+          <Avatar src={assignee.avatar} alt={`${assignee.fullName}`} size="s" />
+        ) : null}
         <div className="task-card__footer__actions">
-          <span aria-label="1 Attachments">
+          <span>
             <AttachmentIcon />
           </span>
-          <span aria-label="5 Branches">
+          <span>
             <p>5</p>
             <BranchIcon />
           </span>
-          <span aria-label="3 Comments">
+          <span>
             <p>3</p>
             <CommentIcon />
           </span>

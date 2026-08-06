@@ -1,6 +1,6 @@
 import type { PointEstimate } from './PointEstimate'
 
-export function formatDueDate(dueDate: Date): {
+export function formatDate(dueDate: Date): {
   status: 'onTime' | 'near' | 'overdue'
   formatted: string
 } {
@@ -77,5 +77,15 @@ export function pointEstimateToNumber(text: PointEstimate): number {
       return 4
     case 'EIGHT':
       return 8
+  }
+}
+
+export function getInitialDate() {
+  const today = new Date()
+
+  return {
+    year: today.getFullYear(),
+    month: today.getMonth(),
+    day: today.getDate(),
   }
 }

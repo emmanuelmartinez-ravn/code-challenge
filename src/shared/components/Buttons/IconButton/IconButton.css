@@ -1,0 +1,14 @@
+.icon-button {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  color: var(--color-neutral-2);
+  cursor: pointer;
+  border-radius: 0.25rem;
+  padding: 0.5rem;
+}
+
+.icon-button:focus-visible {
+  outline: 2px solid var(--color-primary-4);
+  outline-offset: 2px;
+}

@@ -2,7 +2,7 @@ import './TasksTable.css'
 import Badge from '@shared/components/Badge/Badge'
 import Avatar from '@shared/components/Avatar/Avatar'
 import type { Task } from '@constants/Task'
-import { formatDueDate, pointEstimateToNumber } from '@constants/utils'
+import { formatDate, pointEstimateToNumber } from '@constants/utils'
 
 function TaskTable({ tasks }: { readonly tasks?: Task[] }) {
   if (!tasks) {
@@ -20,11 +20,11 @@ function TaskTable({ tasks }: { readonly tasks?: Task[] }) {
               <td className="task-table__title body body--s">
                 <h3
                   className={`task-table__title__status ${(() => {
-                    if (formatDueDate(task.dueDate).status === 'overdue') {
+                    if (formatDate(task.dueDate).status === 'overdue') {
                       return 'task-table__title__status--overdue'
                     }
 
-                    if (formatDueDate(task.dueDate).status === 'near') {
+                    if (formatDate(task.dueDate).status === 'near') {
                       return 'task-table__title__status--near'
                     }
 
@@ -46,28 +46,30 @@ function TaskTable({ tasks }: { readonly tasks?: Task[] }) {
               </td>
 
               <td className="task-table__assignee">
-                <Avatar
-                  src={task.assignee.avatar}
-                  alt={task.assignee.fullName}
-                  size="s"
-                />
-                <span>{task.assignee.fullName}</span>
+                {task.assignee ? (
+                  <>
+                    <Avatar src={task.assignee.avatar} size="s" />
+                    <span>{task.assignee.fullName}</span>
+                  </>
+                ) : (
+                  <span>Unassigned</span>
+                )}
               </td>
 
               <td
                 className={`task-table__due-date ${(() => {
-                  if (formatDueDate(task.dueDate).status === 'overdue') {
+                  if (formatDate(task.dueDate).status === 'overdue') {
                     return 'task-table__due-date--overdue'
                   }
 
-                  if (formatDueDate(task.dueDate).status === 'near') {
+                  if (formatDate(task.dueDate).status === 'near') {
                     return 'task-table__due-date--near'
                   }
 
                   return ''
                 })()}`}
               >
-                {formatDueDate(task.dueDate).formatted}
+                {formatDate(task.dueDate).formatted}
               </td>
             </tr>
           )

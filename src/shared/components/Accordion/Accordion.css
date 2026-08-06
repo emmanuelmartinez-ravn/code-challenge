@@ -22,6 +22,11 @@
   padding: 1rem;
 }
 
+.accordion__header > button:focus-visible {
+  outline: 2px solid var(--color-primary-4);
+  outline-offset: 2px;
+}
+
 .accordion__header > button > :first-child {
   color: var(--color-neutral-2);
 }

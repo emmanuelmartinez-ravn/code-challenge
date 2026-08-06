@@ -1,5 +1,5 @@
 import { Outlet } from 'react-router'
-import Controls from '@features/Dashboard/Controls'
+import Controls from '@core/layout/ControlsLayout/Controls'
 
 function ControlsLayout() {
   return (

@@ -4,15 +4,7 @@ import { GET_TASKS } from '../../graphql/queries/task'
 import type { Status } from '@constants/Status'
 import type { Task } from '@constants/Task'
 import TasksColumn from './TasksColumn'
-
-const statuses: Status[] = [
-  'BACKLOG',
-  'CANCELLED',
-  'DONE',
-  'IN_PROGRESS',
-  'TODO',
-]
-
+import { STATUSES } from '../../constants/Status'
 function DashboardPage() {
   const { data } = useQuery(GET_TASKS, {
     variables: {
@@ -22,7 +14,7 @@ function DashboardPage() {
 
   const tasksByStatus: Map<Status, Task[]> = new Map()
 
-  statuses.forEach((status) => {
+  STATUSES.forEach((status) => {
     tasksByStatus.set(status, [])
   })
 
@@ -42,7 +34,7 @@ function DashboardPage() {
 
       <div className="dashboard__columns">
         {tasksByStatus.size > 0 &&
-          statuses.map((status) => (
+          STATUSES.map((status) => (
             <TasksColumn
               key={status}
               status={status}

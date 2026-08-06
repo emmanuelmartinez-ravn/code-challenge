@@ -47,6 +47,8 @@
   all: unset;
   display: flex;
   align-items: center;
+  cursor: pointer;
+  border-radius: 50%;
 }
 
 .search-bar > :nth-child(2) > :last-child:focus-visible {
