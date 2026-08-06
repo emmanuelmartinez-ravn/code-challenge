@@ -21,3 +21,22 @@
   display: flex;
   gap: 1rem;
 }
+
+.open-date-picker-button {
+  background: #94979a1a;
+  color: var(--color-neutral-1);
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  border-radius: 0.25rem;
+  gap: 0.5rem;
+  height: 100%;
+}
+
+.date-picker-wrapper {
+  position: relative;
+}
+
+.date-picker-container {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+}

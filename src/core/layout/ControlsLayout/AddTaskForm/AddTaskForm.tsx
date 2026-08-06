@@ -1,4 +1,4 @@
-import type { SubmitEvent } from 'react'
+import { useState, type SubmitEvent } from 'react'
 import './AddTaskForm.css'
 import Select from '@shared/components/Select/Select'
 import PlusLessIcon from '@shared/icons/PlusLessIcon'
@@ -13,6 +13,7 @@ import Multiselect from '@shared/components/Multiselect/Multiselect'
 import { TAGS } from '@constants/Tag'
 import TagIcon from '@shared/icons/TagIcon'
 import DatePicker from '@shared/components/DatePicker/DatePicker'
+import CalendarCheckIcon from '@shared/icons/CalendarCheckIcon'
 
 function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
   event.preventDefault()
@@ -24,6 +25,8 @@ function AddTaskForm() {
       input: {},
     },
   })
+
+  const [openDatePicker, setOpenDatePicker] = useState(false)
 
   return (
     <form onSubmit={(event) => handleSubmit(event)} className="add-task-form">
@@ -85,7 +88,22 @@ function AddTaskForm() {
           }))}
         />
 
-        <DatePicker />
+        <div className="date-picker-wrapper">
+          <button
+            className="button open-date-picker-button body body--m"
+            type="button"
+            onClick={() => setOpenDatePicker(!openDatePicker)}
+          >
+            <CalendarCheckIcon />
+            Due date
+          </button>
+
+          {openDatePicker && (
+            <div className="date-picker-container">
+              <DatePicker />
+            </div>
+          )}
+        </div>
       </div>
 
       <div className="add-task-form__footer">
