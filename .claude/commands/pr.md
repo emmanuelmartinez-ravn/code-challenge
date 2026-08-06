@@ -6,12 +6,12 @@ allowed-tools: Bash(git *), Bash(gh pr *), Read, Grep, Glob
 
 # PR
 
-Base branch is `$1`, defaulting to `main` if not given.
+Base branch is `$1`, defaulting to `prod` if not given — that's where features ship from.
 
 1. Run `git status`, `git log <base>..HEAD`, and `git diff <base>...HEAD` to see the full set of commits and changes this PR will include — not just the latest commit.
-2. If the current branch is `main`/`master`, stop and ask the user to move the work to a feature branch first — do not open a PR from it.
+2. If the current branch is `main` or `prod`, stop and ask the user to move the work to `dev` or a feature branch first — do not open a PR from it.
 3. Push the branch: `git push -u origin <branch>` if it has no upstream yet, otherwise a normal `git push`.
-4. Title, Conventional Commits format summarizing the overall change (not just the last commit), same `<type>(<scope>): <description>` rules as `/commit`.
+4. Title, Conventional Commits format summarizing the overall change (not just the last commit), same `<type>(<scope>): <description>` rules as `/commit` — including the `feat` restriction: only use `feat` if the user explicitly asked for a feature PR, since `prod` is meant to only receive features.
 5. Body:
    ```
    ## Summary
