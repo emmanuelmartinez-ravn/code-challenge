@@ -18,3 +18,5 @@ Follow `.claude/rules/code-style.md` and `.claude/project/architecture.md`.
 - No unnecessary comments or docstrings.
 
 After changes, run in order and fix failures before stopping: `npx tsc --noEmit`, `npm test`, `npm run lint`, `npm run build`.
+
+Don't verify styling or layout by launching a dev server and rendering in an actual browser (e.g. chromium-cli/Playwright). Rely on the checks above plus reasoning about the CSS/markup — don't offer or run browser-based visual verification unless the user explicitly asks for it.
