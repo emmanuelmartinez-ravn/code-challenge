@@ -18,10 +18,7 @@ import { TAGS } from '@constants/Tag'
 import TagIcon from '@shared/icons/TagIcon'
 import DatePicker from '@shared/components/DatePicker/DatePicker'
 import CalendarCheckIcon from '@shared/icons/CalendarCheckIcon'
-
-function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
-  event.preventDefault()
-}
+import Button from '@shared/components/Buttons/Button/Button'
 
 function AddTaskForm() {
   const { data } = useQuery(GET_USERS, {
@@ -43,6 +40,19 @@ function AddTaskForm() {
     month: number
     day: number
   } | null>(null)
+
+  const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    const formData = new FormData(event.currentTarget)
+    const title = formData.get('title')
+
+    console.log(title)
+
+    console.log(selectedDate)
+    console.log(selectedEstimate)
+    console.log(selectedAssignee)
+    console.log(selectedTags)
+  }
 
   return (
     <form onSubmit={(event) => handleSubmit(event)} className="add-task-form">
@@ -137,7 +147,8 @@ function AddTaskForm() {
       </div>
 
       <div className="add-task-form__footer">
-        <button type="submit">Add task</button>
+        <Button variant="secondary" name="Cancel" />
+        <Button variant="primary" name="Add task" type="submit" />
       </div>
     </form>
   )

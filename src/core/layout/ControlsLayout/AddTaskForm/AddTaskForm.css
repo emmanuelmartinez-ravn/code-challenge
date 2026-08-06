@@ -40,3 +40,9 @@
   top: calc(100% + 4px);
   left: 0;
 }
+
+.add-task-form__footer {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+}
