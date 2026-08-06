@@ -5,7 +5,7 @@ import type { User } from './User'
 
 export type Task = {
   id: string
-  assignee: User
+  assignee: User | null
   createdAt: Date
   creator: User
   dueDate: Date
@@ -13,7 +13,7 @@ export type Task = {
   pointEstimate: PointEstimate
   position: number
   status: Status
-  tags?: Tag[]
+  tags: Tag[]
 }
 
 export type GetTasksResponse = {
@@ -29,5 +29,20 @@ export type GetTasksVariables = {
     pointEstimate?: PointEstimate
     status?: Status
     tags?: Tag[]
+  }
+}
+
+export type CreateTaskResponse = {
+  createTask: Task
+}
+
+export type CreateTaskVariables = {
+  input: {
+    assigneeId?: string
+    dueDate: Date
+    name: string
+    pointEstimate: PointEstimate
+    status: Status
+    tags: Tag[]
   }
 }

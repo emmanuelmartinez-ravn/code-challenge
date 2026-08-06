@@ -46,8 +46,14 @@ function TaskTable({ tasks }: { readonly tasks?: Task[] }) {
               </td>
 
               <td className="task-table__assignee">
-                <Avatar src={task.assignee.avatar} size="s" />
-                <span>{task.assignee.fullName}</span>
+                {task.assignee ? (
+                  <>
+                    <Avatar src={task.assignee.avatar} size="s" />
+                    <span>{task.assignee.fullName}</span>
+                  </>
+                ) : (
+                  <span>Unassigned</span>
+                )}
               </td>
 
               <td
