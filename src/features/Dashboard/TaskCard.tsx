@@ -1,7 +1,10 @@
 import IconButton from '@shared/components/Buttons/IconButton/IconButton'
+import Button from '@shared/components/Buttons/Button/Button'
 import Tooltip from '@shared/components/Tooltip/Tooltip'
 import './TaskCard.css'
 import OptionsIcon from '@shared/icons/OptionsIcon'
+import EditIcon from '@shared/icons/EditIcon'
+import DeleteIcon from '@shared/icons/DeleteIcon'
 import Badge from '@shared/components/Badge/Badge'
 import ClockIcon from '@shared/icons/ClockIcon'
 import Avatar from '@shared/components/Avatar/Avatar'
@@ -26,7 +29,8 @@ function TaskCard({ task }: { readonly task: Task }) {
         <Tooltip
           trigger={<IconButton label="More options" icon={<OptionsIcon />} />}
         >
-          <p className="body body--s">No actions yet</p>
+          <Button variant="secondary" name="Edit" icon={<EditIcon />} />
+          <Button variant="secondary" name="Delete" icon={<DeleteIcon />} />
         </Tooltip>
       </div>
       <div className="task-card__points body--bold">
