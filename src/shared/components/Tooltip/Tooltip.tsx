@@ -1,4 +1,11 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react'
+import {
+  cloneElement,
+  useEffect,
+  useRef,
+  useState,
+  type ReactElement,
+  type ReactNode,
+} from 'react'
 import { createPortal } from 'react-dom'
 import './Tooltip.css'
 
@@ -6,7 +13,7 @@ function Tooltip({
   trigger,
   children,
 }: {
-  readonly trigger: ReactNode
+  readonly trigger: ReactElement<{ onClick?: () => void }>
   readonly children: ReactNode
 }) {
   const [isOpen, setIsOpen] = useState(false)
@@ -52,22 +59,15 @@ function Tooltip({
     }
   }, [isOpen])
 
+  const toggle = () => {
+    trigger.props.onClick?.()
+    setIsOpen((open) => !open)
+  }
+
   return (
     <>
-      <div
-        className="tooltip__trigger"
-        ref={triggerRef}
-        role="button"
-        tabIndex={0}
-        onClick={() => setIsOpen(!isOpen)}
-        onKeyDown={(event) => {
-          if (event.key === 'Enter' || event.key === ' ') {
-            event.preventDefault()
-            setIsOpen(!isOpen)
-          }
-        }}
-      >
-        {trigger}
+      <div className="tooltip__trigger" ref={triggerRef}>
+        {cloneElement(trigger, { onClick: toggle })}
       </div>
 
       {isOpen &&
