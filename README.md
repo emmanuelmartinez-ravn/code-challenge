@@ -90,6 +90,6 @@ Path aliases (`@app`, `@core`, `@features`, `@shared`, `@constants`, `@graphql`,
 ## Decisions and rationale
 
 - This app was built using React 19 and TypeScript due to their popularity and the fact that I learned them in the past month trying to apply the best practices to a large codebase.
-- This app uses [weserv](https://github.com/weserv/weserv) to proxy remote avatars, which is a free and open-source service that caches and proxies remote images to handle http errors.
+- This app uses [weserv](https://github.com/weserv/images) to proxy remote avatars, which is a free and open-source service that caches and proxies remote images to handle http errors.
 - This app uses Apollo Client to fetch data from the GraphQL API due to its popularity and ease of use with the official Apollo Client Extension for VS Code to easily generate types and queries with introspection.
 - The app was deployed to [Vercel](https://code-challenge-git-prod-emmanuel-martinez-ravn.vercel.app/dashboard/).
