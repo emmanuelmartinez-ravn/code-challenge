@@ -82,6 +82,21 @@ export function pointEstimateToNumber(text: PointEstimate): number {
   }
 }
 
+export function statusToLabel(status: Status): string {
+  switch (status) {
+    case 'BACKLOG':
+      return 'Backlog'
+    case 'CANCELLED':
+      return 'Cancelled'
+    case 'DONE':
+      return 'Done'
+    case 'IN_PROGRESS':
+      return 'In Progress'
+    case 'TODO':
+      return 'To do'
+  }
+}
+
 export function toDateParts(date: Date) {
   return {
     year: date.getFullYear(),
