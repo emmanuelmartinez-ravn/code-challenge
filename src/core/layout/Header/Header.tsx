@@ -6,8 +6,10 @@ import './Header.css'
 import Avatar from '@shared/components/Avatar/Avatar'
 import meAvatar from '@assets/me.png'
 import { useRef } from 'react'
-import { useNavigate } from 'react-router'
+import { useLocation, useNavigate } from 'react-router'
 import IconButton from '@shared/components/Buttons/IconButton/IconButton'
+
+const SEARCHABLE_PAGES = ['dashboard', 'my-task']
 
 function Header({
   searchValue,
@@ -18,24 +20,33 @@ function Header({
 }) {
   const inputRef = useRef<HTMLInputElement>(null)
   const navigate = useNavigate()
+  const location = useLocation()
+
+  const currentPage = location.pathname.split('/')[1]
+  const showSearch = SEARCHABLE_PAGES.includes(currentPage)
+
   return (
     <header className="search-bar">
       <div>
-        <IconButton label="Search" icon={<SearchIcon />} />
+        {showSearch && (
+          <>
+            <IconButton label="Search" icon={<SearchIcon />} />
 
-        <input
-          type="text"
-          placeholder="Search"
-          id="search"
-          value={searchValue}
-          onChange={(e) => onSearchChange(e.target.value)}
-          className="body--m"
-          ref={inputRef}
-        />
+            <input
+              type="text"
+              placeholder="Search"
+              id="search"
+              value={searchValue}
+              onChange={(e) => onSearchChange(e.target.value)}
+              className="body--m"
+              ref={inputRef}
+            />
+          </>
+        )}
       </div>
 
       <div>
-        {searchValue.length > 0 ? (
+        {showSearch && searchValue.length > 0 ? (
           <IconButton
             label="Clear search"
             icon={<CancelIcon />}
