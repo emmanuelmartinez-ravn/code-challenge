@@ -5,11 +5,16 @@ import NotificationIcon from '@shared/icons/NotificationIcon'
 import './Header.css'
 import Avatar from '@shared/components/Avatar/Avatar'
 import meAvatar from '@assets/me.png'
-import { useRef, useState } from 'react'
+import { useRef } from 'react'
 import IconButton from '@shared/components/Buttons/IconButton/IconButton'
 
-function Header() {
-  const [searchValue, setSearchValue] = useState<string>('')
+function Header({
+  searchValue,
+  onSearchChange,
+}: {
+  readonly searchValue: string
+  readonly onSearchChange: (value: string) => void
+}) {
   const inputRef = useRef<HTMLInputElement>(null)
   return (
     <header className="search-bar">
@@ -21,7 +26,7 @@ function Header() {
           placeholder="Search"
           id="search"
           value={searchValue}
-          onChange={(e) => setSearchValue(e.target.value)}
+          onChange={(e) => onSearchChange(e.target.value)}
           className="body--m"
           ref={inputRef}
         />
@@ -34,7 +39,7 @@ function Header() {
             icon={<CancelIcon />}
             onClick={() => {
               inputRef.current?.focus()
-              setSearchValue('')
+              onSearchChange('')
             }}
           />
         ) : null}
