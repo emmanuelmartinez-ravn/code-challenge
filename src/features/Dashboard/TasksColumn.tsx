@@ -1,3 +1,4 @@
+import { Droppable, Draggable } from '@hello-pangea/dnd'
 import type { Status } from '@constants/Status'
 import type { Task } from '@constants/Task'
 import { statusToLabel } from '@constants/utils'
@@ -27,13 +28,37 @@ function TasksColumn({
         {!loading && ` (${tasks!.length})`}
       </h2>
 
-      <div className="tasks-column__tasks">
-        {loading
-          ? Array.from({ length: SKELETON_CARDS_COUNT }, (_, index) => (
-              <TaskCardSkeleton key={index} />
-            ))
-          : tasks!.map((task) => <TaskCard key={task.id} task={task} />)}
-      </div>
+      {loading ? (
+        <div className="tasks-column__tasks">
+          {Array.from({ length: SKELETON_CARDS_COUNT }, (_, index) => (
+            <TaskCardSkeleton key={index} />
+          ))}
+        </div>
+      ) : (
+        <Droppable droppableId={status}>
+          {(droppableProvided) => (
+            <div
+              className="tasks-column__tasks"
+              ref={droppableProvided.innerRef}
+              {...droppableProvided.droppableProps}
+            >
+              {tasks!.map((task, index) => (
+                <Draggable key={task.id} draggableId={task.id} index={index}>
+                  {(draggableProvided) => (
+                    <TaskCard
+                      task={task}
+                      innerRef={draggableProvided.innerRef}
+                      draggableProps={draggableProvided.draggableProps}
+                      dragHandleProps={draggableProvided.dragHandleProps}
+                    />
+                  )}
+                </Draggable>
+              ))}
+              {droppableProvided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      )}
     </div>
   )
 }

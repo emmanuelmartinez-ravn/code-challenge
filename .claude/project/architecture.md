@@ -25,13 +25,13 @@ Tasks Management App — a web app for managing tasks.
 - Build: `npm run build`
 - Lint: `npm run lint`
 - Test: `npm test`
-- Type check: `npx tsc --noEmit`
+- Type check: `npm run type-check`
 
 ## Verification
 
 After every change, run in this order:
 
-1. `npx tsc --noEmit` — fix type errors
+1. `npm run type-check` — fix type errors
 2. `npm test` — fix failing tests
 3. `npm run lint` — fix lint errors
 4. `npm run build` — confirm it builds

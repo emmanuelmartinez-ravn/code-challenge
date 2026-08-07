@@ -10,10 +10,11 @@
     "preview": "vite preview",
     "codegen": "graphql-codegen --config codegen.ts",
     "test": "vitest run --passWithNoTests",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc -b"
   },
   "dependencies": {
     "@apollo/client": "^4.2.9",
+    "@hello-pangea/dnd": "^18.0.1",
     "dotenv": "^17.4.2",
     "graphql": "^16.14.2",
     "react": "^19.2.8",

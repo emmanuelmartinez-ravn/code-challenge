@@ -6,6 +6,11 @@
   border-radius: 0.5rem;
   background-color: var(--color-neutral-4);
   width: 348px;
+  cursor: grab;
+}
+
+.task-card:active {
+  cursor: grabbing;
 }
 
 .task-card__header {
