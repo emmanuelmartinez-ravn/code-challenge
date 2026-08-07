@@ -8,6 +8,7 @@ import {
   formatDate,
   toDateParts,
   pointEstimateToNumber,
+  tagToLabel,
 } from '@constants/utils'
 import AssigneeSelectOption from '@core/layout/ControlsLayout/AddTaskForm/AssigneeSelectOption'
 import UserIcon from '@shared/icons/UserIcon'
@@ -144,7 +145,7 @@ function EditTaskForm({
           name="Label"
           title="Tag Title"
           icon={<TagIcon />}
-          options={TAGS}
+          options={TAGS.map((tag) => ({ value: tag, label: tagToLabel(tag) }))}
           values={selectedTags}
           onChange={(values) => setSelectedTags(values as Tag[])}
         />

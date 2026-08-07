@@ -1,5 +1,6 @@
 import type { PointEstimate } from './PointEstimate'
 import { STATUSES, type Status } from './Status'
+import type { Tag } from './Tag'
 import type { Task } from './Task'
 
 export function formatDate(dueDate: Date): {
@@ -94,6 +95,21 @@ export function statusToLabel(status: Status): string {
       return 'In Progress'
     case 'TODO':
       return 'To do'
+  }
+}
+
+export function tagToLabel(tag: Tag): string {
+  switch (tag) {
+    case 'ANDROID':
+      return 'Android'
+    case 'IOS':
+      return 'iOS'
+    case 'NODE_JS':
+      return 'Node.js'
+    case 'RAILS':
+      return 'Ruby on Rails'
+    case 'REACT':
+      return 'React'
   }
 }
 
