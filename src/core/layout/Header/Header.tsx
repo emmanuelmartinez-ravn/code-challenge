@@ -6,6 +6,7 @@ import './Header.css'
 import Avatar from '@shared/components/Avatar/Avatar'
 import meAvatar from '@assets/me.png'
 import { useRef } from 'react'
+import { useNavigate } from 'react-router'
 import IconButton from '@shared/components/Buttons/IconButton/IconButton'
 
 function Header({
@@ -16,6 +17,7 @@ function Header({
   readonly onSearchChange: (value: string) => void
 }) {
   const inputRef = useRef<HTMLInputElement>(null)
+  const navigate = useNavigate()
   return (
     <header className="search-bar">
       <div>
@@ -44,7 +46,11 @@ function Header({
           />
         ) : null}
         <IconButton label="Notifications" icon={<NotificationIcon />} />
-        <button aria-label="Profile" type="button">
+        <button
+          aria-label="Profile"
+          type="button"
+          onClick={() => navigate('/profile')}
+        >
           <Avatar src={meAvatar} alt="Your profile" />
         </button>
       </div>
