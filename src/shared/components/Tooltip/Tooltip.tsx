@@ -57,7 +57,15 @@ function Tooltip({
       <div
         className="tooltip__trigger"
         ref={triggerRef}
+        role="button"
+        tabIndex={0}
         onClick={() => setIsOpen(!isOpen)}
+        onKeyDown={(event) => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault()
+            setIsOpen(!isOpen)
+          }
+        }}
       >
         {trigger}
       </div>
