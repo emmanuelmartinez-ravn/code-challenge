@@ -15,6 +15,10 @@ export type AvatarProps = {
     }
 )
 
+function isRemoteUrl(src: string): boolean {
+  return src.startsWith('http://') || src.startsWith('https://')
+}
+
 function toProxiedAvatarUrl(src: string): string {
   return `https://images.weserv.nl/?url=${encodeURIComponent(src)}`
 }
@@ -40,10 +44,10 @@ function verifyAvatarSrc(src: string): Promise<string> {
 }
 
 function Avatar({ size = 'm', src, alt = 'Avatar' }: AvatarProps) {
-  const [displaySrc, setDisplaySrc] = useState(avatarPlaceholder)
+  const [verifiedRemoteSrc, setVerifiedRemoteSrc] = useState(avatarPlaceholder)
 
   useEffect(() => {
-    if (!src) {
+    if (!src || !isRemoteUrl(src)) {
       return
     }
 
@@ -51,7 +55,7 @@ function Avatar({ size = 'm', src, alt = 'Avatar' }: AvatarProps) {
 
     verifyAvatarSrc(src).then((verifiedSrc) => {
       if (!isCancelled) {
-        setDisplaySrc(verifiedSrc)
+        setVerifiedRemoteSrc(verifiedSrc)
       }
     })
 
@@ -59,6 +63,8 @@ function Avatar({ size = 'm', src, alt = 'Avatar' }: AvatarProps) {
       isCancelled = true
     }
   }, [src])
+
+  const displaySrc = src && !isRemoteUrl(src) ? src : verifiedRemoteSrc
 
   return (
     <img
