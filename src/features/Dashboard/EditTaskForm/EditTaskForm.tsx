@@ -56,6 +56,8 @@ function EditTaskForm({
     toDateParts(new Date(task.dueDate)),
   )
 
+  const [showError, setShowError] = useState(false)
+
   const handleSubmit = (event: React.SubmitEvent<HTMLFormElement>) => {
     event.preventDefault()
 
@@ -63,8 +65,11 @@ function EditTaskForm({
     const title = formData.get('title') as string
 
     if (!title || !selectedDate || !selectedEstimate || !selectedAssignee) {
+      setShowError(true)
       return
     }
+
+    setShowError(false)
 
     updateTask({
       variables: {
@@ -178,6 +183,12 @@ function EditTaskForm({
           )}
         </div>
       </div>
+
+      {showError && (
+        <span role="alert" className="edit-task-form__error body body--s">
+          Please fill in the title, estimate, assignee, and due date.
+        </span>
+      )}
 
       <div className="edit-task-form__footer">
         <Button variant="secondary" name="Cancel" onClick={onClose} />

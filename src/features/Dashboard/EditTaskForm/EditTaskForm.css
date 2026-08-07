@@ -46,3 +46,8 @@
   gap: 1rem;
   justify-content: flex-end;
 }
+
+.edit-task-form__error {
+  color: var(--color-primary-4);
+  text-align: right;
+}

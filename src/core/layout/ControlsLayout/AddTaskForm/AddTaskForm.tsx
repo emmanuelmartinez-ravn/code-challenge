@@ -49,6 +49,8 @@ function AddTaskForm({ onClose }: { readonly onClose: () => void }) {
     day: number
   } | null>(null)
 
+  const [showError, setShowError] = useState(false)
+
   const handleSubmit = (event: React.SubmitEvent<HTMLFormElement>) => {
     event.preventDefault()
 
@@ -56,8 +58,11 @@ function AddTaskForm({ onClose }: { readonly onClose: () => void }) {
     const title = formData.get('title') as string
 
     if (!title || !selectedDate || !selectedEstimate || !selectedAssignee) {
+      setShowError(true)
       return
     }
+
+    setShowError(false)
 
     createTask({
       variables: {
@@ -170,6 +175,12 @@ function AddTaskForm({ onClose }: { readonly onClose: () => void }) {
           )}
         </div>
       </div>
+
+      {showError && (
+        <span role="alert" className="add-task-form__error body body--s">
+          Please fill in the title, estimate, assignee, and due date.
+        </span>
+      )}
 
       <div className="add-task-form__footer">
         <Button variant="secondary" name="Cancel" onClick={onClose} />
