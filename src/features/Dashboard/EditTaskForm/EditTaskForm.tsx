@@ -8,6 +8,7 @@ import {
   formatDate,
   toDateParts,
   pointEstimateToNumber,
+  statusToLabel,
   tagToLabel,
 } from '@constants/utils'
 import AssigneeSelectOption from '@core/layout/ControlsLayout/AddTaskForm/AssigneeSelectOption'
@@ -23,6 +24,9 @@ import CalendarCheckIcon from '@shared/icons/CalendarCheckIcon'
 import Button from '@shared/components/Buttons/Button/Button'
 import { UPDATE_TASK } from '@graphql/mutations/updateTask'
 import type { Task } from '@constants/Task'
+import { STATUSES, type Status } from '@constants/Status'
+import PieIcon from '@shared/icons/PieIcon'
+import StatusSelectOption from './StatusSelectOption'
 
 function EditTaskForm({
   task,
@@ -45,6 +49,8 @@ function EditTaskForm({
   )
 
   const [selectedTags, setSelectedTags] = useState<Tag[]>(task.tags)
+
+  const [selectedStatus, setSelectedStatus] = useState<Status>(task.status)
 
   const [openDatePicker, setOpenDatePicker] = useState(false)
 
@@ -82,6 +88,7 @@ function EditTaskForm({
             selectedDate.day,
           ),
           pointEstimate: selectedEstimate,
+          status: selectedStatus,
           tags: selectedTags,
           assigneeId: selectedAssignee,
         },
@@ -144,6 +151,19 @@ function EditTaskForm({
           icon={<UserIcon />}
           value={selectedAssignee}
           onChange={(value) => setSelectedAssignee(value)}
+        />
+
+        <Select
+          name="Status"
+          title="Status"
+          options={STATUSES.map((status) => ({
+            value: status,
+            label: statusToLabel(status),
+            node: <StatusSelectOption name={statusToLabel(status)} />,
+          }))}
+          icon={<PieIcon />}
+          value={selectedStatus}
+          onChange={(value) => setSelectedStatus(value as Status)}
         />
 
         <Multiselect
