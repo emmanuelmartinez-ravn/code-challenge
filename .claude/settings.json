@@ -1,4 +1,5 @@
 {
+  "includeCoAuthoredBy": false,
   "permissions": {
     "allow": [
       "Bash(npm test *)",
@@ -12,7 +13,9 @@
       "Bash(git commit *)",
       "Bash(git push *)",
       "Bash(gh pr create *)",
-      "WebFetch(domain:syn-api-production-e95c.up.railway.app)"
+      "WebFetch(domain:syn-api-production-e95c.up.railway.app)",
+      "Bash(git fetch *)",
+      "Bash(npx vitest *)"
     ],
     "deny": [
       "Bash(rm -rf *)",
@@ -34,6 +37,5 @@
         ]
       }
     ]
-  },
-  "includeCoAuthoredBy": false
+  }
 }
