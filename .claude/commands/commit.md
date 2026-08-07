@@ -9,7 +9,7 @@ allowed-tools: Bash(git *), Bash(npx tsc *), Bash(npm test *), Bash(npm run *), 
 2. If the current branch is `main` or `prod`, stop and ask the user to move the work to `dev` or a feature branch first — those are release branches, not where work gets committed.
 3. Run verification in order, stopping at the first failure and reporting it — do not edit code to force it to pass, that's a separate task:
    - `npx tsc --noEmit`
-   - `npm test`
+   - `npm test` — only if this change adds or modifies a test file (`*.test.*`/`*.spec.*`); skip otherwise
    - `npm run lint`
    - `npm run build`
 4. Stage only the files relevant to this change. Check `git status` first — don't blindly `git add -A`, and never commit `.env` or other files that look like they hold secrets.
