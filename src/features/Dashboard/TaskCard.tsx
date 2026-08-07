@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useMutation } from '@apollo/client/react'
 import IconButton from '@shared/components/Buttons/IconButton/IconButton'
 import Button from '@shared/components/Buttons/Button/Button'
 import Tooltip from '@shared/components/Tooltip/Tooltip'
@@ -16,6 +17,8 @@ import BranchIcon from '@shared/icons/BranchIcon'
 import CommentIcon from '@shared/icons/CommentIcon'
 import type { Task } from '@constants/Task'
 import { formatDate, pointEstimateToNumber } from '@constants/utils'
+import { GET_TASKS } from '@graphql/queries/task'
+import { DELETE_TASK } from '@graphql/mutations/deleteTask'
 
 function TaskCard({ task }: { readonly task: Task }) {
   const { assignee, dueDate, name, pointEstimate, tags } = task
@@ -24,6 +27,10 @@ function TaskCard({ task }: { readonly task: Task }) {
   const points = pointEstimateToNumber(pointEstimate)
 
   const [isEditOpen, setIsEditOpen] = useState(false)
+
+  const [deleteTask] = useMutation(DELETE_TASK, {
+    refetchQueries: [{ query: GET_TASKS, variables: { input: {} } }],
+  })
 
   return (
     <article className="task-card">
@@ -41,7 +48,14 @@ function TaskCard({ task }: { readonly task: Task }) {
             icon={<EditIcon />}
             onClick={() => setIsEditOpen(true)}
           />
-          <Button variant="secondary" name="Delete" icon={<DeleteIcon />} />
+          <Button
+            variant="secondary"
+            name="Delete"
+            icon={<DeleteIcon />}
+            onClick={() =>
+              deleteTask({ variables: { input: { id: task.id } } })
+            }
+          />
         </Tooltip>
       </div>
 

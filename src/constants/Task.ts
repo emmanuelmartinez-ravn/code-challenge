@@ -63,3 +63,13 @@ export type UpdateTaskVariables = {
     tags?: Tag[]
   }
 }
+
+export type DeleteTaskResponse = {
+  deleteTask: Pick<Task, 'id'>
+}
+
+export type DeleteTaskVariables = {
+  input: {
+    id: string
+  }
+}
