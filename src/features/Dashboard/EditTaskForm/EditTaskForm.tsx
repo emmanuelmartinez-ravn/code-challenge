@@ -8,6 +8,7 @@ import {
   formatDate,
   toDateParts,
   pointEstimateToNumber,
+  tagToLabel,
 } from '@constants/utils'
 import AssigneeSelectOption from '@core/layout/ControlsLayout/AddTaskForm/AssigneeSelectOption'
 import UserIcon from '@shared/icons/UserIcon'
@@ -55,6 +56,8 @@ function EditTaskForm({
     toDateParts(new Date(task.dueDate)),
   )
 
+  const [showError, setShowError] = useState(false)
+
   const handleSubmit = (event: React.SubmitEvent<HTMLFormElement>) => {
     event.preventDefault()
 
@@ -62,8 +65,11 @@ function EditTaskForm({
     const title = formData.get('title') as string
 
     if (!title || !selectedDate || !selectedEstimate || !selectedAssignee) {
+      setShowError(true)
       return
     }
+
+    setShowError(false)
 
     updateTask({
       variables: {
@@ -144,7 +150,7 @@ function EditTaskForm({
           name="Label"
           title="Tag Title"
           icon={<TagIcon />}
-          options={TAGS}
+          options={TAGS.map((tag) => ({ value: tag, label: tagToLabel(tag) }))}
           values={selectedTags}
           onChange={(values) => setSelectedTags(values as Tag[])}
         />
@@ -177,6 +183,12 @@ function EditTaskForm({
           )}
         </div>
       </div>
+
+      {showError && (
+        <span role="alert" className="edit-task-form__error body body--s">
+          Please fill in the title, estimate, assignee, and due date.
+        </span>
+      )}
 
       <div className="edit-task-form__footer">
         <Button variant="secondary" name="Cancel" onClick={onClose} />

@@ -2,7 +2,12 @@ import './TasksTable.css'
 import Badge from '@shared/components/Badge/Badge'
 import Avatar from '@shared/components/Avatar/Avatar'
 import type { Task } from '@constants/Task'
-import { formatDate, pointEstimateToNumber } from '@constants/utils'
+import {
+  formatDate,
+  pointEstimateToNumber,
+  tagToLabel,
+  tagToVariant,
+} from '@constants/utils'
 
 function TaskTable({ tasks }: { readonly tasks?: Task[] }) {
   if (!tasks) {
@@ -34,7 +39,13 @@ function TaskTable({ tasks }: { readonly tasks?: Task[] }) {
               </td>
 
               <td className="task-table__tags">
-                {tagsCount > 0 && <Badge label="Tag" name={task.tags![0]} />}
+                {tagsCount > 0 && (
+                  <Badge
+                    label="Tag"
+                    name={tagToLabel(task.tags![0]).toUpperCase()}
+                    variant={tagToVariant(task.tags![0])}
+                  />
+                )}
 
                 {tagsCount > 1 && (
                   <Badge label="Tag" name={`+${tagsCount - 1}`} />

@@ -8,6 +8,7 @@ import {
   formatDate,
   getInitialDate,
   pointEstimateToNumber,
+  tagToLabel,
 } from '@constants/utils'
 import AssigneeSelectOption from './AssigneeSelectOption'
 import UserIcon from '@shared/icons/UserIcon'
@@ -48,6 +49,8 @@ function AddTaskForm({ onClose }: { readonly onClose: () => void }) {
     day: number
   } | null>(null)
 
+  const [showError, setShowError] = useState(false)
+
   const handleSubmit = (event: React.SubmitEvent<HTMLFormElement>) => {
     event.preventDefault()
 
@@ -55,8 +58,11 @@ function AddTaskForm({ onClose }: { readonly onClose: () => void }) {
     const title = formData.get('title') as string
 
     if (!title || !selectedDate || !selectedEstimate || !selectedAssignee) {
+      setShowError(true)
       return
     }
+
+    setShowError(false)
 
     createTask({
       variables: {
@@ -136,7 +142,7 @@ function AddTaskForm({ onClose }: { readonly onClose: () => void }) {
           name="Label"
           title="Tag Title"
           icon={<TagIcon />}
-          options={TAGS}
+          options={TAGS.map((tag) => ({ value: tag, label: tagToLabel(tag) }))}
           values={selectedTags}
           onChange={(values) => setSelectedTags(values as Tag[])}
         />
@@ -169,6 +175,12 @@ function AddTaskForm({ onClose }: { readonly onClose: () => void }) {
           )}
         </div>
       </div>
+
+      {showError && (
+        <span role="alert" className="add-task-form__error body body--s">
+          Please fill in the title, estimate, assignee, and due date.
+        </span>
+      )}
 
       <div className="add-task-form__footer">
         <Button variant="secondary" name="Cancel" onClick={onClose} />

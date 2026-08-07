@@ -1,5 +1,6 @@
 import type { PointEstimate } from './PointEstimate'
 import { STATUSES, type Status } from './Status'
+import type { Tag } from './Tag'
 import type { Task } from './Task'
 
 export function formatDate(dueDate: Date): {
@@ -79,6 +80,53 @@ export function pointEstimateToNumber(text: PointEstimate): number {
       return 4
     case 'EIGHT':
       return 8
+  }
+}
+
+export function statusToLabel(status: Status): string {
+  switch (status) {
+    case 'BACKLOG':
+      return 'Backlog'
+    case 'CANCELLED':
+      return 'Cancelled'
+    case 'DONE':
+      return 'Done'
+    case 'IN_PROGRESS':
+      return 'In Progress'
+    case 'TODO':
+      return 'To do'
+  }
+}
+
+export function tagToLabel(tag: Tag): string {
+  switch (tag) {
+    case 'ANDROID':
+      return 'Android'
+    case 'IOS':
+      return 'iOS'
+    case 'NODE_JS':
+      return 'Node.js'
+    case 'RAILS':
+      return 'Rails'
+    case 'REACT':
+      return 'React'
+  }
+}
+
+export function tagToVariant(
+  tag: Tag,
+): 'default' | 'primary' | 'secondary' | 'tertiary' | 'quaternary' {
+  switch (tag) {
+    case 'RAILS':
+      return 'primary'
+    case 'ANDROID':
+      return 'secondary'
+    case 'IOS':
+      return 'tertiary'
+    case 'NODE_JS':
+      return 'default'
+    case 'REACT':
+      return 'quaternary'
   }
 }
 

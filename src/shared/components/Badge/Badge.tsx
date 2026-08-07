@@ -1,6 +1,13 @@
 import type { ReactNode } from 'react'
 import './Badge.css'
 
+export type BadgeVariant =
+  | 'default'
+  | 'primary'
+  | 'secondary'
+  | 'tertiary'
+  | 'quaternary'
+
 function Badge({
   label,
   name,
@@ -10,7 +17,7 @@ function Badge({
   readonly label?: string
   readonly name: string
   readonly icon?: ReactNode
-  readonly variant?: 'default' | 'primary' | 'secondary' | 'tertiary'
+  readonly variant?: BadgeVariant
 }) {
   return (
     <span className={`badge badge--${variant} body--bold`}>

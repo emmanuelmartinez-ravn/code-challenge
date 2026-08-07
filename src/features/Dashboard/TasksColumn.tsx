@@ -1,5 +1,6 @@
 import type { Status } from '@constants/Status'
 import type { Task } from '@constants/Task'
+import { statusToLabel } from '@constants/utils'
 import TaskCard from './TaskCard'
 import TaskCardSkeleton from './TaskCardSkeleton'
 import './TasksColumn.css'
@@ -22,7 +23,7 @@ function TasksColumn({
   return (
     <div className="tasks-column" key={status}>
       <h2 className="body body--l">
-        {status}
+        {statusToLabel(status)}
         {!loading && ` (${tasks!.length})`}
       </h2>
 
