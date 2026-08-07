@@ -26,3 +26,8 @@
   color: var(--color-tertiary-4);
   background: #e5b4541a;
 }
+
+.badge--quaternary {
+  color: var(--color-quaternary-2);
+  background: #4a90d91a;
+}

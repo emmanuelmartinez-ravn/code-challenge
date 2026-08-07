@@ -107,9 +107,26 @@ export function tagToLabel(tag: Tag): string {
     case 'NODE_JS':
       return 'Node.js'
     case 'RAILS':
-      return 'Ruby on Rails'
+      return 'Rails'
     case 'REACT':
       return 'React'
+  }
+}
+
+export function tagToVariant(
+  tag: Tag,
+): 'default' | 'primary' | 'secondary' | 'tertiary' | 'quaternary' {
+  switch (tag) {
+    case 'RAILS':
+      return 'primary'
+    case 'ANDROID':
+      return 'secondary'
+    case 'IOS':
+      return 'tertiary'
+    case 'NODE_JS':
+      return 'default'
+    case 'REACT':
+      return 'quaternary'
   }
 }
 

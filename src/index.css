@@ -69,6 +69,9 @@
   --color-tertiary-2: #f2daab;
   --color-tertiary-3: #ebc77f;
   --color-tertiary-4: #e5b454;
+
+  --color-quaternary-1: #cfe3f7;
+  --color-quaternary-2: #4a90d9;
 }
 
 body {

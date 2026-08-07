@@ -16,7 +16,12 @@ import AttachmentIcon from '@shared/icons/AttachmentIcon'
 import BranchIcon from '@shared/icons/BranchIcon'
 import CommentIcon from '@shared/icons/CommentIcon'
 import type { Task } from '@constants/Task'
-import { formatDate, pointEstimateToNumber } from '@constants/utils'
+import {
+  formatDate,
+  pointEstimateToNumber,
+  tagToLabel,
+  tagToVariant,
+} from '@constants/utils'
 import { GET_TASKS } from '@graphql/queries/task'
 import { DELETE_TASK } from '@graphql/mutations/deleteTask'
 
@@ -88,7 +93,14 @@ function TaskCard({ task }: { readonly task: Task }) {
       </div>
       <div className="task-card__tags">
         {tags
-          ? tags.map((tag) => <Badge key={tag} label="Tag" name={tag} />)
+          ? tags.map((tag) => (
+              <Badge
+                key={tag}
+                label="Tag"
+                name={tagToLabel(tag).toUpperCase()}
+                variant={tagToVariant(tag)}
+              />
+            ))
           : null}
       </div>
       <div className="task-card__footer">
