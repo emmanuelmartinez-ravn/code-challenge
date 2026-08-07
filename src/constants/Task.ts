@@ -46,3 +46,20 @@ export type CreateTaskVariables = {
     tags: Tag[]
   }
 }
+
+export type UpdateTaskResponse = {
+  updateTask: Task
+}
+
+export type UpdateTaskVariables = {
+  input: {
+    id: string
+    assigneeId?: string
+    dueDate?: Date
+    name?: string
+    pointEstimate?: PointEstimate
+    position?: number
+    status?: Status
+    tags?: Tag[]
+  }
+}

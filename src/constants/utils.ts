@@ -82,14 +82,16 @@ export function pointEstimateToNumber(text: PointEstimate): number {
   }
 }
 
-export function getInitialDate() {
-  const today = new Date()
-
+export function toDateParts(date: Date) {
   return {
-    year: today.getFullYear(),
-    month: today.getMonth(),
-    day: today.getDate(),
+    year: date.getFullYear(),
+    month: date.getMonth(),
+    day: date.getDate(),
   }
+}
+
+export function getInitialDate() {
+  return toDateParts(new Date())
 }
 
 export function groupTasksByStatus(tasks?: Task[]): Map<Status, Task[]> {

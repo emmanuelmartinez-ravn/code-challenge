@@ -1,6 +1,9 @@
+import { useState } from 'react'
 import IconButton from '@shared/components/Buttons/IconButton/IconButton'
 import Button from '@shared/components/Buttons/Button/Button'
 import Tooltip from '@shared/components/Tooltip/Tooltip'
+import Modal from '@shared/components/Modal/Modal'
+import EditTaskForm from './EditTaskForm/EditTaskForm'
 import './TaskCard.css'
 import OptionsIcon from '@shared/icons/OptionsIcon'
 import EditIcon from '@shared/icons/EditIcon'
@@ -19,6 +22,9 @@ function TaskCard({ task }: { readonly task: Task }) {
 
   const { status, formatted } = formatDate(dueDate)
   const points = pointEstimateToNumber(pointEstimate)
+
+  const [isEditOpen, setIsEditOpen] = useState(false)
+
   return (
     <article className="task-card">
       <div className="task-card__header">
@@ -29,10 +35,21 @@ function TaskCard({ task }: { readonly task: Task }) {
         <Tooltip
           trigger={<IconButton label="More options" icon={<OptionsIcon />} />}
         >
-          <Button variant="secondary" name="Edit" icon={<EditIcon />} />
+          <Button
+            variant="secondary"
+            name="Edit"
+            icon={<EditIcon />}
+            onClick={() => setIsEditOpen(true)}
+          />
           <Button variant="secondary" name="Delete" icon={<DeleteIcon />} />
         </Tooltip>
       </div>
+
+      {isEditOpen && (
+        <Modal>
+          <EditTaskForm task={task} onClose={() => setIsEditOpen(false)} />
+        </Modal>
+      )}
       <div className="task-card__points body--bold">
         <p className="body body--m">
           <span className="sr-only">Estimated: </span>
