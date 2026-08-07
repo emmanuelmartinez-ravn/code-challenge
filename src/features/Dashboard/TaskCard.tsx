@@ -96,6 +96,7 @@ function TaskCard({ task }: { readonly task: Task }) {
           <Avatar src={assignee.avatar} alt={`${assignee.fullName}`} size="s" />
         ) : null}
         <div className="task-card__footer__actions">
+          {/* TODO: attachment/branch/comment icons and counts are hardcoded for mockup purposes */}
           <span>
             <AttachmentIcon />
           </span>
