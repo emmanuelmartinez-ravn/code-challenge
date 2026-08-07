@@ -1,5 +1,9 @@
 import { useState } from 'react'
 import { useMutation } from '@apollo/client/react'
+import type {
+  DraggableProvidedDragHandleProps,
+  DraggableProvidedDraggableProps,
+} from '@hello-pangea/dnd'
 import IconButton from '@shared/components/Buttons/IconButton/IconButton'
 import Button from '@shared/components/Buttons/Button/Button'
 import Tooltip from '@shared/components/Tooltip/Tooltip'
@@ -25,7 +29,17 @@ import {
 import { GET_TASKS } from '@graphql/queries/task'
 import { DELETE_TASK } from '@graphql/mutations/deleteTask'
 
-function TaskCard({ task }: { readonly task: Task }) {
+function TaskCard({
+  task,
+  innerRef,
+  draggableProps,
+  dragHandleProps,
+}: {
+  readonly task: Task
+  readonly innerRef?: (element: HTMLElement | null) => void
+  readonly draggableProps?: DraggableProvidedDraggableProps
+  readonly dragHandleProps?: DraggableProvidedDragHandleProps | null
+}) {
   const { assignee, dueDate, name, pointEstimate, tags } = task
 
   const { status, formatted } = formatDate(dueDate)
@@ -38,7 +52,12 @@ function TaskCard({ task }: { readonly task: Task }) {
   })
 
   return (
-    <article className="task-card">
+    <article
+      className="task-card"
+      ref={innerRef}
+      {...draggableProps}
+      {...dragHandleProps}
+    >
       <div className="task-card__header">
         <h3 className="body body--xl body--bold">
           <span className="sr-only">Task card: </span>
