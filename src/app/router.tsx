@@ -7,6 +7,7 @@ import RootLayout from '@core/layout/RootLayout'
 import DashboardPage from '@features/Dashboard/DashboardPage'
 import MyTaskPage from '@features/MyTask/MyTaskPage'
 import PlaceholderPage from '@features/PlaceholderPage/PlaceholderPage'
+import ProfilePage from '@features/Profile/ProfilePage'
 import ControlsLayout from '@core/layout/ControlsLayout/ControlsLayout'
 
 export const router = createBrowserRouter([
@@ -40,6 +41,7 @@ export const router = createBrowserRouter([
       { path: 'time-manage', element: <PlaceholderPage name="Time Manage" /> },
       { path: 'reports', element: <PlaceholderPage name="Reports" /> },
       { path: 'settings', element: <PlaceholderPage name="Settings" /> },
+      { path: 'profile', element: <ProfilePage /> },
     ],
   },
   {
