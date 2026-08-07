@@ -2,6 +2,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { MockedProvider } from '@apollo/client/testing/react'
 import AddTaskForm from './AddTaskForm'
 import { GET_USERS } from '@graphql/queries/users'
+import { GET_TASKS } from '@graphql/queries/task'
 import { CREATE_TASK } from '@graphql/mutations/createTask'
 import { getInitialDate } from '@constants/utils'
 
@@ -95,6 +96,10 @@ describe('AddTaskForm', () => {
               },
             },
             result: createTaskResult,
+          },
+          {
+            request: { query: GET_TASKS, variables: { input: {} } },
+            result: { data: { tasks: [] } },
           },
         ]}
       >
