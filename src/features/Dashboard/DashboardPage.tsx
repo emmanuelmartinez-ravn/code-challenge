@@ -1,32 +1,11 @@
 import './DashboardPage.css'
-import { useQuery } from '@apollo/client/react'
-import { GET_TASKS } from '../../graphql/queries/task'
-import type { Status } from '@constants/Status'
-import type { Task } from '@constants/Task'
+import { useOutletContext } from 'react-router'
+import { STATUSES } from '@constants/Status'
 import TasksColumn from './TasksColumn'
-import { STATUSES } from '../../constants/Status'
+import type { ControlsOutletContext } from '@core/layout/ControlsLayout/ControlsLayout'
+
 function DashboardPage() {
-  const { data, loading } = useQuery(GET_TASKS, {
-    variables: {
-      input: {},
-    },
-  })
-
-  const tasksByStatus: Map<Status, Task[]> = new Map()
-
-  STATUSES.forEach((status) => {
-    tasksByStatus.set(status, [])
-  })
-
-  if (data?.tasks) {
-    data.tasks.forEach((task) => {
-      tasksByStatus.get(task.status)?.push(task)
-    })
-
-    tasksByStatus.forEach((tasks) => {
-      tasks.sort((a, b) => a.position - b.position)
-    })
-  }
+  const { tasksByStatus, loading } = useOutletContext<ControlsOutletContext>()
 
   return (
     <section aria-busy={loading} className="dashboard">

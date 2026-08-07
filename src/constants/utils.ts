@@ -1,4 +1,6 @@
 import type { PointEstimate } from './PointEstimate'
+import { STATUSES, type Status } from './Status'
+import type { Task } from './Task'
 
 export function formatDate(dueDate: Date): {
   status: 'onTime' | 'near' | 'overdue'
@@ -88,4 +90,22 @@ export function getInitialDate() {
     month: today.getMonth(),
     day: today.getDate(),
   }
+}
+
+export function groupTasksByStatus(tasks?: Task[]): Map<Status, Task[]> {
+  const tasksByStatus = new Map<Status, Task[]>()
+
+  STATUSES.forEach((status) => {
+    tasksByStatus.set(status, [])
+  })
+
+  tasks?.forEach((task) => {
+    tasksByStatus.get(task.status)?.push(task)
+  })
+
+  tasksByStatus.forEach((statusTasks) => {
+    statusTasks.sort((a, b) => a.position - b.position)
+  })
+
+  return tasksByStatus
 }

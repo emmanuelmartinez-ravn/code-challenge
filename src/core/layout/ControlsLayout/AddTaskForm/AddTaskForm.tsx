@@ -13,6 +13,7 @@ import AssigneeSelectOption from './AssigneeSelectOption'
 import UserIcon from '@shared/icons/UserIcon'
 import { useQuery, useMutation } from '@apollo/client/react'
 import { GET_USERS } from '@graphql/queries/users'
+import { GET_TASKS } from '@graphql/queries/task'
 import Multiselect from '@shared/components/Multiselect/Multiselect'
 import { TAGS, type Tag } from '@constants/Tag'
 import TagIcon from '@shared/icons/TagIcon'
@@ -37,7 +38,9 @@ function AddTaskForm({ onClose }: { readonly onClose: () => void }) {
 
   const [openDatePicker, setOpenDatePicker] = useState(false)
 
-  const [createTask] = useMutation(CREATE_TASK)
+  const [createTask] = useMutation(CREATE_TASK, {
+    refetchQueries: [{ query: GET_TASKS, variables: { input: {} } }],
+  })
 
   const [selectedDate, setSelectedDate] = useState<{
     year: number
