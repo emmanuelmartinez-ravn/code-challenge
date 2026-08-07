@@ -4,6 +4,7 @@ import { useOutletContext } from 'react-router'
 import TablesHeader from './TablesHeader'
 import TaskTable from './TasksTable'
 import { STATUSES } from '@constants/Status'
+import { statusToLabel } from '@constants/utils'
 import type { ControlsOutletContext } from '@core/layout/ControlsLayout/ControlsLayout'
 
 function MyTaskPage() {
@@ -18,7 +19,7 @@ function MyTaskPage() {
           {STATUSES.map((status) => (
             <Accordion
               key={status}
-              title={status}
+              title={statusToLabel(status)}
               subtitle={`(${tasksByStatus.get(status)?.length})`}
             >
               <TaskTable tasks={tasksByStatus.get(status)} />
