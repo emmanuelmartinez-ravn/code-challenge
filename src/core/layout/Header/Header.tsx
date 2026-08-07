@@ -4,6 +4,7 @@ import NotificationIcon from '@shared/icons/NotificationIcon'
 
 import './Header.css'
 import Avatar from '@shared/components/Avatar/Avatar'
+import meAvatar from '@assets/me.png'
 import { useRef, useState } from 'react'
 import IconButton from '@shared/components/Buttons/IconButton/IconButton'
 
@@ -39,7 +40,7 @@ function Header() {
         ) : null}
         <IconButton label="Notifications" icon={<NotificationIcon />} />
         <button aria-label="Profile" type="button">
-          <Avatar />
+          <Avatar src={meAvatar} alt="Your profile" />
         </button>
       </div>
     </header>

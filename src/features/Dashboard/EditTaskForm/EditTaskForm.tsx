@@ -1,15 +1,15 @@
 import { useState } from 'react'
-import './AddTaskForm.css'
+import './EditTaskForm.css'
 import Select from '@shared/components/Select/Select'
 import PlusLessIcon from '@shared/icons/PlusLessIcon'
-import EstimateSelectOption from './EstimateSelectOption'
+import EstimateSelectOption from '@core/layout/ControlsLayout/AddTaskForm/EstimateSelectOption'
 import { POINT_ESTIMATES, type PointEstimate } from '@constants/PointEstimate'
 import {
   formatDate,
-  getInitialDate,
+  toDateParts,
   pointEstimateToNumber,
 } from '@constants/utils'
-import AssigneeSelectOption from './AssigneeSelectOption'
+import AssigneeSelectOption from '@core/layout/ControlsLayout/AddTaskForm/AssigneeSelectOption'
 import UserIcon from '@shared/icons/UserIcon'
 import { useQuery, useMutation } from '@apollo/client/react'
 import { GET_USERS } from '@graphql/queries/users'
@@ -20,9 +20,16 @@ import TagIcon from '@shared/icons/TagIcon'
 import DatePicker from '@shared/components/DatePicker/DatePicker'
 import CalendarCheckIcon from '@shared/icons/CalendarCheckIcon'
 import Button from '@shared/components/Buttons/Button/Button'
-import { CREATE_TASK } from '@graphql/mutations/createTask'
+import { UPDATE_TASK } from '@graphql/mutations/updateTask'
+import type { Task } from '@constants/Task'
 
-function AddTaskForm({ onClose }: { readonly onClose: () => void }) {
+function EditTaskForm({
+  task,
+  onClose,
+}: {
+  readonly task: Task
+  readonly onClose: () => void
+}) {
   const { data } = useQuery(GET_USERS, {
     variables: {
       input: {},
@@ -30,23 +37,23 @@ function AddTaskForm({ onClose }: { readonly onClose: () => void }) {
   })
 
   const [selectedEstimate, setSelectedEstimate] =
-    useState<PointEstimate | null>(null)
+    useState<PointEstimate | null>(task.pointEstimate)
 
-  const [selectedAssignee, setSelectedAssignee] = useState<string | null>(null)
+  const [selectedAssignee, setSelectedAssignee] = useState<string | null>(
+    task.assignee?.id ?? null,
+  )
 
-  const [selectedTags, setSelectedTags] = useState<Tag[]>([])
+  const [selectedTags, setSelectedTags] = useState<Tag[]>(task.tags)
 
   const [openDatePicker, setOpenDatePicker] = useState(false)
 
-  const [createTask] = useMutation(CREATE_TASK, {
+  const [updateTask] = useMutation(UPDATE_TASK, {
     refetchQueries: [{ query: GET_TASKS, variables: { input: {} } }],
   })
 
-  const [selectedDate, setSelectedDate] = useState<{
-    year: number
-    month: number
-    day: number
-  } | null>(null)
+  const [selectedDate, setSelectedDate] = useState(
+    toDateParts(new Date(task.dueDate)),
+  )
 
   const handleSubmit = (event: React.SubmitEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -58,9 +65,10 @@ function AddTaskForm({ onClose }: { readonly onClose: () => void }) {
       return
     }
 
-    createTask({
+    updateTask({
       variables: {
         input: {
+          id: task.id,
           name: title,
           dueDate: new Date(
             selectedDate.year,
@@ -68,7 +76,6 @@ function AddTaskForm({ onClose }: { readonly onClose: () => void }) {
             selectedDate.day,
           ),
           pointEstimate: selectedEstimate,
-          status: 'TODO',
           tags: selectedTags,
           assigneeId: selectedAssignee,
         },
@@ -79,20 +86,21 @@ function AddTaskForm({ onClose }: { readonly onClose: () => void }) {
   }
 
   return (
-    <form onSubmit={(event) => handleSubmit(event)} className="add-task-form">
-      <div className="add-task-form__header">
+    <form onSubmit={(event) => handleSubmit(event)} className="edit-task-form">
+      <div className="edit-task-form__header">
         <label>
           <span className="sr-only">Task title</span>
           <input
             type="text"
             name="title"
+            defaultValue={task.name}
             placeholder="Task title"
             className="body body--l body--bold"
           />
         </label>
       </div>
 
-      <div className="add-task-form__body">
+      <div className="edit-task-form__body">
         <Select
           name="Estimate"
           title="Estimate"
@@ -148,21 +156,21 @@ function AddTaskForm({ onClose }: { readonly onClose: () => void }) {
             onClick={() => setOpenDatePicker(!openDatePicker)}
           >
             <CalendarCheckIcon />
-            {selectedDate
-              ? formatDate(
-                  new Date(
-                    selectedDate.year,
-                    selectedDate.month,
-                    selectedDate.day,
-                  ),
-                ).formatted
-              : 'Due date'}
+            {
+              formatDate(
+                new Date(
+                  selectedDate.year,
+                  selectedDate.month,
+                  selectedDate.day,
+                ),
+              ).formatted
+            }
           </button>
 
           {openDatePicker && (
             <div className="date-picker-container">
               <DatePicker
-                value={selectedDate ?? getInitialDate()}
+                value={selectedDate}
                 onChange={(value) => setSelectedDate(value)}
               />
             </div>
@@ -170,12 +178,12 @@ function AddTaskForm({ onClose }: { readonly onClose: () => void }) {
         </div>
       </div>
 
-      <div className="add-task-form__footer">
+      <div className="edit-task-form__footer">
         <Button variant="secondary" name="Cancel" onClick={onClose} />
-        <Button variant="primary" name="Create" type="submit" />
+        <Button variant="primary" name="Update" type="submit" />
       </div>
     </form>
   )
 }
 
-export default AddTaskForm
+export default EditTaskForm

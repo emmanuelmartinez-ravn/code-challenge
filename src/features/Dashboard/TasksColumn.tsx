@@ -1,28 +1,37 @@
 import type { Status } from '@constants/Status'
 import type { Task } from '@constants/Task'
 import TaskCard from './TaskCard'
+import TaskCardSkeleton from './TaskCardSkeleton'
 import './TasksColumn.css'
+
+const SKELETON_CARDS_COUNT = 1
 
 function TasksColumn({
   status,
   tasks,
+  loading,
 }: {
   readonly status: Status
   readonly tasks?: Task[]
+  readonly loading?: boolean
 }) {
-  if (!tasks) {
+  if (!loading && !tasks) {
     return null
   }
+
   return (
     <div className="tasks-column" key={status}>
       <h2 className="body body--l">
-        {status} ({tasks.length})
+        {status}
+        {!loading && ` (${tasks!.length})`}
       </h2>
 
       <div className="tasks-column__tasks">
-        {tasks.map((task) => (
-          <TaskCard key={task.id} task={task} />
-        ))}
+        {loading
+          ? Array.from({ length: SKELETON_CARDS_COUNT }, (_, index) => (
+              <TaskCardSkeleton key={index} />
+            ))
+          : tasks!.map((task) => <TaskCard key={task.id} task={task} />)}
       </div>
     </div>
   )

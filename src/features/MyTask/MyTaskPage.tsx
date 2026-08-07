@@ -1,34 +1,13 @@
 import Accordion from '@shared/components/Accordion/Accordion'
 import './MyTaskPage.css'
+import { useOutletContext } from 'react-router'
 import TablesHeader from './TablesHeader'
 import TaskTable from './TasksTable'
-import { STATUSES, type Status } from '@constants/Status'
-import { useQuery } from '@apollo/client/react'
-import { GET_TASKS } from '../../graphql/queries/task'
-import type { Task } from '@constants/Task'
+import { STATUSES } from '@constants/Status'
+import type { ControlsOutletContext } from '@core/layout/ControlsLayout/ControlsLayout'
 
 function MyTaskPage() {
-  const { data } = useQuery(GET_TASKS, {
-    variables: {
-      input: {},
-    },
-  })
-
-  const tasksByStatus: Map<Status, Task[]> = new Map()
-
-  STATUSES.forEach((status) => {
-    tasksByStatus.set(status, [])
-  })
-
-  if (data?.tasks) {
-    data.tasks.forEach((task) => {
-      tasksByStatus.get(task.status)?.push(task)
-    })
-
-    tasksByStatus.forEach((tasks) => {
-      tasks.sort((a, b) => a.position - b.position)
-    })
-  }
+  const { tasksByStatus } = useOutletContext<ControlsOutletContext>()
 
   return (
     <section className="my-task">
@@ -36,16 +15,15 @@ function MyTaskPage() {
       <div className="my-task__content">
         <TablesHeader />
         <div className="table__accordions">
-          {tasksByStatus.size > 0 &&
-            STATUSES.map((status) => (
-              <Accordion
-                key={status}
-                title={status}
-                subtitle={`(${tasksByStatus.get(status)?.length})`}
-              >
-                <TaskTable tasks={tasksByStatus.get(status)} />
-              </Accordion>
-            ))}
+          {STATUSES.map((status) => (
+            <Accordion
+              key={status}
+              title={status}
+              subtitle={`(${tasksByStatus.get(status)?.length})`}
+            >
+              <TaskTable tasks={tasksByStatus.get(status)} />
+            </Accordion>
+          ))}
         </div>
       </div>
     </section>

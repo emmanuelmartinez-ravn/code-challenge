@@ -1,0 +1,21 @@
+.task-card-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  background-color: var(--color-neutral-4);
+  width: 348px;
+}
+
+.task-card-skeleton__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.task-card-skeleton__tags {
+  display: flex;
+  gap: 0.5rem;
+}
