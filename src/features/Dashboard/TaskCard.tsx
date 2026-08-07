@@ -1,4 +1,5 @@
 import IconButton from '@shared/components/Buttons/IconButton/IconButton'
+import Tooltip from '@shared/components/Tooltip/Tooltip'
 import './TaskCard.css'
 import OptionsIcon from '@shared/icons/OptionsIcon'
 import Badge from '@shared/components/Badge/Badge'
@@ -22,7 +23,11 @@ function TaskCard({ task }: { readonly task: Task }) {
           <span className="sr-only">Task card: </span>
           {name}
         </h3>
-        <IconButton label="More options" icon={<OptionsIcon />} />
+        <Tooltip
+          trigger={<IconButton label="More options" icon={<OptionsIcon />} />}
+        >
+          <p className="body body--s">No actions yet</p>
+        </Tooltip>
       </div>
       <div className="task-card__points body--bold">
         <p className="body body--m">
