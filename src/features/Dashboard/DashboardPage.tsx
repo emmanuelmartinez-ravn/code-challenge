@@ -2,10 +2,15 @@ import './DashboardPage.css'
 import { useOutletContext } from 'react-router'
 import { STATUSES } from '@constants/Status'
 import TasksColumn from './TasksColumn'
+import NoResults from './NoResults'
 import type { ControlsOutletContext } from '@core/layout/ControlsLayout/ControlsLayout'
 
 function DashboardPage() {
   const { tasksByStatus, loading } = useOutletContext<ControlsOutletContext>()
+
+  const hasResults = Array.from(tasksByStatus.values()).some(
+    (tasks) => tasks.length > 0,
+  )
 
   return (
     <section aria-busy={loading} className="dashboard">
@@ -21,6 +26,8 @@ function DashboardPage() {
           />
         ))}
       </div>
+
+      {!loading && !hasResults && <NoResults />}
     </section>
   )
 }
