@@ -21,11 +21,13 @@ function TasksColumn({
     return null
   }
 
+  const columnTasks = tasks ?? []
+
   return (
     <div className="tasks-column" key={status}>
       <h2 className="body body--l">
         {statusToLabel(status)}
-        {!loading && ` (${tasks!.length})`}
+        {!loading && ` (${columnTasks.length})`}
       </h2>
 
       {loading ? (
@@ -42,7 +44,7 @@ function TasksColumn({
               ref={droppableProvided.innerRef}
               {...droppableProvided.droppableProps}
             >
-              {tasks!.map((task, index) => (
+              {columnTasks.map((task, index) => (
                 <Draggable key={task.id} draggableId={task.id} index={index}>
                   {(draggableProvided) => (
                     <TaskCard

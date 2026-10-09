@@ -6,9 +6,9 @@ import type { User } from './User'
 export type Task = {
   id: string
   assignee: User | null
-  createdAt: Date
+  createdAt: string
   creator: User
-  dueDate: Date
+  dueDate: string
   name: string
   pointEstimate: PointEstimate
   position: number

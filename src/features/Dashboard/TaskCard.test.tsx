@@ -8,9 +8,9 @@ import type { Task } from '@constants/Task'
 const mockTask: Task = {
   id: 'task-1',
   assignee: null,
-  createdAt: new Date('2024-01-01T00:00:00.000Z'),
+  createdAt: '2024-01-01T00:00:00.000Z',
   creator: { id: 'user-1', avatar: '', fullName: 'Jane Doe' },
-  dueDate: new Date('2024-01-10T00:00:00.000Z'),
+  dueDate: '2024-01-10T00:00:00.000Z',
   name: 'Write onboarding docs',
   pointEstimate: 'ONE',
   position: 0,
