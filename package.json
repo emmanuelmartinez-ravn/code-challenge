@@ -8,7 +8,6 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "codegen": "graphql-codegen --config codegen.ts",
     "test": "vitest run --passWithNoTests",
     "type-check": "tsc -b"
   },

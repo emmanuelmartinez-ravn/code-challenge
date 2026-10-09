@@ -184,3 +184,22 @@ describe('DashboardPage task loading', () => {
     ).toBeInTheDocument()
   })
 })
+
+describe('DashboardPage columns', () => {
+  it('shows the status columns in workflow order', async () => {
+    renderDashboard([getTasksMock])
+    await screen.findByText('Write onboarding docs')
+
+    const columnTitles = screen
+      .getAllByRole('heading', { level: 2 })
+      .map((heading) => heading.textContent?.replace(/\s*\(\d+\)$/, ''))
+
+    expect(columnTitles).toEqual([
+      'Backlog',
+      'To do',
+      'In Progress',
+      'Done',
+      'Cancelled',
+    ])
+  })
+})
