@@ -48,7 +48,7 @@ function TaskCard({
   const [isEditOpen, setIsEditOpen] = useState(false)
 
   const [deleteTask] = useMutation(DELETE_TASK, {
-    refetchQueries: [{ query: GET_TASKS, variables: { input: {} } }],
+    refetchQueries: [GET_TASKS],
   })
 
   return (

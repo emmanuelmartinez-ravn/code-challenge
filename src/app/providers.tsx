@@ -3,6 +3,7 @@ import { ApolloProvider } from '@apollo/client/react'
 import { router } from './router'
 import { ApolloClient, InMemoryCache, HttpLink } from '@apollo/client'
 import { SetContextLink } from '@apollo/client/link/context'
+import ToastProvider from '@shared/components/Toast/ToastProvider'
 
 const cache = new InMemoryCache()
 const link = new HttpLink({
@@ -28,7 +29,9 @@ const client = new ApolloClient({
 export default function Providers() {
   return (
     <ApolloProvider client={client}>
-      <RouterProvider router={router} />
+      <ToastProvider>
+        <RouterProvider router={router} />
+      </ToastProvider>
     </ApolloProvider>
   )
 }

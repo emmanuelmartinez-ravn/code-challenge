@@ -163,3 +163,9 @@ export function groupTasksByStatus(tasks?: Task[]): Map<Status, Task[]> {
 export function isStatus(value: string): value is Status {
   return STATUSES.some((status) => status === value)
 }
+
+export function pointEstimateToLabel(estimate: PointEstimate): string {
+  const points = pointEstimateToNumber(estimate)
+
+  return `${points} ${points === 1 ? 'Point' : 'Points'}`
+}

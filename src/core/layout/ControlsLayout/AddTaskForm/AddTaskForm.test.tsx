@@ -5,6 +5,7 @@ import { GET_USERS } from '@graphql/queries/users'
 import { GET_TASKS } from '@graphql/queries/task'
 import { CREATE_TASK } from '@graphql/mutations/createTask'
 import { getInitialDate } from '@constants/utils'
+import ToastProvider from '@shared/components/Toast/ToastProvider'
 
 const mocks = [
   {
@@ -16,7 +17,9 @@ const mocks = [
 function renderAddTaskForm() {
   return render(
     <MockedProvider mocks={mocks}>
-      <AddTaskForm onClose={() => {}} />
+      <ToastProvider>
+        <AddTaskForm onClose={() => {}} />
+      </ToastProvider>
     </MockedProvider>,
   )
 }
@@ -71,7 +74,9 @@ describe('AddTaskForm', () => {
           },
         ]}
       >
-        <AddTaskForm onClose={() => {}} />
+        <ToastProvider>
+          <AddTaskForm onClose={() => {}} />
+        </ToastProvider>
       </MockedProvider>,
     )
 
@@ -136,7 +141,9 @@ describe('AddTaskForm', () => {
           },
         ]}
       >
-        <AddTaskForm onClose={() => {}} />
+        <ToastProvider>
+          <AddTaskForm onClose={() => {}} />
+        </ToastProvider>
       </MockedProvider>,
     )
 
@@ -157,6 +164,128 @@ describe('AddTaskForm', () => {
 
     await waitFor(() => {
       expect(createTaskResult).toHaveBeenCalled()
+    })
+  })
+})
+
+describe('AddTaskForm submit outcome', () => {
+  const mockUser = { id: 'user-1', fullName: 'Jane Doe', avatar: '' }
+
+  const createTaskSuccess = {
+    request: { query: CREATE_TASK, variables: () => true },
+    result: {
+      data: {
+        createTask: {
+          __typename: 'Task',
+          id: 'task-1',
+          assignee: { __typename: 'User', ...mockUser },
+          createdAt: new Date().toISOString(),
+          creator: { __typename: 'User', ...mockUser },
+          dueDate: new Date().toISOString(),
+          name: 'Write onboarding docs',
+          pointEstimate: 'ONE',
+          position: 0,
+          status: 'TODO',
+          tags: [],
+        },
+      },
+    },
+    delay: 50,
+  }
+
+  const createTaskFailure = {
+    request: { query: CREATE_TASK, variables: () => true },
+    error: new Error('Network down'),
+  }
+
+  function renderWithCreateTask(
+    createTaskMock: typeof createTaskSuccess | typeof createTaskFailure,
+    onClose: () => void,
+  ) {
+    return render(
+      <MockedProvider
+        mocks={[
+          {
+            request: { query: GET_USERS, variables: { input: {} } },
+            result: { data: { users: [mockUser] } },
+          },
+          createTaskMock,
+          {
+            request: { query: GET_TASKS, variables: { input: {} } },
+            result: { data: { tasks: [] } },
+          },
+        ]}
+      >
+        <ToastProvider>
+          <AddTaskForm onClose={onClose} />
+        </ToastProvider>
+      </MockedProvider>,
+    )
+  }
+
+  async function submitValidTask(container: HTMLElement) {
+    fireEvent.change(screen.getByPlaceholderText('Task title'), {
+      target: { value: 'Write onboarding docs' },
+    })
+    fireEvent.click(screen.getByRole('button', { name: 'Estimate' }))
+    fireEvent.click(screen.getByRole('button', { name: '1 Point' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Assignee' }))
+    fireEvent.click(await screen.findByRole('button', { name: 'Jane Doe' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Due date' }))
+    const todayButton = container.querySelector('.calendar-button.today')
+    if (!(todayButton instanceof HTMLElement)) {
+      throw new Error('Today button not found in the date picker')
+    }
+    fireEvent.click(todayButton)
+    fireEvent.click(screen.getByRole('button', { name: 'Create' }))
+  }
+
+  it('shows an error toast when createTask fails', async () => {
+    const { container } = renderWithCreateTask(createTaskFailure, () => {})
+
+    await submitValidTask(container)
+
+    expect(
+      await screen.findByText("Couldn't create the task. Please try again."),
+    ).toBeInTheDocument()
+  })
+
+  it('keeps the form open when createTask fails', async () => {
+    const onClose = vi.fn()
+    const { container } = renderWithCreateTask(createTaskFailure, onClose)
+
+    await submitValidTask(container)
+    await screen.findByText("Couldn't create the task. Please try again.")
+
+    expect(onClose).not.toHaveBeenCalled()
+  })
+
+  it('shows a success toast after createTask succeeds', async () => {
+    const { container } = renderWithCreateTask(createTaskSuccess, () => {})
+
+    await submitValidTask(container)
+
+    expect(await screen.findByText('Task created.')).toBeInTheDocument()
+  })
+
+  it('closes the form after createTask succeeds', async () => {
+    const onClose = vi.fn()
+    const { container } = renderWithCreateTask(createTaskSuccess, onClose)
+
+    await submitValidTask(container)
+
+    await waitFor(() => {
+      expect(onClose).toHaveBeenCalledTimes(1)
+    })
+  })
+
+  it('disables the Create button while the task is saving', async () => {
+    const { container } = renderWithCreateTask(createTaskSuccess, () => {})
+
+    await submitValidTask(container)
+
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: 'Create' })).toBeDisabled()
     })
   })
 })

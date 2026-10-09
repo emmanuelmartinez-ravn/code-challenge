@@ -5,6 +5,7 @@ import { GET_USERS } from '@graphql/queries/users'
 import { GET_TASKS } from '@graphql/queries/task'
 import { UPDATE_TASK } from '@graphql/mutations/updateTask'
 import type { Task } from '@constants/Task'
+import ToastProvider from '@shared/components/Toast/ToastProvider'
 
 const mockUser = { id: 'user-1', fullName: 'Jane Doe', avatar: '' }
 
@@ -54,7 +55,9 @@ function renderEditTaskForm(
         },
       ]}
     >
-      <EditTaskForm task={task} onClose={() => {}} />
+      <ToastProvider>
+        <EditTaskForm task={task} onClose={() => {}} />
+      </ToastProvider>
     </MockedProvider>,
   )
 }
@@ -108,5 +111,92 @@ describe('EditTaskForm', () => {
     await screen.findByRole('alert')
 
     expect(updateTaskResult).not.toHaveBeenCalled()
+  })
+})
+
+describe('EditTaskForm submit outcome', () => {
+  const updateTaskSuccess = {
+    request: { query: UPDATE_TASK, variables: () => true },
+    result: updateTaskResponse(),
+    delay: 50,
+  }
+
+  const updateTaskFailure = {
+    request: { query: UPDATE_TASK, variables: () => true },
+    error: new Error('Network down'),
+  }
+
+  function renderWithUpdateTask(
+    updateTaskMock: typeof updateTaskSuccess | typeof updateTaskFailure,
+    onClose: () => void,
+  ) {
+    return render(
+      <MockedProvider
+        mocks={[
+          {
+            request: { query: GET_USERS, variables: { input: {} } },
+            result: { data: { users: [mockUser] } },
+          },
+          updateTaskMock,
+          {
+            request: { query: GET_TASKS, variables: { input: {} } },
+            result: { data: { tasks: [] } },
+          },
+        ]}
+      >
+        <ToastProvider>
+          <EditTaskForm task={task} onClose={onClose} />
+        </ToastProvider>
+      </MockedProvider>,
+    )
+  }
+
+  it('shows an error toast when updateTask fails', async () => {
+    renderWithUpdateTask(updateTaskFailure, () => {})
+
+    fireEvent.click(screen.getByRole('button', { name: 'Update' }))
+
+    expect(
+      await screen.findByText("Couldn't update the task. Please try again."),
+    ).toBeInTheDocument()
+  })
+
+  it('keeps the form open when updateTask fails', async () => {
+    const onClose = vi.fn()
+    renderWithUpdateTask(updateTaskFailure, onClose)
+
+    fireEvent.click(screen.getByRole('button', { name: 'Update' }))
+    await screen.findByText("Couldn't update the task. Please try again.")
+
+    expect(onClose).not.toHaveBeenCalled()
+  })
+
+  it('shows a success toast after updateTask succeeds', async () => {
+    renderWithUpdateTask(updateTaskSuccess, () => {})
+
+    fireEvent.click(screen.getByRole('button', { name: 'Update' }))
+
+    expect(await screen.findByText('Task updated.')).toBeInTheDocument()
+  })
+
+  it('closes the form after updateTask succeeds', async () => {
+    const onClose = vi.fn()
+    renderWithUpdateTask(updateTaskSuccess, onClose)
+
+    fireEvent.click(screen.getByRole('button', { name: 'Update' }))
+
+    await waitFor(() => {
+      expect(onClose).toHaveBeenCalledTimes(1)
+    })
+  })
+
+  it('disables the Update button while the task is saving', async () => {
+    renderWithUpdateTask(updateTaskSuccess, () => {})
+
+    fireEvent.click(screen.getByRole('button', { name: 'Update' }))
+
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: 'Update' })).toBeDisabled()
+    })
   })
 })
