@@ -4,5 +4,10 @@
   align-items: center;
   gap: 1rem;
   padding: 2rem;
+  text-align: center;
   color: var(--color-neutral-2);
+}
+
+.error-state__title {
+  color: var(--color-neutral-1);
 }

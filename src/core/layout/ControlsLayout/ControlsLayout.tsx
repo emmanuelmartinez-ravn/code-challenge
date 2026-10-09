@@ -1,6 +1,7 @@
 import { Outlet, useOutletContext } from 'react-router'
 import { useQuery } from '@apollo/client/react'
 import Controls from '@core/layout/ControlsLayout/Controls'
+import ErrorState from '@shared/components/ErrorState/ErrorState'
 import { GET_TASKS } from '@graphql/queries/task'
 import { groupTasksByStatus } from '@constants/utils'
 import type { Status } from '@constants/Status'
@@ -10,8 +11,7 @@ import type { RootOutletContext } from '@core/layout/RootLayout'
 export type ControlsOutletContext = {
   tasksByStatus: Map<Status, Task[]>
   loading: boolean
-  hasError: boolean
-  retry: () => void
+  isSearching: boolean
 }
 
 function ControlsLayout() {
@@ -23,19 +23,29 @@ function ControlsLayout() {
     },
   })
 
-  const tasks = data?.tasks ?? previousData?.tasks
-
-  const tasksByStatus = groupTasksByStatus(tasks)
-
   const retry = () => {
     refetch().catch(() => {})
   }
 
+  if (error) {
+    return (
+      <>
+        <Controls />
+        <ErrorState
+          title="Couldn't load your tasks."
+          message="The task service isn't responding right now, so your task cards can't be shown. Please try again later."
+          onRetry={retry}
+        />
+      </>
+    )
+  }
+
+  const tasks = data?.tasks ?? previousData?.tasks
+
   const outletContext: ControlsOutletContext = {
-    tasksByStatus,
+    tasksByStatus: groupTasksByStatus(tasks),
     loading: loading && !tasks,
-    hasError: Boolean(error),
-    retry,
+    isSearching: search.length > 0,
   }
 
   return (

@@ -1,18 +1,28 @@
 import { render, screen, fireEvent } from '@testing-library/react'
 import ErrorState from './ErrorState'
 
+function renderErrorState(onRetry: () => void = () => {}) {
+  return render(
+    <ErrorState
+      title="Couldn't load your tasks."
+      message="The task service isn't responding."
+      onRetry={onRetry}
+    />,
+  )
+}
+
 describe('ErrorState', () => {
-  it('announces the error message as an alert', () => {
-    render(<ErrorState message="Couldn't load your tasks." onRetry={() => {}} />)
+  it('announces the title and message as an alert', () => {
+    renderErrorState()
 
     expect(screen.getByRole('alert')).toHaveTextContent(
-      "Couldn't load your tasks.",
+      "Couldn't load your tasks.The task service isn't responding.",
     )
   })
 
   it('calls onRetry when Retry is clicked', () => {
     const onRetry = vi.fn()
-    render(<ErrorState message="Couldn't load your tasks." onRetry={onRetry} />)
+    renderErrorState(onRetry)
 
     fireEvent.click(screen.getByRole('button', { name: 'Retry' }))
 

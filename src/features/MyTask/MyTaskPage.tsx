@@ -6,20 +6,9 @@ import TaskTable from './TasksTable'
 import { STATUSES } from '@constants/Status'
 import { statusToLabel } from '@constants/utils'
 import type { ControlsOutletContext } from '@core/layout/ControlsLayout/ControlsLayout'
-import ErrorState from '@shared/components/ErrorState/ErrorState'
 
 function MyTaskPage() {
-  const { tasksByStatus, hasError, retry } =
-    useOutletContext<ControlsOutletContext>()
-
-  if (hasError) {
-    return (
-      <section className="my-task">
-        <h1 className="sr-only">My task</h1>
-        <ErrorState message="Couldn't load your tasks." onRetry={retry} />
-      </section>
-    )
-  }
+  const { tasksByStatus } = useOutletContext<ControlsOutletContext>()
 
   return (
     <section className="my-task">
