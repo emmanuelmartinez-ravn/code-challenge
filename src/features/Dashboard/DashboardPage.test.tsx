@@ -203,3 +203,54 @@ describe('DashboardPage columns', () => {
     ])
   })
 })
+
+describe('DashboardPage messages', () => {
+  const noTasks = { data: { tasks: [] } }
+
+  it('explains that the task service is not responding when loading fails', async () => {
+    renderDashboard([
+      {
+        request: { query: GET_TASKS, variables: { input: {} } },
+        error: new Error('Network down'),
+      },
+    ])
+
+    expect(
+      await screen.findByText(
+        "The task service isn't responding right now, so your task cards can't be shown. Please try again later.",
+      ),
+    ).toBeInTheDocument()
+  })
+
+  it('says there are no tasks yet when the board is empty without a search', async () => {
+    renderDashboard([
+      {
+        request: { query: GET_TASKS, variables: { input: {} } },
+        result: noTasks,
+      },
+    ])
+
+    expect(
+      await screen.findByText('There are no tasks yet.'),
+    ).toBeInTheDocument()
+  })
+
+  it('says nothing matches when a search returns no tasks', async () => {
+    renderDashboard(
+      [
+        {
+          request: {
+            query: GET_TASKS,
+            variables: { input: { name: 'missing' } },
+          },
+          result: noTasks,
+        },
+      ],
+      'missing',
+    )
+
+    expect(
+      await screen.findByText('No tasks match your search.'),
+    ).toBeInTheDocument()
+  })
+})

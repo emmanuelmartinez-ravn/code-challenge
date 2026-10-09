@@ -10,10 +10,9 @@ import type { ControlsOutletContext } from '@core/layout/ControlsLayout/Controls
 import { GET_TASKS } from '@graphql/queries/task'
 import { UPDATE_TASK } from '@graphql/mutations/updateTask'
 import { useToast } from '@shared/components/Toast/useToast'
-import ErrorState from '@shared/components/ErrorState/ErrorState'
 
 function DashboardPage() {
-  const { tasksByStatus, loading, hasError, retry } =
+  const { tasksByStatus, loading, isSearching } =
     useOutletContext<ControlsOutletContext>()
 
   const showToast = useToast()
@@ -96,15 +95,6 @@ function DashboardPage() {
     })
   }
 
-  if (hasError) {
-    return (
-      <section className="dashboard">
-        <h1 className="sr-only">Dashboard</h1>
-        <ErrorState message="Couldn't load your tasks." onRetry={retry} />
-      </section>
-    )
-  }
-
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
       <section aria-busy={loading} className="dashboard">
@@ -121,7 +111,7 @@ function DashboardPage() {
           ))}
         </div>
 
-        {!loading && !hasResults && <NoResults />}
+        {!loading && !hasResults && <NoResults isSearching={isSearching} />}
       </section>
     </DragDropContext>
   )
