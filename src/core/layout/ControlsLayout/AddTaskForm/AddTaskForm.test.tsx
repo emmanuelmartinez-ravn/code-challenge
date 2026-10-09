@@ -48,6 +48,39 @@ describe('AddTaskForm', () => {
     ).toBeInTheDocument()
   })
 
+  it('shows the error alert when submitted empty', async () => {
+    renderAddTaskForm()
+
+    fireEvent.click(screen.getByRole('button', { name: 'Create' }))
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      'Please fill in the title, estimate, assignee, and due date.',
+    )
+  })
+
+  it('does not call createTask when submitted empty', async () => {
+    const createTaskResult = vi.fn()
+
+    render(
+      <MockedProvider
+        mocks={[
+          ...mocks,
+          {
+            request: { query: CREATE_TASK, variables: () => true },
+            result: createTaskResult,
+          },
+        ]}
+      >
+        <AddTaskForm onClose={() => {}} />
+      </MockedProvider>,
+    )
+
+    fireEvent.click(screen.getByRole('button', { name: 'Create' }))
+    await screen.findByRole('alert')
+
+    expect(createTaskResult).not.toHaveBeenCalled()
+  })
+
   it('calls createTask with the entered task details on submit', async () => {
     const today = getInitialDate()
     const mockUser = { id: 'user-1', fullName: 'Jane Doe', avatar: '' }

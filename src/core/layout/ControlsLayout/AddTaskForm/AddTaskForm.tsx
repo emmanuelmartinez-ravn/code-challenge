@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Controller, useForm } from 'react-hook-form'
 import './AddTaskForm.css'
 import Select from '@shared/components/Select/Select'
 import PlusLessIcon from '@shared/icons/PlusLessIcon'
@@ -23,6 +24,14 @@ import CalendarCheckIcon from '@shared/icons/CalendarCheckIcon'
 import Button from '@shared/components/Buttons/Button/Button'
 import { CREATE_TASK } from '@graphql/mutations/createTask'
 
+type FormValues = {
+  title: string
+  pointEstimate: PointEstimate | null
+  assigneeId: string | null
+  tags: Tag[]
+  dueDate: { year: number; month: number; day: number } | null
+}
+
 function AddTaskForm({ onClose }: { readonly onClose: () => void }) {
   const { data } = useQuery(GET_USERS, {
     variables: {
@@ -30,53 +39,43 @@ function AddTaskForm({ onClose }: { readonly onClose: () => void }) {
     },
   })
 
-  const [selectedEstimate, setSelectedEstimate] =
-    useState<PointEstimate | null>(null)
-
-  const [selectedAssignee, setSelectedAssignee] = useState<string | null>(null)
-
-  const [selectedTags, setSelectedTags] = useState<Tag[]>([])
-
   const [openDatePicker, setOpenDatePicker] = useState(false)
 
   const [createTask] = useMutation(CREATE_TASK, {
     refetchQueries: [{ query: GET_TASKS, variables: { input: {} } }],
   })
 
-  const [selectedDate, setSelectedDate] = useState<{
-    year: number
-    month: number
-    day: number
-  } | null>(null)
+  const { register, control, handleSubmit, formState } = useForm<FormValues>({
+    defaultValues: {
+      title: '',
+      pointEstimate: null,
+      assigneeId: null,
+      tags: [],
+      dueDate: null,
+    },
+    reValidateMode: 'onSubmit',
+  })
 
-  const [showError, setShowError] = useState(false)
+  const hasErrors = Object.keys(formState.errors).length > 0
 
-  const handleSubmit = (event: React.SubmitEvent<HTMLFormElement>) => {
-    event.preventDefault()
-
-    const formData = new FormData(event.currentTarget)
-    const title = formData.get('title') as string
-
-    if (!title || !selectedDate || !selectedEstimate || !selectedAssignee) {
-      setShowError(true)
-      return
-    }
-
-    setShowError(false)
+  const onSubmit = ({
+    title,
+    pointEstimate,
+    assigneeId,
+    tags,
+    dueDate,
+  }: FormValues) => {
+    if (!pointEstimate || !assigneeId || !dueDate) return
 
     createTask({
       variables: {
         input: {
           name: title,
-          dueDate: new Date(
-            selectedDate.year,
-            selectedDate.month,
-            selectedDate.day,
-          ),
-          pointEstimate: selectedEstimate,
+          dueDate: new Date(dueDate.year, dueDate.month, dueDate.day),
+          pointEstimate,
           status: 'TODO',
-          tags: selectedTags,
-          assigneeId: selectedAssignee,
+          tags,
+          assigneeId,
         },
       },
     })
@@ -85,98 +84,128 @@ function AddTaskForm({ onClose }: { readonly onClose: () => void }) {
   }
 
   return (
-    <form onSubmit={(event) => handleSubmit(event)} className="add-task-form">
+    <form onSubmit={handleSubmit(onSubmit)} className="add-task-form">
       <div className="add-task-form__header">
         <label>
           <span className="sr-only">Task title</span>
           <input
             type="text"
-            name="title"
             placeholder="Task title"
             className="body body--l body--bold"
+            {...register('title', { required: true })}
           />
         </label>
       </div>
 
       <div className="add-task-form__body">
-        <Select
-          name="Estimate"
-          title="Estimate"
-          options={POINT_ESTIMATES.map((estimate) => ({
-            value: estimate,
-            label: `${pointEstimateToNumber(estimate)} ${pointEstimateToNumber(estimate) === 1 ? 'Point' : 'Points'}`,
-            node: (
-              <EstimateSelectOption
-                name={`${pointEstimateToNumber(estimate)} ${pointEstimateToNumber(estimate) === 1 ? 'Point' : 'Points'}`}
-              />
-            ),
-          }))}
-          icon={<PlusLessIcon />}
-          value={selectedEstimate}
-          onChange={(value) => setSelectedEstimate(value as PointEstimate)}
+        <Controller
+          name="pointEstimate"
+          control={control}
+          rules={{ required: true }}
+          render={({ field }) => (
+            <Select
+              name="Estimate"
+              title="Estimate"
+              options={POINT_ESTIMATES.map((estimate) => ({
+                value: estimate,
+                label: `${pointEstimateToNumber(estimate)} ${pointEstimateToNumber(estimate) === 1 ? 'Point' : 'Points'}`,
+                node: (
+                  <EstimateSelectOption
+                    name={`${pointEstimateToNumber(estimate)} ${pointEstimateToNumber(estimate) === 1 ? 'Point' : 'Points'}`}
+                  />
+                ),
+              }))}
+              icon={<PlusLessIcon />}
+              value={field.value}
+              onChange={field.onChange}
+            />
+          )}
         />
 
-        <Select
-          name="Assignee"
-          title="Assign To..."
-          options={
-            data
-              ? data.users.map((user) => ({
-                  value: user.id,
-                  label: user.fullName,
-                  node: (
-                    <AssigneeSelectOption
-                      name={user.fullName}
-                      src={user.avatar}
-                    />
-                  ),
-                }))
-              : []
-          }
-          icon={<UserIcon />}
-          value={selectedAssignee}
-          onChange={(value) => setSelectedAssignee(value)}
+        <Controller
+          name="assigneeId"
+          control={control}
+          rules={{ required: true }}
+          render={({ field }) => (
+            <Select
+              name="Assignee"
+              title="Assign To..."
+              options={
+                data
+                  ? data.users.map((user) => ({
+                      value: user.id,
+                      label: user.fullName,
+                      node: (
+                        <AssigneeSelectOption
+                          name={user.fullName}
+                          src={user.avatar}
+                        />
+                      ),
+                    }))
+                  : []
+              }
+              icon={<UserIcon />}
+              value={field.value}
+              onChange={field.onChange}
+            />
+          )}
         />
 
-        <Multiselect
-          name="Label"
-          title="Tag Title"
-          icon={<TagIcon />}
-          options={TAGS.map((tag) => ({ value: tag, label: tagToLabel(tag) }))}
-          values={selectedTags}
-          onChange={(values) => setSelectedTags(values as Tag[])}
+        <Controller
+          name="tags"
+          control={control}
+          render={({ field }) => (
+            <Multiselect
+              name="Label"
+              title="Tag Title"
+              icon={<TagIcon />}
+              options={TAGS.map((tag) => ({
+                value: tag,
+                label: tagToLabel(tag),
+              }))}
+              values={field.value}
+              onChange={field.onChange}
+            />
+          )}
         />
 
-        <div className="date-picker-wrapper">
-          <button
-            className="button open-date-picker-button body body--m"
-            type="button"
-            onClick={() => setOpenDatePicker(!openDatePicker)}
-          >
-            <CalendarCheckIcon />
-            {selectedDate
-              ? formatDate(
-                  new Date(
-                    selectedDate.year,
-                    selectedDate.month,
-                    selectedDate.day,
-                  ),
-                ).formatted
-              : 'Due date'}
-          </button>
+        <Controller
+          name="dueDate"
+          control={control}
+          rules={{ required: true }}
+          render={({ field }) => (
+            <div className="date-picker-wrapper">
+              <button
+                className="button open-date-picker-button body body--m"
+                type="button"
+                onClick={() => setOpenDatePicker(!openDatePicker)}
+              >
+                <CalendarCheckIcon />
+                {field.value
+                  ? formatDate(
+                      new Date(
+                        field.value.year,
+                        field.value.month,
+                        field.value.day,
+                      ),
+                    ).formatted
+                  : 'Due date'}
+              </button>
 
-          {openDatePicker && (
-            <div className="date-picker-container">
-              <DatePicker
-                value={selectedDate ?? getInitialDate()}
-                onChange={(value) => setSelectedDate(value)}
-              />
+              {openDatePicker && (
+                <div className="date-picker-container">
+                  <DatePicker
+                    value={field.value ?? getInitialDate()}
+                    onChange={field.onChange}
+                  />
+                </div>
+              )}
             </div>
           )}
-        </div>
+        />
       </div>
 
-      {showError && (
+      {hasErrors && (
         <span role="alert" className="add-task-form__error body body--s">
           Please fill in the title, estimate, assignee, and due date.
         </span>

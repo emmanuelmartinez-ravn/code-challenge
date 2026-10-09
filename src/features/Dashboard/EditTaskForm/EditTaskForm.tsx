@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Controller, useForm } from 'react-hook-form'
 import './EditTaskForm.css'
 import Select from '@shared/components/Select/Select'
 import PlusLessIcon from '@shared/icons/PlusLessIcon'
@@ -28,6 +29,15 @@ import { STATUSES, type Status } from '@constants/Status'
 import PieIcon from '@shared/icons/PieIcon'
 import StatusSelectOption from './StatusSelectOption'
 
+type FormValues = {
+  title: string
+  pointEstimate: PointEstimate | null
+  assigneeId: string | null
+  status: Status
+  tags: Tag[]
+  dueDate: { year: number; month: number; day: number }
+}
+
 function EditTaskForm({
   task,
   onClose,
@@ -41,56 +51,46 @@ function EditTaskForm({
     },
   })
 
-  const [selectedEstimate, setSelectedEstimate] =
-    useState<PointEstimate | null>(task.pointEstimate)
-
-  const [selectedAssignee, setSelectedAssignee] = useState<string | null>(
-    task.assignee?.id ?? null,
-  )
-
-  const [selectedTags, setSelectedTags] = useState<Tag[]>(task.tags)
-
-  const [selectedStatus, setSelectedStatus] = useState<Status>(task.status)
-
   const [openDatePicker, setOpenDatePicker] = useState(false)
 
   const [updateTask] = useMutation(UPDATE_TASK, {
     refetchQueries: [{ query: GET_TASKS, variables: { input: {} } }],
   })
 
-  const [selectedDate, setSelectedDate] = useState(
-    toDateParts(new Date(task.dueDate)),
-  )
+  const { register, control, handleSubmit, formState } = useForm<FormValues>({
+    defaultValues: {
+      title: task.name,
+      pointEstimate: task.pointEstimate,
+      assigneeId: task.assignee?.id ?? null,
+      status: task.status,
+      tags: task.tags,
+      dueDate: toDateParts(new Date(task.dueDate)),
+    },
+    reValidateMode: 'onSubmit',
+  })
 
-  const [showError, setShowError] = useState(false)
+  const hasErrors = Object.keys(formState.errors).length > 0
 
-  const handleSubmit = (event: React.SubmitEvent<HTMLFormElement>) => {
-    event.preventDefault()
-
-    const formData = new FormData(event.currentTarget)
-    const title = formData.get('title') as string
-
-    if (!title || !selectedDate || !selectedEstimate || !selectedAssignee) {
-      setShowError(true)
-      return
-    }
-
-    setShowError(false)
+  const onSubmit = ({
+    title,
+    pointEstimate,
+    assigneeId,
+    status,
+    tags,
+    dueDate,
+  }: FormValues) => {
+    if (!pointEstimate || !assigneeId) return
 
     updateTask({
       variables: {
         input: {
           id: task.id,
           name: title,
-          dueDate: new Date(
-            selectedDate.year,
-            selectedDate.month,
-            selectedDate.day,
-          ),
-          pointEstimate: selectedEstimate,
-          status: selectedStatus,
-          tags: selectedTags,
-          assigneeId: selectedAssignee,
+          dueDate: new Date(dueDate.year, dueDate.month, dueDate.day),
+          pointEstimate,
+          status,
+          tags,
+          assigneeId,
         },
       },
     })
@@ -99,112 +99,144 @@ function EditTaskForm({
   }
 
   return (
-    <form onSubmit={(event) => handleSubmit(event)} className="edit-task-form">
+    <form onSubmit={handleSubmit(onSubmit)} className="edit-task-form">
       <div className="edit-task-form__header">
         <label>
           <span className="sr-only">Task title</span>
           <input
             type="text"
-            name="title"
-            defaultValue={task.name}
             placeholder="Task title"
             className="body body--l body--bold"
+            {...register('title', { required: true })}
           />
         </label>
       </div>
 
       <div className="edit-task-form__body">
-        <Select
-          name="Estimate"
-          title="Estimate"
-          options={POINT_ESTIMATES.map((estimate) => ({
-            value: estimate,
-            label: `${pointEstimateToNumber(estimate)} ${pointEstimateToNumber(estimate) === 1 ? 'Point' : 'Points'}`,
-            node: (
-              <EstimateSelectOption
-                name={`${pointEstimateToNumber(estimate)} ${pointEstimateToNumber(estimate) === 1 ? 'Point' : 'Points'}`}
-              />
-            ),
-          }))}
-          icon={<PlusLessIcon />}
-          value={selectedEstimate}
-          onChange={(value) => setSelectedEstimate(value as PointEstimate)}
-        />
-
-        <Select
-          name="Assignee"
-          title="Assign To..."
-          options={
-            data
-              ? data.users.map((user) => ({
-                  value: user.id,
-                  label: user.fullName,
-                  node: (
-                    <AssigneeSelectOption
-                      name={user.fullName}
-                      src={user.avatar}
-                    />
-                  ),
-                }))
-              : []
-          }
-          icon={<UserIcon />}
-          value={selectedAssignee}
-          onChange={(value) => setSelectedAssignee(value)}
-        />
-
-        <Select
-          name="Status"
-          title="Status"
-          options={STATUSES.map((status) => ({
-            value: status,
-            label: statusToLabel(status),
-            node: <StatusSelectOption name={statusToLabel(status)} />,
-          }))}
-          icon={<PieIcon />}
-          value={selectedStatus}
-          onChange={(value) => setSelectedStatus(value as Status)}
-        />
-
-        <Multiselect
-          name="Label"
-          title="Tag Title"
-          icon={<TagIcon />}
-          options={TAGS.map((tag) => ({ value: tag, label: tagToLabel(tag) }))}
-          values={selectedTags}
-          onChange={(values) => setSelectedTags(values as Tag[])}
-        />
-
-        <div className="date-picker-wrapper">
-          <button
-            className="button open-date-picker-button body body--m"
-            type="button"
-            onClick={() => setOpenDatePicker(!openDatePicker)}
-          >
-            <CalendarCheckIcon />
-            {
-              formatDate(
-                new Date(
-                  selectedDate.year,
-                  selectedDate.month,
-                  selectedDate.day,
+        <Controller
+          name="pointEstimate"
+          control={control}
+          rules={{ required: true }}
+          render={({ field }) => (
+            <Select
+              name="Estimate"
+              title="Estimate"
+              options={POINT_ESTIMATES.map((estimate) => ({
+                value: estimate,
+                label: `${pointEstimateToNumber(estimate)} ${pointEstimateToNumber(estimate) === 1 ? 'Point' : 'Points'}`,
+                node: (
+                  <EstimateSelectOption
+                    name={`${pointEstimateToNumber(estimate)} ${pointEstimateToNumber(estimate) === 1 ? 'Point' : 'Points'}`}
+                  />
                 ),
-              ).formatted
-            }
-          </button>
+              }))}
+              icon={<PlusLessIcon />}
+              value={field.value}
+              onChange={field.onChange}
+            />
+          )}
+        />
 
-          {openDatePicker && (
-            <div className="date-picker-container">
-              <DatePicker
-                value={selectedDate}
-                onChange={(value) => setSelectedDate(value)}
-              />
+        <Controller
+          name="assigneeId"
+          control={control}
+          rules={{ required: true }}
+          render={({ field }) => (
+            <Select
+              name="Assignee"
+              title="Assign To..."
+              options={
+                data
+                  ? data.users.map((user) => ({
+                      value: user.id,
+                      label: user.fullName,
+                      node: (
+                        <AssigneeSelectOption
+                          name={user.fullName}
+                          src={user.avatar}
+                        />
+                      ),
+                    }))
+                  : []
+              }
+              icon={<UserIcon />}
+              value={field.value}
+              onChange={field.onChange}
+            />
+          )}
+        />
+
+        <Controller
+          name="status"
+          control={control}
+          render={({ field }) => (
+            <Select
+              name="Status"
+              title="Status"
+              options={STATUSES.map((status) => ({
+                value: status,
+                label: statusToLabel(status),
+                node: <StatusSelectOption name={statusToLabel(status)} />,
+              }))}
+              icon={<PieIcon />}
+              value={field.value}
+              onChange={field.onChange}
+            />
+          )}
+        />
+
+        <Controller
+          name="tags"
+          control={control}
+          render={({ field }) => (
+            <Multiselect
+              name="Label"
+              title="Tag Title"
+              icon={<TagIcon />}
+              options={TAGS.map((tag) => ({
+                value: tag,
+                label: tagToLabel(tag),
+              }))}
+              values={field.value}
+              onChange={field.onChange}
+            />
+          )}
+        />
+
+        <Controller
+          name="dueDate"
+          control={control}
+          rules={{ required: true }}
+          render={({ field }) => (
+            <div className="date-picker-wrapper">
+              <button
+                className="button open-date-picker-button body body--m"
+                type="button"
+                onClick={() => setOpenDatePicker(!openDatePicker)}
+              >
+                <CalendarCheckIcon />
+                {
+                  formatDate(
+                    new Date(
+                      field.value.year,
+                      field.value.month,
+                      field.value.day,
+                    ),
+                  ).formatted
+                }
+              </button>
+
+              {openDatePicker && (
+                <div className="date-picker-container">
+                  <DatePicker value={field.value} onChange={field.onChange} />
+                </div>
+              )}
             </div>
           )}
-        </div>
+        />
       </div>
 
-      {showError && (
+      {hasErrors && (
         <span role="alert" className="edit-task-form__error body body--s">
           Please fill in the title, estimate, assignee, and due date.
         </span>
