@@ -10,9 +10,11 @@ import type { ControlsOutletContext } from '@core/layout/ControlsLayout/Controls
 import { GET_TASKS } from '@graphql/queries/task'
 import { UPDATE_TASK } from '@graphql/mutations/updateTask'
 import { useToast } from '@shared/components/Toast/useToast'
+import ErrorState from '@shared/components/ErrorState/ErrorState'
 
 function DashboardPage() {
-  const { tasksByStatus, loading } = useOutletContext<ControlsOutletContext>()
+  const { tasksByStatus, loading, hasError, retry } =
+    useOutletContext<ControlsOutletContext>()
 
   const showToast = useToast()
 
@@ -92,6 +94,15 @@ function DashboardPage() {
     }).catch(() => {
       showToast("Couldn't move the task. Please try again.", 'error')
     })
+  }
+
+  if (hasError) {
+    return (
+      <section className="dashboard">
+        <h1 className="sr-only">Dashboard</h1>
+        <ErrorState message="Couldn't load your tasks." onRetry={retry} />
+      </section>
+    )
   }
 
   return (
