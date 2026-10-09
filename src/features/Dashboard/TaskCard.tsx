@@ -8,6 +8,8 @@ import IconButton from '@shared/components/Buttons/IconButton/IconButton'
 import Button from '@shared/components/Buttons/Button/Button'
 import Tooltip from '@shared/components/Tooltip/Tooltip'
 import Modal from '@shared/components/Modal/Modal'
+import ConfirmDialog from '@shared/components/ConfirmDialog/ConfirmDialog'
+import { useToast } from '@shared/components/Toast/useToast'
 import EditTaskForm from './EditTaskForm/EditTaskForm'
 import './TaskCard.css'
 import OptionsIcon from '@shared/icons/OptionsIcon'
@@ -46,10 +48,25 @@ function TaskCard({
   const points = pointEstimateToNumber(pointEstimate)
 
   const [isEditOpen, setIsEditOpen] = useState(false)
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false)
+
+  const showToast = useToast()
 
   const [deleteTask] = useMutation(DELETE_TASK, {
     refetchQueries: [GET_TASKS],
   })
+
+  const confirmDelete = async () => {
+    try {
+      await deleteTask({ variables: { input: { id: task.id } } })
+    } catch {
+      showToast("Couldn't delete the task. Please try again.", 'error')
+      return
+    }
+
+    showToast('Task deleted.', 'success')
+    setIsDeleteOpen(false)
+  }
 
   return (
     <article
@@ -76,17 +93,24 @@ function TaskCard({
             variant="secondary"
             name="Delete"
             icon={<DeleteIcon />}
-            onClick={() =>
-              deleteTask({ variables: { input: { id: task.id } } })
-            }
+            onClick={() => setIsDeleteOpen(true)}
           />
         </Tooltip>
       </div>
 
       {isEditOpen && (
-        <Modal>
+        <Modal label="Edit task" onClose={() => setIsEditOpen(false)}>
           <EditTaskForm task={task} onClose={() => setIsEditOpen(false)} />
         </Modal>
+      )}
+      {isDeleteOpen && (
+        <ConfirmDialog
+          title="Delete task?"
+          message={`"${name}" will be permanently deleted.`}
+          confirmLabel="Delete"
+          onConfirm={confirmDelete}
+          onCancel={() => setIsDeleteOpen(false)}
+        />
       )}
       <div className="task-card__points body--bold">
         <p className="body body--m">

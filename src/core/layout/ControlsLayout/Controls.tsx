@@ -52,7 +52,7 @@ function Controls() {
       </div>
 
       {isOpen && (
-        <Modal>
+        <Modal label="Create task" onClose={() => setIsOpen(false)}>
           <AddTaskForm onClose={() => setIsOpen(!isOpen)} />
         </Modal>
       )}

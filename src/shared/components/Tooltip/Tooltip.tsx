@@ -64,6 +64,11 @@ function Tooltip({
     setIsOpen((open) => !open)
   }
 
+  const closeAndFocusTrigger = () => {
+    setIsOpen(false)
+    triggerRef.current?.querySelector('button')?.focus()
+  }
+
   return (
     <>
       <div className="tooltip__trigger" ref={triggerRef}>
@@ -76,6 +81,7 @@ function Tooltip({
             className="tooltip__content"
             ref={contentRef}
             style={{ top: position.top, left: position.left }}
+            onClick={closeAndFocusTrigger}
           >
             {children}
           </div>,
