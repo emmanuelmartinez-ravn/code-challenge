@@ -2,18 +2,22 @@ import './DashboardPage.css'
 import { useOutletContext } from 'react-router'
 import { DragDropContext, type DropResult } from '@hello-pangea/dnd'
 import { useMutation } from '@apollo/client/react'
-import { STATUSES, type Status } from '@constants/Status'
+import { STATUSES } from '@constants/Status'
+import { isStatus } from '@constants/utils'
 import TasksColumn from './TasksColumn'
 import NoResults from './NoResults'
 import type { ControlsOutletContext } from '@core/layout/ControlsLayout/ControlsLayout'
 import { GET_TASKS } from '@graphql/queries/task'
 import { UPDATE_TASK } from '@graphql/mutations/updateTask'
+import { useToast } from '@shared/components/Toast/useToast'
 
 function DashboardPage() {
   const { tasksByStatus, loading } = useOutletContext<ControlsOutletContext>()
 
+  const showToast = useToast()
+
   const [updateTask] = useMutation(UPDATE_TASK, {
-    refetchQueries: [{ query: GET_TASKS, variables: { input: {} } }],
+    refetchQueries: [GET_TASKS],
   })
 
   const hasResults = Array.from(tasksByStatus.values()).some(
@@ -32,7 +36,13 @@ function DashboardPage() {
       return
     }
 
-    const sourceStatus = source.droppableId as Status
+    const sourceStatus = source.droppableId
+    const destinationStatus = destination.droppableId
+
+    if (!isStatus(sourceStatus) || !isStatus(destinationStatus)) {
+      return
+    }
+
     const draggedTask = tasksByStatus
       .get(sourceStatus)
       ?.find((task) => task.id === draggableId)
@@ -41,7 +51,6 @@ function DashboardPage() {
       return
     }
 
-    const destinationStatus = destination.droppableId as Status
     const destinationTasks = tasksByStatus.get(destinationStatus) ?? []
     const otherTasks = destinationTasks.filter(
       (task) => task.id !== draggableId,
@@ -80,6 +89,8 @@ function DashboardPage() {
       optimisticResponse: {
         updateTask: optimisticTask,
       },
+    }).catch(() => {
+      showToast("Couldn't move the task. Please try again.", 'error')
     })
   }
 

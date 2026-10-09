@@ -1,10 +1,10 @@
-.edit-task-form {
+.task-form {
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
 
-.edit-task-form__header > label > input {
+.task-form__header > label > input {
   border: none;
   background: none;
   outline: none;
@@ -13,11 +13,11 @@
   cursor: pointer;
 }
 
-.edit-task-form__header > label > input::placeholder {
+.task-form__header > label > input::placeholder {
   color: var(--color-neutral-2);
 }
 
-.edit-task-form__body {
+.task-form__body {
   display: flex;
   gap: 1rem;
 }
@@ -41,13 +41,13 @@
   left: 0;
 }
 
-.edit-task-form__footer {
+.task-form__footer {
   display: flex;
   gap: 1rem;
   justify-content: flex-end;
 }
 
-.edit-task-form__error {
+.task-form__error {
   color: var(--color-primary-4);
   text-align: right;
 }

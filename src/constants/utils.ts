@@ -3,7 +3,7 @@ import { STATUSES, type Status } from './Status'
 import type { Tag } from './Tag'
 import type { Task } from './Task'
 
-export function formatDate(dueDate: Date): {
+export function formatDate(dueDate: Date | string): {
   status: 'onTime' | 'near' | 'overdue'
   formatted: string
 } {
@@ -158,4 +158,14 @@ export function groupTasksByStatus(tasks?: Task[]): Map<Status, Task[]> {
   })
 
   return tasksByStatus
+}
+
+export function isStatus(value: string): value is Status {
+  return STATUSES.some((status) => status === value)
+}
+
+export function pointEstimateToLabel(estimate: PointEstimate): string {
+  const points = pointEstimateToNumber(estimate)
+
+  return `${points} ${points === 1 ? 'Point' : 'Points'}`
 }

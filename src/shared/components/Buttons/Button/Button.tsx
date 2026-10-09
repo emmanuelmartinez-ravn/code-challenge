@@ -7,6 +7,7 @@ type ButtonProps = {
   readonly onClick?: () => void
   readonly variant?: ButtonVariant
   readonly type?: 'button' | 'submit' | 'reset'
+  readonly disabled?: boolean
 } & (
   | {
       readonly name: string
@@ -25,6 +26,7 @@ function Button({
   onClick,
   variant = 'primary',
   type = 'button',
+  disabled,
 }: ButtonProps) {
   return (
     <button
@@ -32,6 +34,7 @@ function Button({
       className={`button ${variant === 'primary' ? 'button--primary' : 'button--secondary'}`}
       onClick={onClick}
       type={type}
+      disabled={disabled}
     >
       {icon ?? null}
       {name ? <span>{name}</span> : null}

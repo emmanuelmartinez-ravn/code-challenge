@@ -5,6 +5,7 @@ import {
 } from '@apollo/client/testing/react'
 import { createMemoryRouter, RouterProvider, Outlet } from 'react-router'
 import Controls from './Controls'
+import ToastProvider from '@shared/components/Toast/ToastProvider'
 import { GET_USERS } from '@graphql/queries/users'
 
 function renderControls(
@@ -31,7 +32,9 @@ function renderControls(
 
   return render(
     <MockedProvider mocks={mocks}>
-      <RouterProvider router={router} />
+      <ToastProvider>
+        <RouterProvider router={router} />
+      </ToastProvider>
     </MockedProvider>,
   )
 }

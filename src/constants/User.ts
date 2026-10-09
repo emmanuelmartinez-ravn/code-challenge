@@ -16,8 +16,8 @@ export type Profile = {
   fullName: string
   email: string
   type: UserType
-  createdAt: Date
-  updatedAt: Date
+  createdAt: string
+  updatedAt: string
 }
 
 export type GetProfileResponse = {
