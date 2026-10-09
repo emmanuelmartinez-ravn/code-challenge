@@ -1,4 +1,4 @@
-import { render, screen, act } from '@testing-library/react'
+import { render, screen, act, fireEvent } from '@testing-library/react'
 import {
   MockedProvider,
   type MockedProviderProps,
@@ -63,15 +63,15 @@ const getTasksMock = {
   },
 }
 
-function RootOutletStub() {
-  return <Outlet context={{ search: '' }} />
+function RootOutletStub({ search }: { readonly search: string }) {
+  return <Outlet context={{ search }} />
 }
 
-function renderDashboard(mocks: MockedProviderProps['mocks']) {
+function renderDashboard(mocks: MockedProviderProps['mocks'], search = '') {
   const router = createMemoryRouter(
     [
       {
-        element: <RootOutletStub />,
+        element: <RootOutletStub search={search} />,
         children: [
           {
             element: <ControlsLayout />,
@@ -128,5 +128,78 @@ describe('DashboardPage', () => {
     expect(
       await screen.findByText("Couldn't move the task. Please try again."),
     ).toBeInTheDocument()
+  })
+})
+
+describe('DashboardPage task loading', () => {
+  const getTasksFailure = {
+    request: { query: GET_TASKS, variables: { input: {} } },
+    error: new Error('Network down'),
+  }
+
+  it('sends the search term to the server as the name filter', async () => {
+    renderDashboard(
+      [
+        {
+          request: {
+            query: GET_TASKS,
+            variables: { input: { name: 'onboarding' } },
+          },
+          result: getTasksMock.result,
+        },
+      ],
+      'onboarding',
+    )
+
+    expect(
+      await screen.findByText('Write onboarding docs'),
+    ).toBeInTheDocument()
+  })
+
+  it('shows an error state when the tasks fail to load', async () => {
+    renderDashboard([getTasksFailure])
+
+    expect(
+      await screen.findByText("Couldn't load your tasks."),
+    ).toBeInTheDocument()
+  })
+
+  it('does not claim there are no results when the tasks fail to load', async () => {
+    renderDashboard([getTasksFailure])
+    await screen.findByText("Couldn't load your tasks.")
+
+    expect(
+      screen.queryByText('No tasks match your search.'),
+    ).not.toBeInTheDocument()
+  })
+
+  it('loads the tasks again when Retry is clicked', async () => {
+    renderDashboard([getTasksFailure, getTasksMock])
+    await screen.findByText("Couldn't load your tasks.")
+
+    fireEvent.click(screen.getByRole('button', { name: 'Retry' }))
+
+    expect(
+      await screen.findByText('Write onboarding docs'),
+    ).toBeInTheDocument()
+  })
+})
+
+describe('DashboardPage columns', () => {
+  it('shows the status columns in workflow order', async () => {
+    renderDashboard([getTasksMock])
+    await screen.findByText('Write onboarding docs')
+
+    const columnTitles = screen
+      .getAllByRole('heading', { level: 2 })
+      .map((heading) => heading.textContent?.replace(/\s*\(\d+\)$/, ''))
+
+    expect(columnTitles).toEqual([
+      'Backlog',
+      'To do',
+      'In Progress',
+      'Done',
+      'Cancelled',
+    ])
   })
 })

@@ -25,7 +25,7 @@ A task management dashboard built with React, TypeScript, and GraphQL. It includ
 - **[Vite](https://vite.dev/)** — dev server and build tool
 - **[React Router](https://reactrouter.com/)** — routing
 - **[Apollo Client](https://www.apollographql.com/docs/react)** — GraphQL client and cache
-- **[GraphQL Code Generator](https://the-guild.dev/graphql/codegen)** — typed GraphQL operations
+- **[React Hook Form](https://react-hook-form.com/)** — form state and validation
 - **[Vitest](https://vitest.dev/)** + **[jsdom](https://github.com/jsdom/jsdom)** — unit testing
 - **[ESLint](https://eslint.org/)** — linting
 
@@ -70,7 +70,6 @@ The app will be available at the URL printed in the terminal (default [http://lo
 | `npm run lint`       | Runs ESLint                                         |
 | `npm run type-check` | Runs the TypeScript compiler without emitting files |
 | `npm test`           | Runs the test suite with Vitest                     |
-| `npm run codegen`    | Generates GraphQL types from `codegen.ts`           |
 
 ## Project structure
 
@@ -81,7 +80,7 @@ src/
 ├── features/       # Feature/page modules (Dashboard, MyTask, ...)
 ├── graphql/         # Queries, mutations, and fragments
 ├── shared/         # Reusable components and pages shared across features
-├── constants/       # Shared constants and utility functions
+├── constants/       # Domain types, shared constants and utility functions
 └── assets/         # Static assets
 ```
 
@@ -92,4 +91,5 @@ Path aliases (`@app`, `@core`, `@features`, `@shared`, `@constants`, `@graphql`,
 - This app was built using React 19 and TypeScript due to their popularity and the fact that I learned them in the past month trying to apply the best practices to a large codebase.
 - This app uses [weserv](https://github.com/weserv/images) to proxy remote avatars, which is a free and open-source service that caches and proxies remote images to handle http errors.
 - This app uses Apollo Client to fetch data from the GraphQL API due to its popularity and ease of use with the official Apollo Client Extension for VS Code to easily generate types and queries with introspection.
+- The GraphQL types (query results and variables) are written by hand in `src/constants/` and attached to each operation with `TypedDocumentNode`; there is no code generation step.
 - The app was deployed to [Vercel](https://code-challenge-git-prod-emmanuel-martinez-ravn.vercel.app/dashboard/).

@@ -10,24 +10,33 @@ import type { RootOutletContext } from '@core/layout/RootLayout'
 export type ControlsOutletContext = {
   tasksByStatus: Map<Status, Task[]>
   loading: boolean
+  hasError: boolean
+  retry: () => void
 }
 
 function ControlsLayout() {
   const { search } = useOutletContext<RootOutletContext>()
 
-  const { data, loading } = useQuery(GET_TASKS, {
+  const { data, previousData, loading, error, refetch } = useQuery(GET_TASKS, {
     variables: {
-      input: {},
+      input: search ? { name: search } : {},
     },
   })
 
-  const filteredTasks = data?.tasks.filter((task) =>
-    task.name.toLowerCase().includes(search.toLowerCase()),
-  )
+  const tasks = data?.tasks ?? previousData?.tasks
 
-  const tasksByStatus = groupTasksByStatus(filteredTasks)
+  const tasksByStatus = groupTasksByStatus(tasks)
 
-  const outletContext: ControlsOutletContext = { tasksByStatus, loading }
+  const retry = () => {
+    refetch().catch(() => {})
+  }
+
+  const outletContext: ControlsOutletContext = {
+    tasksByStatus,
+    loading: loading && !tasks,
+    hasError: Boolean(error),
+    retry,
+  }
 
   return (
     <>

@@ -12,14 +12,14 @@ Steven's summary: *"they are one lesson, not four"*. **Everything that can fail 
 | 1 | #2 | `AddTaskForm.tsx` | High | `createTask` is fire-and-forget: the modal closes before the result arrives, and errors are never shown | **Done (Phase 1)** |
 | 2 | #3 | `EditTaskForm.tsx` | High | Same fire-and-forget problem with `updateTask` | **Done (Phase 1)** |
 | 3 | #4 | `TaskCard.tsx` | High | Delete has no confirmation, no notification, and fails silently | **Done (Phase 2)** |
-| 4 | #7 | `ControlsLayout.tsx` | High | Search filters on the client; `FilterTaskInput` is never sent to the server | Open → Phase 3 (needs API) |
-| 5 | #7 | `ControlsLayout.tsx` | High | `error` is ignored, so an API failure shows "No tasks match your search" | Open → Phase 3 |
+| 4 | #7 | `ControlsLayout.tsx` | High | Search filters on the client; `FilterTaskInput` is never sent to the server | **Done (Phase 3)**, live check pending API |
+| 5 | #7 | `ControlsLayout.tsx` | High | `error` is ignored, so an API failure shows "No tasks match your search" | **Done (Phase 3)** |
 | 6 | #2 | `Modal.tsx` | Medium | No `role="dialog"`, no Escape key, no focus handling | **Done (Phase 2)** |
 | 7 | #3 | Both forms | Medium | The two forms are ~90% duplicated, and they live in different folders | **Done (Phase 1)** |
 | 8 | #8 | `router.tsx`, `profile.ts` | Medium | `/settings` is a placeholder; the profile query doesn't request `position` | Open → Phase 4 (`position` needs API) |
 | 9 | #11 | 4 files | Low | `refetchQueries: [{ query: GET_TASKS, variables: { input: {} } }]` is repeated in 4 files | **Done (Phase 1)** |
-| 10 | #2 | `Status.ts` | Low | Columns are in alphabetical order, not workflow order | Open → Phase 5 |
-| 11 | #14 | `README.md` | Hygiene | README mentions GraphQL Code Generator and `npm run codegen`, which don't exist | Open → Phase 5 |
+| 10 | #2 | `Status.ts` | Low | Columns are in alphabetical order, not workflow order | **Done (Phase 5)** |
+| 11 | #14 | `README.md` | Hygiene | README mentions GraphQL Code Generator and `npm run codegen`, which don't exist | **Done (Phase 5)** |
 | 12 | #14 | `TasksColumn.tsx` | Hygiene | `tasks!` non-null assertions | **Done in PR #15** |
 
 ---
