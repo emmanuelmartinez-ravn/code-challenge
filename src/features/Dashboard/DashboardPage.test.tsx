@@ -106,9 +106,7 @@ describe('DashboardPage', () => {
   it('displays a card for a task returned by the API', async () => {
     renderDashboard([getTasksMock])
 
-    expect(
-      await screen.findByText('Write onboarding docs'),
-    ).toBeInTheDocument()
+    expect(await screen.findByText('Write onboarding docs')).toBeInTheDocument()
   })
 
   it('shows an error toast when moving a task fails', async () => {
@@ -151,9 +149,7 @@ describe('DashboardPage task loading', () => {
       'onboarding',
     )
 
-    expect(
-      await screen.findByText('Write onboarding docs'),
-    ).toBeInTheDocument()
+    expect(await screen.findByText('Write onboarding docs')).toBeInTheDocument()
   })
 
   it('shows an error state when the tasks fail to load', async () => {
@@ -179,9 +175,7 @@ describe('DashboardPage task loading', () => {
 
     fireEvent.click(screen.getByRole('button', { name: 'Retry' }))
 
-    expect(
-      await screen.findByText('Write onboarding docs'),
-    ).toBeInTheDocument()
+    expect(await screen.findByText('Write onboarding docs')).toBeInTheDocument()
   })
 })
 
@@ -207,19 +201,33 @@ describe('DashboardPage columns', () => {
 describe('DashboardPage messages', () => {
   const noTasks = { data: { tasks: [] } }
 
-  it('explains that the task service is not responding when loading fails', async () => {
-    renderDashboard([
-      {
-        request: { query: GET_TASKS, variables: { input: {} } },
-        error: new Error('Network down'),
-      },
-    ])
+  const loadFailure = {
+    request: { query: GET_TASKS, variables: { input: {} } },
+    error: new Error('Network down'),
+  }
+
+  it('explains that the task cards cannot be shown when loading fails', async () => {
+    renderDashboard([loadFailure])
 
     expect(
       await screen.findByText(
-        "The task service isn't responding right now, so your task cards can't be shown. Please try again later.",
+        "Your task cards can't be shown right now. Try again in a moment.",
       ),
     ).toBeInTheDocument()
+  })
+
+  it('keeps a page heading when loading fails', async () => {
+    renderDashboard([loadFailure])
+    await screen.findByText("Couldn't load your tasks.")
+
+    expect(screen.getByRole('heading', { level: 1 })).toBeInTheDocument()
+  })
+
+  it('keeps the Add task button visible when loading fails', async () => {
+    renderDashboard([loadFailure])
+    await screen.findByText("Couldn't load your tasks.")
+
+    expect(screen.getByRole('button', { name: /Add task/ })).toBeInTheDocument()
   })
 
   it('says there are no tasks yet when the board is empty without a search', async () => {

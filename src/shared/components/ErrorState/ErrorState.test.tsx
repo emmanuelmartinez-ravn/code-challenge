@@ -12,11 +12,19 @@ function renderErrorState(onRetry: () => void = () => {}) {
 }
 
 describe('ErrorState', () => {
-  it('announces the title and message as an alert', () => {
+  it('announces the title as an alert', () => {
     renderErrorState()
 
     expect(screen.getByRole('alert')).toHaveTextContent(
-      "Couldn't load your tasks.The task service isn't responding.",
+      "Couldn't load your tasks.",
+    )
+  })
+
+  it('announces the message as an alert', () => {
+    renderErrorState()
+
+    expect(screen.getByRole('alert')).toHaveTextContent(
+      "The task service isn't responding.",
     )
   })
 

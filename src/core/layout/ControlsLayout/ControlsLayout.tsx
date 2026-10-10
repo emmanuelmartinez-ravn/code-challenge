@@ -31,9 +31,10 @@ function ControlsLayout() {
     return (
       <>
         <Controls />
+        <h1 className="sr-only">Tasks</h1>
         <ErrorState
           title="Couldn't load your tasks."
-          message="The task service isn't responding right now, so your task cards can't be shown. Please try again later."
+          message="Your task cards can't be shown right now. Try again in a moment."
           onRetry={retry}
         />
       </>
