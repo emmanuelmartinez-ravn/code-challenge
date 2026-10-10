@@ -6,6 +6,7 @@ import Select from '@shared/components/Select/Select'
 import Multiselect from '@shared/components/Multiselect/Multiselect'
 import DatePicker from '@shared/components/DatePicker/DatePicker'
 import Button from '@shared/components/Buttons/Button/Button'
+import ErrorState from '@shared/components/ErrorState/ErrorState'
 import PlusLessIcon from '@shared/icons/PlusLessIcon'
 import UserIcon from '@shared/icons/UserIcon'
 import PieIcon from '@shared/icons/PieIcon'
@@ -57,11 +58,15 @@ function TaskForm({
   readonly onSubmit: (values: TaskFormValues) => Promise<void>
   readonly onCancel: () => void
 }) {
-  const { data } = useQuery(GET_USERS, {
+  const { data, error, refetch } = useQuery(GET_USERS, {
     variables: {
       input: {},
     },
   })
+
+  const retryUsers = () => {
+    refetch().catch(() => {})
+  }
 
   const [openDatePicker, setOpenDatePicker] = useState(false)
 
@@ -239,6 +244,14 @@ function TaskForm({
           )}
         />
       </div>
+
+      {error && (
+        <ErrorState
+          title="Couldn't load the assignees."
+          message="The assignee list can't be shown right now. Try again in a moment."
+          onRetry={retryUsers}
+        />
+      )}
 
       {hasErrors && (
         <span role="alert" className="task-form__error body body--s">

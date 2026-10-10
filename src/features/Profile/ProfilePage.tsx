@@ -2,6 +2,7 @@ import { useQuery } from '@apollo/client/react'
 import { GET_PROFILE } from '@graphql/queries/profile'
 import Avatar from '@shared/components/Avatar/Avatar'
 import Badge from '@shared/components/Badge/Badge'
+import ErrorState from '@shared/components/ErrorState/ErrorState'
 import Skeleton from '@shared/components/Skeleton/Skeleton'
 import './ProfilePage.css'
 
@@ -14,9 +15,13 @@ const dateFormatter = new Intl.DateTimeFormat('en-US', {
 const SKELETON_DETAILS_COUNT = 3
 
 function ProfilePage() {
-  const { data, loading } = useQuery(GET_PROFILE)
+  const { data, loading, error, refetch } = useQuery(GET_PROFILE)
 
   const profile = data?.profile
+
+  const retry = () => {
+    refetch().catch(() => {})
+  }
 
   if (loading) {
     return (
@@ -37,6 +42,19 @@ function ProfilePage() {
             </div>
           ))}
         </dl>
+      </section>
+    )
+  }
+
+  if (error) {
+    return (
+      <section className="profile-page">
+        <h1 className="sr-only">Profile</h1>
+        <ErrorState
+          title="Couldn't load your profile."
+          message="Your profile details can't be shown right now. Try again in a moment."
+          onRetry={retry}
+        />
       </section>
     )
   }
