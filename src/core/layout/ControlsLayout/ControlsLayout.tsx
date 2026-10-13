@@ -7,6 +7,9 @@ import { groupTasksByStatus } from '@constants/utils'
 import type { Status } from '@constants/Status'
 import type { Task } from '@constants/Task'
 import type { RootOutletContext } from '@core/layout/RootLayout'
+import { MOCK_TASKS } from '@constants/mockTasks'
+
+const shouldUseMockTasks = import.meta.env.VITE_USE_MOCK_TASKS === 'true'
 
 export type ControlsOutletContext = {
   tasksByStatus: Map<Status, Task[]>
@@ -21,6 +24,7 @@ function ControlsLayout() {
     variables: {
       input: search ? { name: search } : {},
     },
+    skip: shouldUseMockTasks,
   })
 
   const retry = () => {
@@ -41,7 +45,9 @@ function ControlsLayout() {
     )
   }
 
-  const tasks = data?.tasks ?? previousData?.tasks
+  const tasks = shouldUseMockTasks
+    ? MOCK_TASKS
+    : (data?.tasks ?? previousData?.tasks)
 
   const outletContext: ControlsOutletContext = {
     tasksByStatus: groupTasksByStatus(tasks),

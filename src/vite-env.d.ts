@@ -7,6 +7,7 @@ interface ViteTypeOptions {
 interface ImportMetaEnv {
   readonly VITE_GRAPHQL_URI: string
   readonly VITE_GRAPHQL_TOKEN?: string
+  readonly VITE_USE_MOCK_TASKS?: string
 }
 
 interface ImportMeta {
