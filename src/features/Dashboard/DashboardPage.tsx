@@ -1,14 +1,12 @@
 import './DashboardPage.css'
 import { useOutletContext } from 'react-router'
 import { DragDropContext, type DropResult } from '@hello-pangea/dnd'
-import { useMutation } from '@apollo/client/react'
 import { STATUSES } from '@constants/Status'
 import { isStatus } from '@constants/utils'
 import TasksColumn from './TasksColumn'
 import NoResults from './NoResults'
 import type { ControlsOutletContext } from '@core/layout/ControlsLayout/ControlsLayout'
-import { GET_TASKS } from '@graphql/queries/task'
-import { UPDATE_TASK } from '@graphql/mutations/updateTask'
+import { useTaskMutations } from '@graphql/hooks/useTaskMutations'
 import { useToast } from '@shared/components/Toast/useToast'
 
 function DashboardPage() {
@@ -17,9 +15,7 @@ function DashboardPage() {
 
   const showToast = useToast()
 
-  const [updateTask] = useMutation(UPDATE_TASK, {
-    refetchQueries: [GET_TASKS],
-  })
+  const { updateTask } = useTaskMutations()
 
   const hasResults = Array.from(tasksByStatus.values()).some(
     (tasks) => tasks.length > 0,

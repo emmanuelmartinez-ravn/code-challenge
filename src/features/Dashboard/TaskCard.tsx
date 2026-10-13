@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { useMutation } from '@apollo/client/react'
 import type {
   DraggableProvidedDragHandleProps,
   DraggableProvidedDraggableProps,
@@ -28,8 +27,7 @@ import {
   tagToLabel,
   tagToVariant,
 } from '@constants/utils'
-import { GET_TASKS } from '@graphql/queries/task'
-import { DELETE_TASK } from '@graphql/mutations/deleteTask'
+import { useTaskMutations } from '@graphql/hooks/useTaskMutations'
 
 function TaskCard({
   task,
@@ -52,9 +50,7 @@ function TaskCard({
 
   const showToast = useToast()
 
-  const [deleteTask] = useMutation(DELETE_TASK, {
-    refetchQueries: [GET_TASKS],
-  })
+  const { deleteTask } = useTaskMutations()
 
   const confirmDelete = async () => {
     try {

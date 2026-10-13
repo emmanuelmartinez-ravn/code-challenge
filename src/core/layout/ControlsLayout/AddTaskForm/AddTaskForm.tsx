@@ -1,17 +1,13 @@
-import { useMutation } from '@apollo/client/react'
 import TaskForm, {
   type TaskFormValues,
 } from '@shared/components/TaskForm/TaskForm'
 import { useToast } from '@shared/components/Toast/useToast'
-import { GET_TASKS } from '@graphql/queries/task'
-import { CREATE_TASK } from '@graphql/mutations/createTask'
+import { useTaskMutations } from '@graphql/hooks/useTaskMutations'
 
 function AddTaskForm({ onClose }: { readonly onClose: () => void }) {
   const showToast = useToast()
 
-  const [createTask] = useMutation(CREATE_TASK, {
-    refetchQueries: [GET_TASKS],
-  })
+  const { createTask } = useTaskMutations()
 
   const handleSubmit = async (values: TaskFormValues) => {
     try {
